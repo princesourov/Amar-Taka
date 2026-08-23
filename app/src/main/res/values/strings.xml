@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Hisab</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_accounts">Accounts</string>
+    <string name="nav_people">People</string>
+    <string name="nav_transactions">Transactions</string>
+    <string name="nav_reports">Reports</string>
+
+    <string name="greeting_morning">Good morning</string>
+    <string name="greeting_afternoon">Good afternoon</string>
+    <string name="greeting_evening">Good evening</string>
+
+    <string name="label_total_money">Total Money</string>
+    <string name="label_you_will_receive">You Will Receive</string>
+    <string name="label_you_will_pay">You Will Pay</string>
+    <string name="label_net_balance">Net Balance</string>
+    <string name="label_todays_summary">Today\'s Summary</string>
+    <string name="label_todays_income">Income</string>
+    <string name="label_todays_expense">Expense</string>
+
+    <string name="action_add_expense">Expense</string>
+    <string name="add_expense_title">Add Expense</string>
+    <string name="hint_amount">Amount</string>
+    <string name="hint_category">Category</string>
+    <string name="hint_paid_from">Paid from</string>
+    <string name="hint_note">Note (optional)</string>
+    <string name="action_save">Save</string>
+    <string name="action_yes_save">Save anyway</string>
+    <string name="action_cancel">Cancel</string>
+
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_amount_required">Enter an amount greater than zero</string>
+    <string name="error_category_required">Choose a category</string>
+    <string name="error_account_required">Choose an account</string>
+    <string name="duplicate_warning_message">You just added a very similar expense — save it again?</string>
+
+    <string name="coming_soon_default_title">Coming soon</string>
+    <string name="coming_soon_subtitle">This part of Hisab is on the roadmap and isn\'t built yet.</string>
+
+    <!-- Phase 2: Budgets -->
+    <string name="budgets_title">Budgets</string>
+    <string name="budgets_empty_state">No budgets yet. Tap + to set one.</string>
+    <string name="create_budget_title">Create Budget</string>
+    <string name="hint_period">Period</string>
+    <string name="scope_daily">Daily</string>
+    <string name="scope_weekly">Weekly</string>
+    <string name="scope_monthly">Monthly</string>
+    <string name="scope_yearly">Yearly</string>
+    <string name="budget_overall_option">Overall (all spending)</string>
+    <string name="budget_over_by">Over by %1$s</string>
+    <string name="budget_remaining">%1$s left</string>
+    <string name="budget_spent_of">%1$s of %2$s</string>
+
+    <!-- Phase 2: Savings Goals -->
+    <string name="savings_goals_title">Savings Goals</string>
+    <string name="savings_goals_empty_state">No goals yet. Tap + to start one.</string>
+    <string name="create_goal_title">New Savings Goal</string>
+    <string name="hint_goal_name">Goal name</string>
+    <string name="hint_target_amount">Target amount</string>
+    <string name="goal_saved_of">%1$s of %2$s</string>
+    <string name="action_contribute">Add money</string>
+    <string name="contribute_to_goal_title">Add to %1$s</string>
+    <string name="error_goal_invalid">Enter a name and a target amount greater than zero</string>
+
+    <!-- Phase 2: Recurring Transactions -->
+    <string name="recurring_title">Recurring</string>
+    <string name="recurring_empty_state">No recurring transactions yet. Tap + to add one.</string>
+    <string name="create_recurring_title">New Recurring Transaction</string>
+    <string name="type_expense">Expense</string>
+    <string name="type_income">Income</string>
+    <string name="recurring_untitled">Recurring transaction</string>
+    <string name="recurring_next_run">Next: %1$s</string>
+    <string name="error_recurring_invalid">Fill in amount, account, and category (for expenses)</string>
+
+    <!-- Phase 2: Dashboard cards -->
+    <string name="label_budgets_card">Budgets</string>
+    <string name="label_goals_card">Savings Goals</string>
+    <string name="action_see_all">See all</string>
+    <string name="dashboard_budgets_summary">%1$d budgets · %2$d over</string>
+    <string name="dashboard_budgets_empty">Set your first budget</string>
+    <string name="dashboard_goals_summary">%1$s saved of %2$s target</string>
+    <string name="dashboard_goals_empty">Set your first savings goal</string>
+
+    <!-- Priority build: Add Money, Transactions, Edit/Delete, Accounts, Transfer -->
+    <string name="action_add_money">Money</string>
+    <string name="add_money_title">Add Money</string>
+    <string name="hint_into_account">Into account</string>
+    <string name="hint_source_optional">Source (optional)</string>
+    <string name="hint_date">Date</string>
+    <string name="source_none_option">None</string>
+    <string name="action_saving">Saving…</string>
+
+    <string name="nav_transactions_title">Transactions</string>
+    <string name="hint_search_transactions">Search by note, category, account…</string>
+    <string name="filter_all">All</string>
+    <string name="filter_lending">Lent</string>
+    <string name="filter_borrowing">Borrowed</string>
+    <string name="type_transfer">Transfer</string>
+    <string name="txn_gave">Lent</string>
+    <string name="txn_took">Borrowed</string>
+    <string name="txn_repaid_by_them">Repayment received</string>
+    <string name="txn_repaid_by_you">Repayment made</string>
+    <string name="transactions_empty_state">No transactions yet. Add an expense or income to get started.</string>
+    <string name="action_more_options">More options</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="delete_transaction_title">Delete this transaction?</string>
+    <string name="delete_transaction_message">Deleting this transaction will update your account balances and any related budgets.</string>
+
+    <string name="edit_transaction_generic_title">Edit Transaction</string>
+    <string name="edit_transaction_title">Edit %1$s</string>
+    <string name="edit_transaction_person_label">This transaction is linked to a person</string>
+    <string name="action_save_changes">Save changes</string>
+    <string name="error_exceeds_outstanding">That\'s more than what\'s owed (%1$s available)</string>
+    <string name="error_same_account_transfer">Source and destination accounts must be different</string>
+
+    <string name="accounts_empty_state">No accounts yet. Tap + to add one.</string>
+    <string name="create_account_title">Add Account</string>
+    <string name="edit_account_title">Edit Account</string>
+    <string name="hint_account_name">Account name</string>
+    <string name="hint_account_type">Account type</string>
+    <string name="hint_opening_balance">Opening balance</string>
+    <string name="hint_notes_optional">Notes (optional)</string>
+    <string name="error_account_name_required">Enter an account name</string>
+    <string name="account_type_cash">Cash</string>
+    <string name="account_type_bank">Bank</string>
+    <string name="account_type_bkash">bKash</string>
+    <string name="account_type_nagad">Nagad</string>
+    <string name="account_type_rocket">Rocket</string>
+    <string name="account_type_other">Other</string>
+    <string name="delete_account_title">Delete this account?</string>
+    <string name="delete_account_message">This hides the account from your active accounts — its transaction history stays intact and correct.</string>
+
+    <string name="action_transfer_money">Transfer Money</string>
+    <string name="transfer_money_title">Transfer Money</string>
+    <string name="hint_transfer_from">From account</string>
+    <string name="hint_transfer_to">To account</string>
+
+    <string name="label_recent_transactions">Recent Transactions</string>
+    <string name="recent_transactions_empty">No transactions yet</string>
+</resources>

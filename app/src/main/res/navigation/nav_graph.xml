@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.hisab.app.presentation.dashboard.DashboardFragment"
+        android:label="@string/nav_home">
+
+        <action
+            android:id="@+id/action_dashboard_to_addExpense"
+            app:destination="@id/addExpenseFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_addMoney"
+            app:destination="@id/addMoneyFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_budgets"
+            app:destination="@id/budgetsFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_savingsGoals"
+            app:destination="@id/savingsGoalsFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_recurring"
+            app:destination="@id/recurringFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_transactions"
+            app:destination="@id/transactionsFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_editTransaction"
+            app:destination="@id/editTransactionFragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/budgetsFragment"
+        android:name="com.hisab.app.presentation.budgets.BudgetsFragment"
+        android:label="@string/budgets_title">
+
+        <action
+            android:id="@+id/action_budgets_to_createBudget"
+            app:destination="@id/createBudgetFragment" />
+
+    </fragment>
+
+
+    <dialog
+        android:id="@+id/createBudgetFragment"
+        android:name="com.hisab.app.presentation.budgets.CreateBudgetFragment"
+        android:label="@string/create_budget_title" />
+
+
+    <fragment
+        android:id="@+id/savingsGoalsFragment"
+        android:name="com.hisab.app.presentation.savings.SavingsGoalsFragment"
+        android:label="@string/savings_goals_title">
+
+        <action
+            android:id="@+id/action_savingsGoals_to_createGoal"
+            app:destination="@id/createGoalFragment" />
+
+        <action
+            android:id="@+id/action_savingsGoals_to_contributeGoal"
+            app:destination="@id/contributeToGoalFragment" />
+
+    </fragment>
+
+
+    <dialog
+        android:id="@+id/createGoalFragment"
+        android:name="com.hisab.app.presentation.savings.CreateGoalFragment"
+        android:label="@string/create_goal_title" />
+
+
+    <dialog
+        android:id="@+id/contributeToGoalFragment"
+        android:name="com.hisab.app.presentation.savings.ContributeToGoalFragment"
+        android:label="@string/action_contribute">
+
+        <argument
+            android:name="goalId"
+            app:argType="string" />
+
+        <argument
+            android:name="goalName"
+            app:argType="string" />
+
+    </dialog>
+
+
+    <fragment
+        android:id="@+id/recurringFragment"
+        android:name="com.hisab.app.presentation.recurring.RecurringFragment"
+        android:label="@string/recurring_title">
+
+        <action
+            android:id="@+id/action_recurring_to_createRecurring"
+            app:destination="@id/createRecurringFragment" />
+
+    </fragment>
+
+
+    <dialog
+        android:id="@+id/createRecurringFragment"
+        android:name="com.hisab.app.presentation.recurring.CreateRecurringFragment"
+        android:label="@string/create_recurring_title" />
+
+
+    <fragment
+        android:id="@+id/accountsFragment"
+        android:name="com.hisab.app.presentation.accounts.AccountsFragment"
+        android:label="@string/nav_accounts">
+
+        <action
+            android:id="@+id/action_accounts_to_createAccount"
+            app:destination="@id/createAccountFragment" />
+
+        <action
+            android:id="@+id/action_accounts_to_transfer"
+            app:destination="@id/transferMoneyFragment" />
+
+    </fragment>
+
+
+    <dialog
+        android:id="@+id/transferMoneyFragment"
+        android:name="com.hisab.app.presentation.transfer.TransferMoneyFragment"
+        android:label="@string/transfer_money_title" />
+
+
+    <dialog
+        android:id="@+id/createAccountFragment"
+        android:name="com.hisab.app.presentation.accounts.CreateAccountFragment"
+        android:label="@string/create_account_title">
+
+        <argument
+            android:name="accountId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
+    </dialog>
+
+
+    <fragment
+        android:id="@+id/peopleFragment"
+        android:name="com.hisab.app.presentation.common.ComingSoonFragment"
+        android:label="@string/nav_people">
+
+        <argument
+            android:name="screenTitle"
+            app:argType="string"
+            android:defaultValue="People" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/transactionsFragment"
+        android:name="com.hisab.app.presentation.transactions.TransactionsFragment"
+        android:label="@string/nav_transactions">
+
+        <action
+            android:id="@+id/action_transactions_to_editTransaction"
+            app:destination="@id/editTransactionFragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/editTransactionFragment"
+        android:name="com.hisab.app.presentation.transactions.EditTransactionFragment"
+        android:label="@string/edit_transaction_generic_title">
+
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/reportsFragment"
+        android:name="com.hisab.app.presentation.common.ComingSoonFragment"
+        android:label="@string/nav_reports">
+
+        <argument
+            android:name="screenTitle"
+            app:argType="string"
+            android:defaultValue="Reports" />
+
+    </fragment>
+
+
+    <dialog
+        android:id="@+id/addExpenseFragment"
+        android:name="com.hisab.app.presentation.expense.AddExpenseFragment"
+        android:label="@string/add_expense_title" />
+
+
+    <dialog
+        android:id="@+id/addMoneyFragment"
+        android:name="com.hisab.app.presentation.income.AddMoneyFragment"
+        android:label="@string/add_money_title" />
+
+</navigation>

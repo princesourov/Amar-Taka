@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_primary">#145C4B</color>
+    <color name="color_primary_variant">#0D3F34</color>
+    <color name="color_on_primary">#FFFFFF</color>
+    <color name="color_secondary">#D9A441</color>
+    <color name="color_on_secondary">#241A00</color>
+    <color name="color_background">#F7F6F2</color>
+    <color name="color_surface">#FFFFFF</color>
+    <color name="color_on_surface">#1B1F1E</color>
+    <color name="color_positive">#1E8A5F</color>
+    <color name="color_negative">#C0453A</color>
+    <color name="color_outline">#E1DED6</color>
+
+    <!-- Not overridden in values-night — the launcher icon background should
+         stay constant regardless of the in-app theme. -->
+    <color name="ic_launcher_background">#145C4B</color>
+</resources>
