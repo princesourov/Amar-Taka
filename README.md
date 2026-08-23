@@ -35,6 +35,16 @@ run — see "Before you build" below.
   Budgets and Savings Goals summary cards, Add Money + Add Expense FABs.
   All live from Room, nothing hardcoded.
 - **Navigation shell** — 5-tab bottom nav, Material 3 light/dark theming.
+- **People, Lending & Borrowing** — real screen, replacing the placeholder.
+  Add/edit/deactivate people, search, live receivable/payable balance per
+  person. Person detail shows full history (reusing the same transaction
+  list/edit/delete UI as the Transactions screen) plus Give Money, Take
+  Money, Receive Repayment, and Make Repayment — each going through the
+  exact same `LendMoneyUseCase`/`BorrowMoneyUseCase`/repayment use cases
+  built in Phase 1, including the overpayment guard. This closes the gap
+  flagged earlier: the Dashboard's "You Will Receive"/"You Will Pay" cards
+  could only ever read ৳0.00 with no way to create a person-linked
+  transaction — now they can show real figures.
 - **Firebase scaffold** — Auth wrapper and a Firestore push function, plus
   `firestore.rules`. Extended this round, but still **not wired into the
   live app** — see "Firebase" below for exactly why and what that means.
@@ -49,12 +59,10 @@ background permanently. This is fixed everywhere now, old screens and new.
 
 ## What's NOT built yet
 
-People + Lending/Borrowing/Repayment UI (the backend — 4 use cases, full
-person-balance math — is complete and correct; there's just no screen yet),
 Reports & Analytics, date-range/account/person filtering beyond the search
-already in Transactions, sign-in screens, live Firebase sync, reminders/
-notifications, a Trash/Restore screen (soft-delete works, nothing shows you
-the deleted list yet), Settings, and onboarding.
+already in Transactions and People, sign-in screens, live Firebase sync,
+reminders/notifications, a Trash/Restore screen (soft-delete works,
+nothing shows you the deleted list yet), Settings, and onboarding.
 
 ## Firebase — extended, still not live, and why that's deliberate
 

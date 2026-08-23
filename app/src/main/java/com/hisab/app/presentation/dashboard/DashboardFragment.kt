@@ -30,6 +30,12 @@ class DashboardFragment : Fragment() {
 
     private val accountAdapter = AccountBalanceAdapter()
 
+    private val viewModel: DashboardViewModel by viewModels {
+        ViewModelFactory(
+            (requireActivity().application as HisabApplication).container
+        )
+    }
+
     private val recentTransactionsAdapter = TransactionAdapter(
         onEdit = { item ->
             val args = Bundle().apply {
@@ -54,12 +60,6 @@ class DashboardFragment : Fragment() {
         }
     )
 
-    private val viewModel: DashboardViewModel by viewModels {
-        ViewModelFactory(
-            (requireActivity().application as HisabApplication).container
-        )
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -81,7 +81,6 @@ class DashboardFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Account list
         binding.accountList.layoutManager =
             LinearLayoutManager(
                 requireContext(),
@@ -91,31 +90,26 @@ class DashboardFragment : Fragment() {
 
         binding.accountList.adapter = accountAdapter
 
-        // Recent transactions
         binding.recentTransactionsList.layoutManager =
             LinearLayoutManager(requireContext())
 
         binding.recentTransactionsList.adapter =
             recentTransactionsAdapter
 
-        // Greeting
         binding.greeting.text = greetingForNow()
 
-        // Add Expense
         binding.fabAddExpense.setOnClickListener {
             findNavController().navigate(
                 R.id.action_dashboard_to_addExpense
             )
         }
 
-        // Add Money
         binding.fabAddMoney.setOnClickListener {
             findNavController().navigate(
                 R.id.action_dashboard_to_addMoney
             )
         }
 
-        // Budgets
         binding.seeAllBudgets.setOnClickListener {
             findNavController().navigate(
                 R.id.action_dashboard_to_budgets
@@ -128,7 +122,6 @@ class DashboardFragment : Fragment() {
             )
         }
 
-        // Savings Goals
         binding.seeAllGoals.setOnClickListener {
             findNavController().navigate(
                 R.id.action_dashboard_to_savingsGoals
@@ -141,23 +134,19 @@ class DashboardFragment : Fragment() {
             )
         }
 
-        // Recurring
         binding.recurringLink.setOnClickListener {
             findNavController().navigate(
                 R.id.action_dashboard_to_recurring
             )
         }
 
-        // All Transactions
         binding.seeAllTransactions.setOnClickListener {
             findNavController().navigate(
                 R.id.action_dashboard_to_transactions
             )
         }
 
-        // Observe data
         viewLifecycleOwner.lifecycleScope.launch {
-
             viewLifecycleOwner.repeatOnLifecycle(
                 Lifecycle.State.STARTED
             ) {
@@ -308,9 +297,7 @@ class DashboardFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-
         super.onDestroyView()
-
         _binding = null
     }
 }

@@ -42,13 +42,13 @@ data class DashboardUiState(
 }
 
 class DashboardViewModel(
-    private val userId: String,
-    private val accountRepository: AccountRepository,
+    userId: String,
+    accountRepository: AccountRepository,
     private val transactionRepository: TransactionRepository,
-    private val personRepository: PersonRepository,
-    private val budgetRepository: BudgetRepository,
-    private val savingsGoalRepository: SavingsGoalRepository,
-    private val categoryDao: CategoryDao
+    personRepository: PersonRepository,
+    budgetRepository: BudgetRepository,
+    savingsGoalRepository: SavingsGoalRepository,
+    categoryDao: CategoryDao
 ) : ViewModel() {
 
     val budgetsSummary: StateFlow<BudgetsSummary> =
@@ -56,8 +56,8 @@ class DashboardViewModel(
             .getBudgetsWithSpent(userId)
             .map { list ->
                 BudgetsSummary(
-                    totalBudgets = list.size,
-                    overBudgetCount = list.count { (budget, spent) ->
+                    list.size,
+                    list.count { (budget, spent) ->
                         spent > budget.amountMinor
                     }
                 )
@@ -73,9 +73,9 @@ class DashboardViewModel(
             .getActiveGoals(userId)
             .map { goals ->
                 GoalsSummary(
-                    totalGoals = goals.size,
-                    totalSavedMinor = goals.sumOf { it.savedAmountMinor },
-                    totalTargetMinor = goals.sumOf { it.targetAmountMinor }
+                    goals.size,
+                    goals.sumOf { it.savedAmountMinor },
+                    goals.sumOf { it.targetAmountMinor }
                 )
             }
             .stateIn(
@@ -84,62 +84,74 @@ class DashboardViewModel(
                 GoalsSummary(0, 0, 0)
             )
 
-    private val accountsWithBalances: Flow<Pair<List<AccountBalanceItem>, Long>> =
+    private val accountsWithBalances:
+            Flow<Pair<List<AccountBalanceItem>, Long>> =
+
         accountRepository
             .getAccountsWithBalances(userId)
             .map { pairs ->
+
                 val items = pairs.map { (account, balance) ->
+
                     AccountBalanceItem(
-                        id = account.id,
-                        name = account.name,
-                        type = AccountType.valueOf(account.type),
-                        balanceMinor = balance
+                        account.id,
+                        account.name,
+                        AccountType.valueOf(account.type),
+                        balance
                     )
                 }
 
-                items to items.sumOf { it.balanceMinor }
+                items to items.sumOf {
+                    it.balanceMinor
+                }
             }
 
-    private val todayRange = DateRanges.todayRange()
+    private val todayRange =
+        DateRanges.todayRange()
 
-    val uiState: StateFlow<DashboardUiState> = combine(
-        accountsWithBalances,
-        personRepository.getTotalReceivable(userId),
-        personRepository.getTotalPayable(userId),
-        transactionRepository.getTotalExpenseBetween(
-            userId,
-            todayRange.first,
-            todayRange.second
-        ),
-        transactionRepository.getTotalIncomeBetween(
-            userId,
-            todayRange.first,
-            todayRange.second
-        )
-    ) { accountsAndTotal,
-        receivable,
-        payable,
-        todayExpense,
-        todayIncome ->
+    val uiState: StateFlow<DashboardUiState> =
+        combine(
+            accountsWithBalances,
+            personRepository.getTotalReceivable(userId),
+            personRepository.getTotalPayable(userId),
+            transactionRepository.getTotalExpenseBetween(
+                userId,
+                todayRange.first,
+                todayRange.second
+            ),
+            transactionRepository.getTotalIncomeBetween(
+                userId,
+                todayRange.first,
+                todayRange.second
+            )
+        ) { accountsAndTotal,
+            receivable,
+            payable,
+            todayExpense,
+            todayIncome ->
 
-        val (accounts, total) = accountsAndTotal
+            val (accounts, total) =
+                accountsAndTotal
 
-        DashboardUiState(
-            isLoading = false,
-            totalBalanceMinor = total,
-            accounts = accounts,
-            totalReceivableMinor = receivable,
-            totalPayableMinor = payable,
-            todayExpenseMinor = todayExpense,
-            todayIncomeMinor = todayIncome
-        )
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        DashboardUiState()
-    )
+            DashboardUiState(
+                isLoading = false,
+                totalBalanceMinor = total,
+                accounts = accounts,
+                totalReceivableMinor = receivable,
+                totalPayableMinor = payable,
+                todayExpenseMinor = todayExpense,
+                todayIncomeMinor = todayIncome
+            )
+        }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                DashboardUiState()
+            )
 
-    val recentTransactions: StateFlow<List<TransactionDisplayItem>> =
+    val recentTransactions:
+            StateFlow<List<TransactionDisplayItem>> =
+
         combine(
             transactionRepository.getRecentTransactions(userId),
             accountRepository.getActiveAccounts(userId),
@@ -147,33 +159,54 @@ class DashboardViewModel(
             personRepository.getActivePeople(userId)
         ) { txns, accs, cats, ppl ->
 
-            txns.take(5).map { transaction ->
-                TransactionDisplayItem(
-                    transaction = transaction,
-                    categoryName = transaction.categoryId?.let { id ->
-                        cats.find { it.id == id }?.name
-                    },
-                    sourceAccountName = transaction.sourceAccountId?.let { id ->
-                        accs.find { it.id == id }?.name
-                    },
-                    destinationAccountName =
-                        transaction.destinationAccountId?.let { id ->
-                            accs.find { it.id == id }?.name
-                        },
-                    personName = transaction.personId?.let { id ->
-                        ppl.find { it.id == id }?.name
-                    }
-                )
-            }
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            emptyList()
-        )
+            txns
+                .take(5)
+                .map { t ->
+
+                    TransactionDisplayItem(
+                        transaction = t,
+
+                        categoryName =
+                            t.categoryId?.let { id ->
+                                cats.find {
+                                    it.id == id
+                                }?.name
+                            },
+
+                        sourceAccountName =
+                            t.sourceAccountId?.let { id ->
+                                accs.find {
+                                    it.id == id
+                                }?.name
+                            },
+
+                        destinationAccountName =
+                            t.destinationAccountId?.let { id ->
+                                accs.find {
+                                    it.id == id
+                                }?.name
+                            },
+
+                        personName =
+                            t.personId?.let { id ->
+                                ppl.find {
+                                    it.id == id
+                                }?.name
+                            }
+                    )
+                }
+        }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                emptyList()
+            )
 
     fun deleteTransaction(transactionId: String) {
         viewModelScope.launch {
-            transactionRepository.softDeleteTransaction(transactionId)
+            transactionRepository.softDeleteTransaction(
+                transactionId
+            )
         }
     }
 }

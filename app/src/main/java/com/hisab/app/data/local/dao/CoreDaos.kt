@@ -50,4 +50,10 @@ interface PersonDao {
 
     @Query("SELECT * FROM people WHERE id = :id")
     suspend fun getById(id: String): PersonEntity?
+
+    @Query("SELECT * FROM people WHERE id = :id")
+    fun observeById(id: String): Flow<PersonEntity?>
+
+    @Query("UPDATE people SET isActive = 0 WHERE id = :id")
+    suspend fun deactivate(id: String)
 }

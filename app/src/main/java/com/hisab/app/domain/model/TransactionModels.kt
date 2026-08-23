@@ -1,7 +1,17 @@
 package com.hisab.app.domain.model
 
 import com.hisab.app.data.local.entity.AccountEntity
+import com.hisab.app.data.local.entity.PersonEntity
 import com.hisab.app.data.local.entity.TransactionEntity
+
+data class PersonWithBalance(val person: PersonEntity, val netBalanceMinor: Long) {
+    val status: PersonStatus
+        get() = when {
+            netBalanceMinor > 0 -> PersonStatus.YOU_WILL_RECEIVE
+            netBalanceMinor < 0 -> PersonStatus.YOU_WILL_PAY
+            else -> PersonStatus.SETTLED
+        }
+}
 
 data class AccountWithBalance(val account: AccountEntity, val balanceMinor: Long)
 

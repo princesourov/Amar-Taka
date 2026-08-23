@@ -7,6 +7,8 @@ import com.hisab.app.presentation.budgets.BudgetsViewModel
 import com.hisab.app.presentation.dashboard.DashboardViewModel
 import com.hisab.app.presentation.expense.AddExpenseViewModel
 import com.hisab.app.presentation.income.AddMoneyViewModel
+import com.hisab.app.presentation.people.PeopleViewModel
+import com.hisab.app.presentation.people.PersonDetailViewModel
 import com.hisab.app.presentation.recurring.RecurringViewModel
 import com.hisab.app.presentation.savings.SavingsGoalsViewModel
 import com.hisab.app.presentation.transactions.EditTransactionViewModel
@@ -14,14 +16,15 @@ import com.hisab.app.presentation.transactions.TransactionsViewModel
 import com.hisab.app.presentation.transfer.TransferMoneyViewModel
 
 /**
- * [transactionId] is only needed by [EditTransactionViewModel] — a screen that edits ONE
- * specific existing row, the same reason PersonDetailViewModel (Phase 3, not yet shipped)
- * would have needed a personId. Every other ViewModel here is parameterless beyond the
- * container, so this stays a single shared factory rather than one per screen.
+ * [transactionId] is only needed by [EditTransactionViewModel] and [personId] only by
+ * [PersonDetailViewModel] — screens that each revolve around one specific existing row.
+ * Every other ViewModel here is parameterless beyond the container, so this stays a single
+ * shared factory rather than one per screen.
  */
 class ViewModelFactory(
     private val container: AppContainer,
-    private val transactionId: String? = null
+    private val transactionId: String? = null,
+    private val personId: String? = null
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -95,6 +98,24 @@ class ViewModelFactory(
                 container.userId,
                 container.accountRepository,
                 container.transferMoneyUseCase
+            ) as T
+
+            PeopleViewModel::class.java -> PeopleViewModel(
+                container.userId,
+                container.personRepository
+            ) as T
+
+            PersonDetailViewModel::class.java -> PersonDetailViewModel(
+                container.userId,
+                requireNotNull(personId) { "personId is required to create a PersonDetailViewModel" },
+                container.personRepository,
+                container.accountRepository,
+                container.categoryDao,
+                container.lendMoneyUseCase,
+                container.borrowMoneyUseCase,
+                container.recordRepaymentReceivedUseCase,
+                container.recordRepaymentMadeUseCase,
+                container.deleteTransactionUseCase
             ) as T
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

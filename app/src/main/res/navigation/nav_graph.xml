@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
     app:startDestination="@id/dashboardFragment">
 
+    <!-- Dashboard -->
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.hisab.app.presentation.dashboard.DashboardFragment"
@@ -40,6 +42,7 @@
     </fragment>
 
 
+    <!-- Budgets -->
     <fragment
         android:id="@+id/budgetsFragment"
         android:name="com.hisab.app.presentation.budgets.BudgetsFragment"
@@ -52,12 +55,14 @@
     </fragment>
 
 
+    <!-- Create Budget -->
     <dialog
         android:id="@+id/createBudgetFragment"
         android:name="com.hisab.app.presentation.budgets.CreateBudgetFragment"
         android:label="@string/create_budget_title" />
 
 
+    <!-- Savings Goals -->
     <fragment
         android:id="@+id/savingsGoalsFragment"
         android:name="com.hisab.app.presentation.savings.SavingsGoalsFragment"
@@ -74,12 +79,14 @@
     </fragment>
 
 
+    <!-- Create Goal -->
     <dialog
         android:id="@+id/createGoalFragment"
         android:name="com.hisab.app.presentation.savings.CreateGoalFragment"
         android:label="@string/create_goal_title" />
 
 
+    <!-- Contribute To Goal -->
     <dialog
         android:id="@+id/contributeToGoalFragment"
         android:name="com.hisab.app.presentation.savings.ContributeToGoalFragment"
@@ -96,6 +103,7 @@
     </dialog>
 
 
+    <!-- Recurring -->
     <fragment
         android:id="@+id/recurringFragment"
         android:name="com.hisab.app.presentation.recurring.RecurringFragment"
@@ -108,12 +116,14 @@
     </fragment>
 
 
+    <!-- Create Recurring -->
     <dialog
         android:id="@+id/createRecurringFragment"
         android:name="com.hisab.app.presentation.recurring.CreateRecurringFragment"
         android:label="@string/create_recurring_title" />
 
 
+    <!-- Accounts -->
     <fragment
         android:id="@+id/accountsFragment"
         android:name="com.hisab.app.presentation.accounts.AccountsFragment"
@@ -130,12 +140,14 @@
     </fragment>
 
 
+    <!-- Transfer Money -->
     <dialog
         android:id="@+id/transferMoneyFragment"
         android:name="com.hisab.app.presentation.transfer.TransferMoneyFragment"
         android:label="@string/transfer_money_title" />
 
 
+    <!-- Create Account -->
     <dialog
         android:id="@+id/createAccountFragment"
         android:name="com.hisab.app.presentation.accounts.CreateAccountFragment"
@@ -150,19 +162,81 @@
     </dialog>
 
 
+    <!-- People -->
     <fragment
         android:id="@+id/peopleFragment"
-        android:name="com.hisab.app.presentation.common.ComingSoonFragment"
+        android:name="com.hisab.app.presentation.people.PeopleFragment"
         android:label="@string/nav_people">
 
-        <argument
-            android:name="screenTitle"
-            app:argType="string"
-            android:defaultValue="People" />
+        <action
+            android:id="@+id/action_people_to_createPerson"
+            app:destination="@id/createPersonFragment" />
+
+        <action
+            android:id="@+id/action_people_to_personDetail"
+            app:destination="@id/personDetailFragment" />
 
     </fragment>
 
 
+    <!-- Create Person -->
+    <dialog
+        android:id="@+id/createPersonFragment"
+        android:name="com.hisab.app.presentation.people.CreatePersonFragment"
+        android:label="@string/create_person_title">
+
+        <argument
+            android:name="personId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
+    </dialog>
+
+
+    <!-- Person Details -->
+    <fragment
+        android:id="@+id/personDetailFragment"
+        android:name="com.hisab.app.presentation.people.PersonDetailFragment"
+        android:label="@string/nav_people">
+
+        <argument
+            android:name="personId"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_personDetail_to_personAction"
+            app:destination="@id/personActionFragment" />
+
+        <action
+            android:id="@+id/action_personDetail_to_editTransaction"
+            app:destination="@id/editTransactionFragment" />
+
+    </fragment>
+
+
+    <!-- Person Action -->
+    <dialog
+        android:id="@+id/personActionFragment"
+        android:name="com.hisab.app.presentation.people.PersonActionFragment"
+        android:label="@string/nav_people">
+
+        <argument
+            android:name="personId"
+            app:argType="string" />
+
+        <argument
+            android:name="personName"
+            app:argType="string" />
+
+        <argument
+            android:name="action"
+            app:argType="string" />
+
+    </dialog>
+
+
+    <!-- Transactions -->
     <fragment
         android:id="@+id/transactionsFragment"
         android:name="com.hisab.app.presentation.transactions.TransactionsFragment"
@@ -175,6 +249,7 @@
     </fragment>
 
 
+    <!-- Edit Transaction -->
     <fragment
         android:id="@+id/editTransactionFragment"
         android:name="com.hisab.app.presentation.transactions.EditTransactionFragment"
@@ -187,6 +262,7 @@
     </fragment>
 
 
+    <!-- Reports -->
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.hisab.app.presentation.common.ComingSoonFragment"
@@ -200,12 +276,14 @@
     </fragment>
 
 
+    <!-- Add Expense -->
     <dialog
         android:id="@+id/addExpenseFragment"
         android:name="com.hisab.app.presentation.expense.AddExpenseFragment"
         android:label="@string/add_expense_title" />
 
 
+    <!-- Add Money -->
     <dialog
         android:id="@+id/addMoneyFragment"
         android:name="com.hisab.app.presentation.income.AddMoneyFragment"

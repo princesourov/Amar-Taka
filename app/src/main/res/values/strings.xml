@@ -140,4 +140,25 @@
 
     <string name="label_recent_transactions">Recent Transactions</string>
     <string name="recent_transactions_empty">No transactions yet</string>
+
+    <!-- Phase 3: People & Lending/Borrowing -->
+    <string name="hint_search_people">Search people…</string>
+    <string name="people_empty_state">No one yet. Tap + to add someone.</string>
+    <string name="create_person_title">Add Person</string>
+    <string name="edit_person_title">Edit Person</string>
+    <string name="hint_person_name">Name</string>
+    <string name="hint_phone">Phone (optional)</string>
+    <string name="hint_email">Email (optional)</string>
+    <string name="error_person_name_required">Enter a name</string>
+    <string name="delete_person_title">Delete this person?</string>
+    <string name="delete_person_message">This hides them from your active people list — their transaction history stays intact and still counts correctly toward your totals.</string>
+    <string name="person_will_receive">You\'ll receive %1$s</string>
+    <string name="person_will_pay">You owe %1$s</string>
+    <string name="person_settled">Settled</string>
+    <string name="action_give_money">Give Money</string>
+    <string name="action_take_money">Take Money</string>
+    <string name="action_receive_repayment">Receive Repayment</string>
+    <string name="action_make_repayment">Make Repayment</string>
+    <string name="person_history_title">History</string>
+    <string name="person_no_history">No transactions with this person yet</string>
 </resources>
