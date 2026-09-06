@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Amar Taka</string>
+    <string name="app_name">Hisab</string>
 
     <string name="nav_home">Home</string>
     <string name="nav_accounts">Accounts</string>
     <string name="nav_people">People</string>
     <string name="nav_transactions">Transactions</string>
     <string name="nav_reports">Reports</string>
+    <string name="nav_calendar">Calendar</string>
+    <string name="nav_trash">Trash</string>
+    <string name="nav_settings">Settings</string>
 
     <string name="greeting_morning">Good morning</string>
     <string name="greeting_afternoon">Good afternoon</string>
@@ -161,4 +164,44 @@
     <string name="action_make_repayment">Make Repayment</string>
     <string name="person_history_title">History</string>
     <string name="person_no_history">No transactions with this person yet</string>
+
+    <!-- Phase 3: Date, Calendar, Budget History, Reports -->
+    <string name="action_return_current_month">Current Month</string>
+    <string name="action_view_budget_history">View Budget History</string>
+    <string name="calendar_empty_day">No transactions</string>
+    <string name="hint_date_range">Select Date Range</string>
+    <string name="action_today">Today</string>
+
+    <string name="action_disable_budget">Disable Budget</string>
+    <string name="action_enable_budget">Enable Budget</string>
+    <string name="delete_budget_title">Delete this budget?</string>
+    <string name="delete_budget_message">This budget will be deleted. Your transaction history will remain unchanged.</string>
+    <string name="budget_history_line">%1$s — Spent %2$s of %3$s</string>
+    <string name="edit_budget_title">Edit Budget</string>
+
+
+    <string name="range_today">Today</string>
+    <string name="range_last_3_days">Last 3 Days</string>
+    <string name="range_last_7_days">Last 7 Days</string>
+    <string name="range_last_15_days">Last 15 Days</string>
+    <string name="range_last_30_days">Last 30 Days</string>
+    <string name="range_last_90_days">Last 90 Days</string>
+    <string name="range_last_6_months">Last 6 Months</string>
+    <string name="range_this_month">This Month</string>
+    <string name="range_previous_month">Previous Month</string>
+    <string name="range_this_year">This Year</string>
+    <string name="range_last_year">Last Year</string>
+    <string name="range_custom">Custom Range</string>
+
+    <string name="report_income_expense">Income: %1$s • Expense: %2$s</string>
+    <string name="report_net_cash_flow">Net Cash Flow: %1$s</string>
+    <string name="report_expense_by_category">Expense by Category: %1$s</string>
+    <string name="report_income_by_category">Income by Category: %1$s</string>
+    <string name="report_account_activity">Account Activity: %1$s</string>
+    <string name="report_monthly_trend">Monthly Trend: %1$s</string>
+    <string name="report_budget_performance">Budget Performance: %1$s</string>
+    <string name="report_lending_borrowing">Lending &amp; Borrowing: %1$s</string>
+
+
+
 </resources>

@@ -37,9 +37,9 @@ class ReportsFragment : Fragment() {
         binding.rangeDropdown.setText(viewModel.rangeLabelList.firstOrNull().orEmpty(), false)
         binding.rangeDropdown.setOnItemClickListener { _, _, position, _ -> viewModel.setRange(position) }
 
-        binding.openCalendarButton.setOnClickListener { findNavController().navigate(R.id.action_reports_to_calendar) }
-        binding.openTrashButton.setOnClickListener { findNavController().navigate(R.id.action_reports_to_trash) }
-        binding.openSettingsButton.setOnClickListener { findNavController().navigate(R.id.action_reports_to_settings) }
+//        binding.openCalendarButton.setOnClickListener { findNavController().navigate(R.id.action_reports_to_calendar) }
+//        binding.openTrashButton.setOnClickListener { findNavController().navigate(R.id.action_reports_to_trash) }
+//        binding.openSettingsButton.setOnClickListener { findNavController().navigate(R.id.action_reports_to_settings) }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
