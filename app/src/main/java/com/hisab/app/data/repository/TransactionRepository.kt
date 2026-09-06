@@ -44,6 +44,9 @@ class TransactionRepository(private val transactionDao: TransactionDao) {
     fun getRecentTransactions(userId: String): Flow<List<TransactionEntity>> =
         transactionDao.getAllForUser(userId)
 
+    fun getDeletedTransactions(userId: String): Flow<List<TransactionEntity>> =
+        transactionDao.getDeletedForUser(userId)
+
     fun getTransactionsBetween(userId: String, startMillis: Long, endMillis: Long) =
         transactionDao.getForUserBetween(userId, startMillis, endMillis)
 

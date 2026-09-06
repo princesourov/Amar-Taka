@@ -5,10 +5,12 @@ import com.hisab.app.data.local.entity.BudgetEntity
 data class BudgetProgressItem(
     val budget: BudgetEntity,
     val categoryName: String?, // null = overall budget, not category-specific
-    val spentMinor: Long
+    val spentMinor: Long,
+    val periodLabel: String
 ) {
     val remainingMinor: Long get() = budget.amountMinor - spentMinor
     val isOverBudget: Boolean get() = spentMinor > budget.amountMinor
+    val isActive: Boolean get() = budget.isActive
     val percentUsed: Float
         get() = if (budget.amountMinor <= 0) 0f else spentMinor.toFloat() / budget.amountMinor.toFloat()
 }

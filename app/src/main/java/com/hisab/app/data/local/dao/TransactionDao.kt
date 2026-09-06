@@ -28,6 +28,13 @@ interface TransactionDao {
 
     @Query("""
         SELECT * FROM transactions
+        WHERE userId = :userId AND isDeleted = 1
+        ORDER BY updatedAtMillis DESC
+    """)
+    fun getDeletedForUser(userId: String): Flow<List<TransactionEntity>>
+
+    @Query("""
+        SELECT * FROM transactions
         WHERE userId = :userId AND isDeleted = 0
         AND transactionDateMillis BETWEEN :startMillis AND :endMillis
         ORDER BY transactionDateMillis DESC

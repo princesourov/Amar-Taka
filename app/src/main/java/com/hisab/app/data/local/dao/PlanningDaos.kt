@@ -16,6 +16,12 @@ interface BudgetDao {
     @Update suspend fun update(budget: BudgetEntity)
     @Query("SELECT * FROM budgets WHERE userId = :userId AND isActive = 1")
     fun getActiveBudgets(userId: String): Flow<List<BudgetEntity>>
+    @Query("SELECT * FROM budgets WHERE userId = :userId ORDER BY COALESCE(startDateEpochDay, 0) DESC")
+    fun getAllBudgets(userId: String): Flow<List<BudgetEntity>>
+    @Query("SELECT * FROM budgets WHERE id = :id")
+    suspend fun getById(id: String): BudgetEntity?
+    @Query("UPDATE budgets SET isActive = :isActive WHERE id = :id")
+    suspend fun setActive(id: String, isActive: Boolean)
 }
 
 @Dao

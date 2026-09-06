@@ -26,7 +26,11 @@ class LocalUserProvider(context: Context) {
 }
 
 /** Renders minor units (poisha) as a "৳12,345.00"-style string. */
-fun formatMinorAsCurrency(minorUnits: Long, symbol: String = "৳"): String {
+object CurrencyConfig {
+    @Volatile var symbol: String = "৳"
+}
+
+fun formatMinorAsCurrency(minorUnits: Long, symbol: String = CurrencyConfig.symbol): String {
     val negative = minorUnits < 0
     val absValue = abs(minorUnits)
     val major = absValue / 100

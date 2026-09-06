@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,6 +20,7 @@ import com.hisab.app.di.ViewModelFactory
 import com.hisab.app.domain.model.BudgetsSummary
 import com.hisab.app.domain.model.GoalsSummary
 import com.hisab.app.presentation.transactions.TransactionAdapter
+import com.hisab.app.utils.DateRangeType
 import com.hisab.app.utils.formatMinorAsCurrency
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -97,6 +99,29 @@ class DashboardFragment : Fragment() {
             recentTransactionsAdapter
 
         binding.greeting.text = greetingForNow()
+
+        val dateRanges = listOf(
+            DateRangeType.TODAY,
+            DateRangeType.LAST_3_DAYS,
+            DateRangeType.LAST_7_DAYS,
+            DateRangeType.LAST_15_DAYS,
+            DateRangeType.LAST_30_DAYS,
+            DateRangeType.LAST_90_DAYS,
+            DateRangeType.LAST_6_MONTHS,
+            DateRangeType.THIS_MONTH,
+            DateRangeType.PREVIOUS_MONTH,
+            DateRangeType.THIS_YEAR,
+            DateRangeType.LAST_YEAR
+        )
+        val labels = dateRanges.map { displayName(it) }
+        binding.dateRangeDropdown.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, labels))
+        binding.dateRangeDropdown.setText(displayName(DateRangeType.THIS_MONTH), false)
+        binding.dateRangeDropdown.setOnItemClickListener { _, _, position, _ ->
+            viewModel.setRangeType(dateRanges[position])
+        }
+        binding.monthBackButton.setOnClickListener { viewModel.previousMonth() }
+        binding.monthForwardButton.setOnClickListener { viewModel.nextMonth() }
+        binding.monthNowButton.setOnClickListener { viewModel.resetToCurrentMonth() }
 
         binding.fabAddExpense.setOnClickListener {
             findNavController().navigate(
@@ -181,6 +206,9 @@ class DashboardFragment : Fragment() {
                                 View.GONE
                             }
                     }
+                    launch {
+                            viewModel.monthIndicator.collect { binding.monthIndicator.text = it }
+                    }
                 }
             }
         }
@@ -262,13 +290,28 @@ class DashboardFragment : Fragment() {
 
         binding.todayIncome.text =
             formatMinorAsCurrency(
-                state.todayIncomeMinor
+                state.incomeMinor
             )
 
         binding.todayExpense.text =
             formatMinorAsCurrency(
-                state.todayExpenseMinor
+                state.expenseMinor
             )
+    }
+
+    private fun displayName(type: DateRangeType): String = when (type) {
+        DateRangeType.TODAY -> getString(R.string.range_today)
+        DateRangeType.LAST_3_DAYS -> getString(R.string.range_last_3_days)
+        DateRangeType.LAST_7_DAYS -> getString(R.string.range_last_7_days)
+        DateRangeType.LAST_15_DAYS -> getString(R.string.range_last_15_days)
+        DateRangeType.LAST_30_DAYS -> getString(R.string.range_last_30_days)
+        DateRangeType.LAST_90_DAYS -> getString(R.string.range_last_90_days)
+        DateRangeType.LAST_6_MONTHS -> getString(R.string.range_last_6_months)
+        DateRangeType.THIS_MONTH -> getString(R.string.range_this_month)
+        DateRangeType.PREVIOUS_MONTH -> getString(R.string.range_previous_month)
+        DateRangeType.THIS_YEAR -> getString(R.string.range_this_year)
+        DateRangeType.LAST_YEAR -> getString(R.string.range_last_year)
+        DateRangeType.CUSTOM -> getString(R.string.range_custom)
     }
 
     private fun greetingForNow(): String {
