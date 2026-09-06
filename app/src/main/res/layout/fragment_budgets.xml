@@ -18,6 +18,44 @@
             android:text="@string/budgets_title"
             android:textAppearance="?attr/textAppearanceHeadlineSmall" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/previousMonthButton"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="←" />
+
+            <TextView
+                android:id="@+id/currentMonthLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                tools:text="January 2026" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nextMonthButton"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="→" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/currentMonthButton"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_return_current_month" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/budgetList"
             android:layout_width="match_parent"
@@ -37,6 +75,13 @@
             android:gravity="center"
             android:text="@string/budgets_empty_state"
             android:visibility="gone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/viewHistoryButton"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_view_budget_history" />
 
     </LinearLayout>
 
