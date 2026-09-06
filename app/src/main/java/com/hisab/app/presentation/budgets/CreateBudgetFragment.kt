@@ -17,15 +17,22 @@ import com.hisab.app.databinding.FragmentCreateBudgetBinding
 import com.hisab.app.di.ViewModelFactory
 import com.hisab.app.domain.model.BudgetScope
 import kotlinx.coroutines.launch
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class CreateBudgetFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentCreateBudgetBinding? = null
     private val binding get() = _binding!!
+    private val monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
 
     private val scopes = listOf(BudgetScope.DAILY, BudgetScope.WEEKLY, BudgetScope.MONTHLY)
     private var selectedScope = BudgetScope.MONTHLY
-    private var selectedCategoryId: String? = null // null = overall budget
+    private var selectedCategoryId: String? = null
+    private var selectedMonth = YearMonth.now()
+    private var editingId: String? = null
+    private var editingActive: Boolean = true
 
     private val viewModel: BudgetsViewModel by viewModels {
         ViewModelFactory((requireActivity().application as HisabApplication).container)
@@ -40,17 +47,40 @@ class CreateBudgetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        editingId = arguments?.getString("budgetId")
+        binding.titleText.text = if (editingId == null) getString(R.string.create_budget_title) else getString(R.string.edit_budget_title)
 
         val scopeLabels = listOf(
-            getString(R.string.scope_daily), getString(R.string.scope_weekly), getString(R.string.scope_monthly)
+            getString(R.string.scope_daily),
+            getString(R.string.scope_weekly),
+            getString(R.string.scope_monthly)
         )
         binding.scopeDropdown.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, scopeLabels))
         binding.scopeDropdown.setText(scopeLabels[2], false)
         binding.scopeDropdown.setOnItemClickListener { _, _, position, _ -> selectedScope = scopes[position] }
+        renderMonth()
+        binding.monthPrevButton.setOnClickListener {
+            selectedMonth = selectedMonth.minusMonths(1)
+            renderMonth()
+        }
+        binding.monthNextButton.setOnClickListener {
+            selectedMonth = selectedMonth.plusMonths(1)
+            renderMonth()
+        }
 
         binding.saveButton.setOnClickListener {
-            viewModel.createBudget(selectedScope, selectedCategoryId, binding.amountInput.text.toString())
+            val state = BudgetEditorState(
+                budgetId = editingId,
+                scope = selectedScope,
+                categoryId = selectedCategoryId,
+                amountText = binding.amountInput.text.toString(),
+                month = selectedMonth,
+                isActive = editingActive
+            )
+            viewModel.saveBudget(state)
         }
+
+        editingId?.let { viewModel.loadBudgetForEdit(it) }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -58,7 +88,8 @@ class CreateBudgetFragment : BottomSheetDialogFragment() {
                     viewModel.categories.collect { list ->
                         val labels = listOf(getString(R.string.budget_overall_option)) + list.map { it.name }
                         binding.categoryDropdown.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, labels))
-                        binding.categoryDropdown.setText(labels[0], false)
+                        val selectedIndex = selectedCategoryId?.let { id -> list.indexOfFirst { it.id == id } + 1 } ?: 0
+                        binding.categoryDropdown.setText(labels.getOrElse(selectedIndex) { labels[0] }, false)
                         binding.categoryDropdown.setOnItemClickListener { _, _, position, _ ->
                             selectedCategoryId = if (position == 0) null else list[position - 1].id
                         }
@@ -67,14 +98,32 @@ class CreateBudgetFragment : BottomSheetDialogFragment() {
                 launch {
                     viewModel.events.collect { event ->
                         when (event) {
-                            is CreateBudgetEvent.Saved -> dismiss()
-                            is CreateBudgetEvent.ValidationError ->
+                            is BudgetEvent.Saved -> dismiss()
+                            is BudgetEvent.ValidationError ->
                                 Snackbar.make(binding.root, R.string.error_amount_required, Snackbar.LENGTH_SHORT).show()
+                            is BudgetEvent.EditReady -> bindEditorState(event.state)
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun bindEditorState(state: BudgetEditorState) {
+        editingId = state.budgetId
+        selectedScope = state.scope
+        selectedCategoryId = state.categoryId
+        selectedMonth = state.month
+        editingActive = state.isActive
+        binding.amountInput.setText(state.amountText)
+        val scopeIndex = scopes.indexOf(selectedScope).coerceAtLeast(0)
+        val scopeLabels = listOf(getString(R.string.scope_daily), getString(R.string.scope_weekly), getString(R.string.scope_monthly))
+        binding.scopeDropdown.setText(scopeLabels[scopeIndex], false)
+        renderMonth()
+    }
+
+    private fun renderMonth() {
+        binding.monthLabel.text = selectedMonth.format(monthFormatter)
     }
 
     override fun onDestroyView() {

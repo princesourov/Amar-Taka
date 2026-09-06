@@ -59,7 +59,13 @@
     <dialog
         android:id="@+id/createBudgetFragment"
         android:name="com.hisab.app.presentation.budgets.CreateBudgetFragment"
-        android:label="@string/create_budget_title" />
+        android:label="@string/create_budget_title">
+        <argument
+            android:name="budgetId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
 
 
     <!-- Savings Goals -->
