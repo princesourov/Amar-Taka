@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Strings for the rebuilt Reports, Budgets and Trash screens. -->
+<resources>
+    <!-- Periods -->
+    <string name="period_today">Today</string>
+    <string name="period_yesterday">Yesterday</string>
+    <string name="period_this_week">This week</string>
+    <string name="period_last_week">Last week</string>
+    <string name="period_this_month">This month</string>
+    <string name="period_last_month">Last month</string>
+    <string name="period_last_3_months">Last 3 months</string>
+    <string name="period_this_year">This year</string>
+    <string name="period_custom">Custom</string>
+    <string name="period_custom_title">Select date range</string>
+
+    <!-- Reports: sections -->
+    <string name="report_filters_title">Filters</string>
+    <string name="report_clear_filters">Clear filters</string>
+    <string name="report_search_hint">Search notes, categories, accounts</string>
+    <string name="hint_account">Account</string>
+    <string name="report_category_hint">Tap a category to see its transactions</string>
+    <string name="report_export">Export</string>
+    <string name="report_export_csv">Export CSV</string>
+    <string name="report_share_summary">Share summary</string>
+    <string name="report_export_done">Report exported</string>
+    <string name="report_export_failed">Could not export the report</string>
+    <string name="report_share_title">Hisab report — %1$s</string>
+    <string name="report_income_line">Income: %1$s</string>
+    <string name="report_expense_line">Expenses: %1$s</string>
+    <string name="report_net_line">Net cash flow: %1$s</string>
+    <string name="report_compared_with">Compared with %1$s</string>
+    <string name="report_empty">No transactions in this period yet.</string>
+    <string name="report_empty_filtered">No transactions match these filters.</string>
+    <string name="report_income_label">Income</string>
+    <string name="report_expense_label">Expenses</string>
+    <string name="report_net_cash_flow_label">Net cash flow</string>
+    <string name="report_net_positive">You kept more than you spent</string>
+    <string name="report_net_negative">You spent more than you earned</string>
+    <string name="report_net_zero">Income and spending were equal</string>
+    <string name="report_savings_rate_label">Savings rate</string>
+    <string name="report_expense_ratio_label">Expense ratio</string>
+    <string name="report_not_available">N/A</string>
+    <string name="report_needs_income">Needs income in this period</string>
+    <string name="report_savings_rate_note">Share of income you kept</string>
+    <string name="report_expense_ratio_note">Share of income you spent</string>
+    <string name="report_refund_note">Refunds of %1$s already deducted from gross spending of %2$s</string>
+    <string name="report_daily_average">Daily average spending: %1$s</string>
+    <string name="report_not_counted">Not counted as income or spending: %1$s</string>
+    <plurals name="report_transfers">
+        <item quantity="one">%d transfer</item>
+        <item quantity="other">%d transfers</item>
+    </plurals>
+    <plurals name="report_loan_movements">
+        <item quantity="one">%d loan movement</item>
+        <item quantity="other">%d loan movements</item>
+    </plurals>
+    <plurals name="report_transactions">
+        <item quantity="one">%d transaction</item>
+        <item quantity="other">%d transactions</item>
+    </plurals>
+
+    <!-- Reports: charts -->
+    <string name="report_trend_title">Income vs expenses</string>
+    <string name="report_trend_hint">Tap a bar to see exact figures</string>
+    <string name="report_trend_description">Income %1$s, expenses %2$s over the selected period</string>
+    <string name="report_trend_detail">%1$s — income %2$s, expenses %3$s</string>
+    <string name="report_legend_income">Income</string>
+    <string name="report_legend_expense">Expenses</string>
+    <string name="report_legend_previous">Previous</string>
+    <string name="report_legend_current">Current</string>
+    <string name="report_expense_by_category_title">Spending by category</string>
+    <string name="report_income_by_category_title">Income by category</string>
+    <string name="report_total_spent">Spent</string>
+    <string name="report_donut_description">Spending of %1$s across %2$d categories</string>
+    <string name="report_other_categories">Other</string>
+    <string name="report_more_categories">+%1$d more categories (%2$s)</string>
+    <string name="report_uncategorized">Uncategorized</string>
+    <string name="report_share_of_spending">%1$s of spending</string>
+    <string name="report_share_of_income">%1$s of income</string>
+    <string name="report_new_category">New</string>
+    <string name="report_comparison_title">Compared with previous period</string>
+    <string name="report_comparison_description">Income and expenses, previous versus current period</string>
+    <string name="report_comparison_detail">Expenses: %1$s before, %2$s now (%3$s)</string>
+    <string name="report_no_previous_data">No data in the previous period to compare with.</string>
+    <string name="report_no_comparison">New</string>
+    <string name="report_unchanged">No change</string>
+    <string name="report_delta_up">▲ %1$s higher</string>
+    <string name="report_delta_down">▼ %1$s lower</string>
+    <string name="report_accounts_title">Account balances</string>
+    <string name="report_total_balance">Total balance</string>
+    <string name="report_accounts_description">Balances of %1$d accounts</string>
+    <string name="report_accounts_note">Balances are current, not limited to the selected period.</string>
+    <string name="report_budgets_title">Budgets</string>
+    <string name="report_manage_budgets">Manage budgets</string>
+    <string name="report_insights_title">Insights</string>
+    <string name="report_recent_title">Transactions in this report</string>
+    <string name="report_see_all_transactions">See all transactions</string>
+    <string name="report_all_transactions_title">All transactions in this report</string>
+    <string name="report_sheet_empty">No transactions to show.</string>
+
+    <!-- Insights -->
+    <string name="insight_top_category">%1$s is your biggest expense: %2$s (%3$s) of spending</string>
+    <string name="insight_spending_up">Spending is %1$s higher than the previous period</string>
+    <string name="insight_spending_down">Spending is %1$s lower than the previous period</string>
+    <string name="insight_income_up">Income is %1$s higher than the previous period</string>
+    <string name="insight_income_down">Income is %1$s lower than the previous period</string>
+    <string name="insight_category_increase">%1$s spending rose %2$s (%3$s more)</string>
+    <string name="insight_negative_cash_flow">You spent %1$s more than you earned</string>
+    <string name="insight_savings_rate">You kept %1$s of your income</string>
+    <string name="insight_spent_without_income">%1$s spent with no income recorded in this period</string>
+    <plurals name="insight_budgets_over">
+        <item quantity="one">%d budget is over its limit</item>
+        <item quantity="other">%d budgets are over their limits</item>
+    </plurals>
+    <plurals name="insight_budgets_near">
+        <item quantity="one">%d budget is close to its limit</item>
+        <item quantity="other">%d budgets are close to their limits</item>
+    </plurals>
+
+    <!-- Budget status text (always words, never colour alone) -->
+    <string name="budget_card_title">%1$s · %2$s</string>
+    <string name="budget_status_over">Over budget: %1$s spent of %2$s (%3$s over)</string>
+    <string name="budget_status_reached">Limit reached: %1$s spent of %2$s</string>
+    <string name="budget_status_near">Close to limit: %1$s of %2$s (%3$s left)</string>
+    <string name="budget_status_ok">On track: %1$s of %2$s (%3$s left)</string>
+    <string name="budget_status_invalid">Invalid limit — edit this budget</string>
+
+    <!-- Budgets screen -->
+    <string name="action_add_budget">Add budget</string>
+    <string name="budget_summary_title">Monthly budgets</string>
+    <string name="budget_filter_active">Active</string>
+    <string name="budget_filter_paused">Paused</string>
+    <string name="budget_kind_all">All types</string>
+    <string name="budget_kind_overall">Overall</string>
+    <string name="budget_kind_category">By category</string>
+    <string name="budget_previous_month">Previous month</string>
+    <string name="budget_next_month">Next month</string>
+    <string name="budget_enabled_message">Budget enabled</string>
+    <string name="budget_paused_message">Budget paused</string>
+    <string name="budget_restored_message">Budget restored</string>
+    <string name="budget_restore_conflict">Another budget already covers this category and period. Edit or delete it first.</string>
+    <string name="action_undo">Undo</string>
+    <string name="budget_moved_to_trash">Budget moved to Trash</string>
+    <string name="budget_summary_amounts">%1$s of %2$s</string>
+    <string name="budget_summary_detail">%1$d active · %2$d paused · %3$d over</string>
+    <string name="budgets_empty_filtered">No budgets match these filters.</string>
+    <string name="budget_action_pause">Pause</string>
+    <string name="budget_action_enable">Enable</string>
+    <string name="budget_badge_paused">Paused</string>
+    <string name="budget_badge_over">Over</string>
+    <string name="budget_badge_near">Near limit</string>
+
+    <!-- Budget editor -->
+    <string name="hint_budget_name">Budget name (optional)</string>
+    <string name="hint_budget_amount">Limit amount</string>
+    <string name="budget_active_switch">Budget is active</string>
+    <string name="budget_start_date">Starts: %1$s</string>
+    <string name="budget_recurrence_hint">The budget repeats every day, week or month from the start date.</string>
+    <string name="error_budget_amount_invalid">Enter a valid amount</string>
+    <string name="error_budget_amount_decimals">Use at most 2 decimal places</string>
+    <string name="error_budget_amount_positive">Amount must be greater than zero</string>
+    <string name="error_budget_amount_large">That amount is too large</string>
+    <string name="error_budget_name_long">Name is too long (max 60 characters)</string>
+    <string name="error_budget_duplicate">A budget for this category and period already exists. Edit it instead.</string>
+
+    <!-- Trash -->
+    <string name="trash_title">Trash</string>
+    <string name="trash_explainer">Deleted items stay here until you delete them forever. Restoring brings them back with all their totals.</string>
+    <string name="trash_empty_state">Trash is empty.</string>
+    <string name="trash_empty_action">Empty Trash</string>
+    <string name="trash_restore">Restore</string>
+    <string name="trash_delete_forever">Delete forever</string>
+    <string name="trash_confirm_purge_title">Delete forever?</string>
+    <string name="trash_confirm_purge_message">This cannot be undone.</string>
+    <string name="trash_confirm_empty_title">Empty Trash?</string>
+    <string name="trash_confirm_empty_message">Everything in Trash will be deleted forever. This cannot be undone.</string>
+    <string name="trash_restored">Restored</string>
+    <string name="trash_budget_subtitle">Budget · %1$s</string>
+    <string name="trash_deleted_on">Deleted %1$s</string>
+</resources>
