@@ -57,9 +57,14 @@ interface TransactionDao {
     """)
     fun getNetMovementForAccount(accountId: String): Flow<Long>
 
+    /**
+     * Net spending: EXPENSE minus REFUND (see LedgerRules in domain/report). Transfers, loans and
+     * repayments are never included.
+     */
     @Query("""
-        SELECT COALESCE(SUM(amountMinor), 0) FROM transactions
-        WHERE userId = :userId AND type = 'EXPENSE' AND isDeleted = 0
+        SELECT COALESCE(SUM(CASE type WHEN 'EXPENSE' THEN amountMinor WHEN 'REFUND' THEN -amountMinor ELSE 0 END), 0)
+        FROM transactions
+        WHERE userId = :userId AND type IN ('EXPENSE', 'REFUND') AND isDeleted = 0
         AND transactionDateMillis BETWEEN :startMillis AND :endMillis
     """)
     fun getTotalExpenseBetween(userId: String, startMillis: Long, endMillis: Long): Flow<Long>
@@ -71,15 +76,26 @@ interface TransactionDao {
     """)
     fun getTotalIncomeBetween(userId: String, startMillis: Long, endMillis: Long): Flow<Long>
 
-    /** Backs category-specific budget progress (spec Section 40's "Food budget: ৳3,000/month"). */
+    /** Backs category-specific budget progress; same net-of-refunds rule as getTotalExpenseBetween. */
     @Query("""
-        SELECT COALESCE(SUM(amountMinor), 0) FROM transactions
-        WHERE userId = :userId AND type = 'EXPENSE' AND categoryId = :categoryId AND isDeleted = 0
+        SELECT COALESCE(SUM(CASE type WHEN 'EXPENSE' THEN amountMinor WHEN 'REFUND' THEN -amountMinor ELSE 0 END), 0)
+        FROM transactions
+        WHERE userId = :userId AND type IN ('EXPENSE', 'REFUND') AND categoryId = :categoryId AND isDeleted = 0
         AND transactionDateMillis BETWEEN :startMillis AND :endMillis
     """)
     fun getTotalExpenseForCategoryBetween(
         userId: String, categoryId: String, startMillis: Long, endMillis: Long
     ): Flow<Long>
+
+    /** Budget spending: overall when [categoryId] is null, otherwise that category only. */
+    @Query("""
+        SELECT COALESCE(SUM(CASE type WHEN 'EXPENSE' THEN amountMinor WHEN 'REFUND' THEN -amountMinor ELSE 0 END), 0)
+        FROM transactions
+        WHERE userId = :userId AND type IN ('EXPENSE', 'REFUND') AND isDeleted = 0
+        AND (:categoryId IS NULL OR categoryId = :categoryId)
+        AND transactionDateMillis BETWEEN :startMillis AND :endMillis
+    """)
+    fun getSpentBetween(userId: String, categoryId: String?, startMillis: Long, endMillis: Long): Flow<Long>
 
     /** Full lending/borrowing/repayment history with one person, newest first. */
     @Query("""

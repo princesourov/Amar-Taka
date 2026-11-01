@@ -23,7 +23,6 @@ import com.hisab.app.presentation.transactions.TransactionAdapter
 import com.hisab.app.utils.DateRangeType
 import com.hisab.app.utils.formatMinorAsCurrency
 import kotlinx.coroutines.launch
-import java.util.Calendar
 
 class DashboardFragment : Fragment() {
 
@@ -49,7 +48,6 @@ class DashboardFragment : Fragment() {
                 args
             )
         },
-
         onDelete = { item ->
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.delete_transaction_title)
@@ -67,7 +65,6 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentDashboardBinding.inflate(
             inflater,
             container,
@@ -113,15 +110,37 @@ class DashboardFragment : Fragment() {
             DateRangeType.THIS_YEAR,
             DateRangeType.LAST_YEAR
         )
+
         val labels = dateRanges.map { displayName(it) }
-        binding.dateRangeDropdown.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, labels))
-        binding.dateRangeDropdown.setText(displayName(DateRangeType.THIS_MONTH), false)
+
+        binding.dateRangeDropdown.setAdapter(
+            ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_list_item_1,
+                labels
+            )
+        )
+
+        binding.dateRangeDropdown.setText(
+            displayName(DateRangeType.TODAY),
+            false
+        )
+
         binding.dateRangeDropdown.setOnItemClickListener { _, _, position, _ ->
             viewModel.setRangeType(dateRanges[position])
         }
-        binding.monthBackButton.setOnClickListener { viewModel.previousMonth() }
-        binding.monthForwardButton.setOnClickListener { viewModel.nextMonth() }
-        binding.monthNowButton.setOnClickListener { viewModel.resetToCurrentMonth() }
+
+        binding.monthBackButton.setOnClickListener {
+            viewModel.previousDay()
+        }
+
+        binding.monthForwardButton.setOnClickListener {
+            viewModel.nextDay()
+        }
+
+        binding.monthNowButton.setOnClickListener {
+            viewModel.resetToToday()
+        }
 
         binding.fabAddExpense.setOnClickListener {
             findNavController().navigate(
@@ -196,7 +215,6 @@ class DashboardFragment : Fragment() {
 
                 launch {
                     viewModel.recentTransactions.collect { list ->
-
                         recentTransactionsAdapter.submitList(list)
 
                         binding.recentTransactionsEmpty.visibility =
@@ -206,8 +224,11 @@ class DashboardFragment : Fragment() {
                                 View.GONE
                             }
                     }
-                    launch {
-                            viewModel.monthIndicator.collect { binding.monthIndicator.text = it }
+                }
+
+                launch {
+                    viewModel.dayIndicator.collect {
+                        binding.monthIndicator.text = it
                     }
                 }
             }
@@ -217,16 +238,10 @@ class DashboardFragment : Fragment() {
     private fun renderBudgetsSummary(
         summary: BudgetsSummary
     ) {
-
         binding.budgetsSummaryText.text =
             if (summary.totalBudgets == 0) {
-
-                getString(
-                    R.string.dashboard_budgets_empty
-                )
-
+                getString(R.string.dashboard_budgets_empty)
             } else {
-
                 getString(
                     R.string.dashboard_budgets_summary,
                     summary.totalBudgets,
@@ -238,24 +253,14 @@ class DashboardFragment : Fragment() {
     private fun renderGoalsSummary(
         summary: GoalsSummary
     ) {
-
         binding.goalsSummaryText.text =
             if (summary.totalGoals == 0) {
-
-                getString(
-                    R.string.dashboard_goals_empty
-                )
-
+                getString(R.string.dashboard_goals_empty)
             } else {
-
                 getString(
                     R.string.dashboard_goals_summary,
-                    formatMinorAsCurrency(
-                        summary.totalSavedMinor
-                    ),
-                    formatMinorAsCurrency(
-                        summary.totalTargetMinor
-                    )
+                    formatMinorAsCurrency(summary.totalSavedMinor),
+                    formatMinorAsCurrency(summary.totalTargetMinor)
                 )
             }
     }
@@ -263,79 +268,83 @@ class DashboardFragment : Fragment() {
     private fun render(
         state: DashboardUiState
     ) {
-
         binding.totalBalance.text =
-            formatMinorAsCurrency(
-                state.totalBalanceMinor
-            )
+            formatMinorAsCurrency(state.totalBalanceMinor)
 
-        accountAdapter.submitList(
-            state.accounts
-        )
+        accountAdapter.submitList(state.accounts)
 
         binding.receiveAmount.text =
-            formatMinorAsCurrency(
-                state.totalReceivableMinor
-            )
+            formatMinorAsCurrency(state.totalReceivableMinor)
 
         binding.payAmount.text =
-            formatMinorAsCurrency(
-                state.totalPayableMinor
-            )
+            formatMinorAsCurrency(state.totalPayableMinor)
 
         binding.netAmount.text =
-            formatMinorAsCurrency(
-                state.netBalanceMinor
-            )
+            formatMinorAsCurrency(state.netBalanceMinor)
 
         binding.todayIncome.text =
-            formatMinorAsCurrency(
-                state.incomeMinor
-            )
+            formatMinorAsCurrency(state.incomeMinor)
 
         binding.todayExpense.text =
-            formatMinorAsCurrency(
-                state.expenseMinor
-            )
+            formatMinorAsCurrency(state.expenseMinor)
     }
 
-    private fun displayName(type: DateRangeType): String = when (type) {
-        DateRangeType.TODAY -> getString(R.string.range_today)
-        DateRangeType.LAST_3_DAYS -> getString(R.string.range_last_3_days)
-        DateRangeType.LAST_7_DAYS -> getString(R.string.range_last_7_days)
-        DateRangeType.LAST_15_DAYS -> getString(R.string.range_last_15_days)
-        DateRangeType.LAST_30_DAYS -> getString(R.string.range_last_30_days)
-        DateRangeType.LAST_90_DAYS -> getString(R.string.range_last_90_days)
-        DateRangeType.LAST_6_MONTHS -> getString(R.string.range_last_6_months)
-        DateRangeType.THIS_MONTH -> getString(R.string.range_this_month)
-        DateRangeType.PREVIOUS_MONTH -> getString(R.string.range_previous_month)
-        DateRangeType.THIS_YEAR -> getString(R.string.range_this_year)
-        DateRangeType.LAST_YEAR -> getString(R.string.range_last_year)
-        DateRangeType.CUSTOM -> getString(R.string.range_custom)
+    private fun displayName(
+        type: DateRangeType
+    ): String {
+        return when (type) {
+            DateRangeType.TODAY ->
+                getString(R.string.range_today)
+
+            DateRangeType.LAST_3_DAYS ->
+                getString(R.string.range_last_3_days)
+
+            DateRangeType.LAST_7_DAYS ->
+                getString(R.string.range_last_7_days)
+
+            DateRangeType.LAST_15_DAYS ->
+                getString(R.string.range_last_15_days)
+
+            DateRangeType.LAST_30_DAYS ->
+                getString(R.string.range_last_30_days)
+
+            DateRangeType.LAST_90_DAYS ->
+                getString(R.string.range_last_90_days)
+
+            DateRangeType.LAST_6_MONTHS ->
+                getString(R.string.range_last_6_months)
+
+            DateRangeType.THIS_MONTH ->
+                getString(R.string.range_this_month)
+
+            DateRangeType.PREVIOUS_MONTH ->
+                getString(R.string.range_previous_month)
+
+            DateRangeType.THIS_YEAR ->
+                getString(R.string.range_this_year)
+
+            DateRangeType.LAST_YEAR ->
+                getString(R.string.range_last_year)
+
+            DateRangeType.CUSTOM ->
+                getString(R.string.range_custom)
+        }
     }
 
     private fun greetingForNow(): String {
-
-        val hour =
-            Calendar.getInstance()
-                .get(Calendar.HOUR_OF_DAY)
+        val hour = java.util.Calendar
+            .getInstance()
+            .get(java.util.Calendar.HOUR_OF_DAY)
 
         return when {
-
             hour < 12 ->
-                getString(
-                    R.string.greeting_morning
-                )
+                getString(R.string.greeting_morning)
 
             hour < 17 ->
-                getString(
-                    R.string.greeting_afternoon
-                )
+                getString(R.string.greeting_afternoon)
 
             else ->
-                getString(
-                    R.string.greeting_evening
-                )
+                getString(R.string.greeting_evening)
         }
     }
 

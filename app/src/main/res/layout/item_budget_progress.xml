@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.CardView.Outlined"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_sm"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="?attr/colorOutline">
+    android:layout_marginBottom="@dimen/spacing_md"
+    app:cardCornerRadius="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,20 +14,52 @@
         android:orientation="vertical"
         android:padding="@dimen/spacing_md">
 
-        <TextView
-            android:id="@+id/budgetLabel"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
-            tools:text="Food" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/budgetLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                tools:text="Food &amp; Dining" />
+
+            <TextView
+                android:id="@+id/budgetBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_badge"
+                android:paddingStart="8dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="2dp"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                tools:text="Over budget" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/budgetPeriod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:alpha="0.75"
             android:textAppearance="?attr/textAppearanceBodySmall"
-            tools:text="January 2026" />
+            tools:text="Monthly · November 2026" />
+
+        <TextView
+            android:id="@+id/budgetSpent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            tools:text="৳2,200.00 of ৳3,000.00" />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/budgetProgress"
@@ -38,40 +67,47 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_sm"
             android:max="100"
-            app:trackCornerRadius="4dp"
-            tools:progress="60" />
+            app:trackCornerRadius="6dp"
+            app:trackThickness="10dp"
+            tools:progress="73" />
+
+        <TextView
+            android:id="@+id/budgetStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            tools:text="73% used · ৳800.00 left" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/spacing_sm"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/budgetSpent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/budgetEdit"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                tools:text="৳2,200.00 of ৳3,000.00" />
+                android:text="@string/action_edit" />
 
-            <TextView
-                android:id="@+id/budgetStatus"
-                android:layout_width="wrap_content"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/budgetToggle"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                tools:text="৳800.00 left" />
+                android:layout_weight="1"
+                android:text="@string/action_disable_budget" />
 
-            <ImageButton
-                android:id="@+id/budgetMore"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="@dimen/spacing_sm"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/action_more_options"
-                android:padding="8dp"
-                android:src="@drawable/ic_more_vert" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/budgetDelete"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/action_delete" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

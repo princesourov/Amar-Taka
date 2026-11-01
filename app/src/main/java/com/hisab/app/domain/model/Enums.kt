@@ -12,7 +12,7 @@ enum class TransactionType {
     REPAYMENT_RECEIVED, REPAYMENT_MADE, REFUND, GIFT, OTHER
 }
 
-enum class AccountType { POCKET, BANK, BKASH, NAGAD, ROCKET, CUSTOM }
+enum class AccountType { POCKET, BANK, BKASH, NAGAD, ROCKET, MOBILE_BANKING,PASS, CUSTOM }
 
 enum class SyncStatus { PENDING, SYNCED, FAILED }
 

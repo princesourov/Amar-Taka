@@ -12,6 +12,7 @@ import com.hisab.app.data.local.dao.RecurringTransactionDao
 import com.hisab.app.data.local.dao.ReminderDao
 import com.hisab.app.data.local.dao.SavingsGoalDao
 import com.hisab.app.data.local.dao.TransactionDao
+import com.hisab.app.data.local.dao.TrashDao
 import com.hisab.app.data.local.entity.AccountEntity
 import com.hisab.app.data.local.entity.AttachmentEntity
 import com.hisab.app.data.local.entity.BudgetEntity
@@ -29,11 +30,10 @@ import com.hisab.app.data.local.entity.UserProfileEntity
         TransactionEntity::class, BudgetEntity::class, SavingsGoalEntity::class,
         RecurringTransactionEntity::class, ReminderEntity::class, AttachmentEntity::class
     ],
-    version = 1,
-    // Turned off for Phase 1 to avoid needing a version-controlled schema directory.
-    // Turn this on (and set room { schemaDirectory(...) } in build.gradle.kts) once
-    // you start writing real migrations instead of just reinstalling on schema changes.
-    exportSchema = false
+    version = 2,
+    // Schemas are exported to app/schemas (see the ksp arg in build.gradle.kts). Commit them: they
+    // are what future migrations are tested against.
+    exportSchema = true
 )
 abstract class HisabDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao
@@ -44,6 +44,7 @@ abstract class HisabDatabase : RoomDatabase() {
     abstract fun savingsGoalDao(): SavingsGoalDao
     abstract fun recurringTransactionDao(): RecurringTransactionDao
     abstract fun reminderDao(): ReminderDao
+    abstract fun trashDao(): TrashDao
 
     companion object {
         @Volatile private var INSTANCE: HisabDatabase? = null
@@ -54,7 +55,10 @@ abstract class HisabDatabase : RoomDatabase() {
                     context.applicationContext,
                     HisabDatabase::class.java,
                     "hisab.db"
-                ).build().also { INSTANCE = it }
+                )
+                    // NEVER fallbackToDestructiveMigration(): users' financial data must survive upgrades.
+                    .addMigrations(MIGRATION_1_2)
+                    .build().also { INSTANCE = it }
             }
     }
 }

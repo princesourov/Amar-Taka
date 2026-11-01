@@ -39,7 +39,7 @@ class AddExpenseViewModel(
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val categories: StateFlow<List<CategoryEntity>> =
-        categoryDao.getActiveCategories(userId)
+        categoryDao.getActiveCategoriesByKinds(userId, listOf("EXPENSE", "BOTH"))
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _isSaving = MutableStateFlow(false)

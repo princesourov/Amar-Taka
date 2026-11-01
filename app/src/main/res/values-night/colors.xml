@@ -11,4 +11,15 @@
     <color name="color_positive">#4FD08A</color>
     <color name="color_negative">#E4695D</color>
     <color name="color_outline">#333B38</color>
+    <color name="color_warning">#E8B85B</color>
+    <color name="chart_1">#4FBF9E</color>
+    <color name="chart_2">#F0A04B</color>
+    <color name="chart_3">#7FA0D6</color>
+    <color name="chart_4">#D67BA0</color>
+    <color name="chart_5">#A5C45F</color>
+    <color name="chart_6">#B398D6</color>
+    <color name="chart_7">#E57F68</color>
+    <color name="chart_8">#6FC3DB</color>
+    <color name="chart_9">#D4BB5E</color>
+    <color name="chart_10">#9AA7BA</color>
 </resources>

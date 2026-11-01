@@ -12,6 +12,18 @@
     <color name="color_negative">#C0453A</color>
     <color name="color_outline">#E1DED6</color>
 
+    <color name="color_warning">#B7791F</color>
+    <color name="chart_1">#2A7F6F</color>
+    <color name="chart_2">#D9822B</color>
+    <color name="chart_3">#4A6FA5</color>
+    <color name="chart_4">#B5527A</color>
+    <color name="chart_5">#7A9E3D</color>
+    <color name="chart_6">#8C6BB1</color>
+    <color name="chart_7">#C4553D</color>
+    <color name="chart_8">#3E9CB5</color>
+    <color name="chart_9">#A3893A</color>
+    <color name="chart_10">#6B7A8F</color>
+
     <!-- Not overridden in values-night — the launcher icon background should
          stay constant regardless of the in-app theme. -->
     <color name="ic_launcher_background">#145C4B</color>

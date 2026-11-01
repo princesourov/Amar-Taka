@@ -45,7 +45,10 @@ data class CategoryEntity(
     val colorHex: String? = null,
     val monthlyBudgetMinor: Long? = null,
     val isCustom: Boolean = false,
-    val isActive: Boolean = true
+    val isActive: Boolean = true,
+    // Added in database v2: which pickers show this category. CategoryKind enum name
+    // (EXPENSE / INCOME / BOTH). Pre-existing categories were migrated to BOTH.
+    val kind: String = "BOTH"
 )
 
 /**

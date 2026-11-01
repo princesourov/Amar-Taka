@@ -15,7 +15,11 @@ data class BudgetEntity(
     val categoryId: String? = null, // null = overall budget, not category-specific
     val amountMinor: Long,
     val startDateEpochDay: Long? = null,
-    val isActive: Boolean = true
+    val isActive: Boolean = true,
+    // Added in database v2 (see Migrations.kt). Defaults here match the migration's column defaults.
+    val name: String? = null,
+    val isDeleted: Boolean = false, // soft delete -> Trash; a deleted budget never touches transactions
+    val updatedAtMillis: Long = 0L
 )
 
 @Entity(tableName = "savings_goals")

@@ -24,6 +24,10 @@ interface AccountDao {
     @Query("SELECT * FROM accounts WHERE id = :id")
     suspend fun getById(id: String): AccountEntity?
 
+    /** Counts inactive accounts too — "first run" must not be re-triggered by deleting every account. */
+    @Query("SELECT COUNT(*) FROM accounts WHERE userId = :userId")
+    suspend fun countAll(userId: String): Int
+
     @Query("UPDATE accounts SET isActive = 0 WHERE id = :id")
     suspend fun deactivate(id: String)
 }
@@ -38,6 +42,22 @@ interface CategoryDao {
 
     @Query("SELECT * FROM categories WHERE userId = :userId AND isActive = 1 ORDER BY name ASC")
     suspend fun getActiveCategoriesOnce(userId: String): List<CategoryEntity>
+
+    /** Active categories of the given kinds, e.g. listOf("EXPENSE", "BOTH") for the Add Expense picker. */
+    @Query("SELECT * FROM categories WHERE userId = :userId AND isActive = 1 AND kind IN (:kinds) ORDER BY name ASC")
+    fun getActiveCategoriesByKinds(userId: String, kinds: List<String>): Flow<List<CategoryEntity>>
+
+    /** Including deactivated ones: history must still resolve names/colours of categories the user later deleted. */
+    @Query("SELECT * FROM categories WHERE userId = :userId ORDER BY name ASC")
+    fun getAllCategories(userId: String): Flow<List<CategoryEntity>>
+
+    @Query("SELECT * FROM categories WHERE userId = :userId")
+    suspend fun getAllCategoriesOnce(userId: String): List<CategoryEntity>
+
+    @Update suspend fun update(category: CategoryEntity)
+
+    @Query("UPDATE categories SET isActive = 0 WHERE id = :id")
+    suspend fun deactivate(id: String)
 }
 
 @Dao

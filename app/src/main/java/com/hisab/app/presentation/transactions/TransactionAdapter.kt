@@ -69,6 +69,9 @@ class TransactionAdapter(
                 context.getColor(if (isOutflow) R.color.color_negative else R.color.color_positive)
             )
 
+            // Tapping the row itself opens the transaction (same as the Edit menu entry).
+            binding.root.setOnClickListener { onEdit(item) }
+
             binding.txnMenuButton.setOnClickListener { anchor ->
                 PopupMenu(context, anchor).apply {
                     menuInflater.inflate(R.menu.transaction_item_menu, menu)

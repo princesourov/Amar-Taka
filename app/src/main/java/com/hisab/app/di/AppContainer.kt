@@ -13,6 +13,7 @@ import com.hisab.app.data.repository.PersonRepository
 import com.hisab.app.data.repository.RecurringTransactionRepository
 import com.hisab.app.data.repository.SavingsGoalRepository
 import com.hisab.app.data.repository.TransactionRepository
+import com.hisab.app.data.repository.TrashRepository
 import com.hisab.app.domain.usecase.BorrowMoneyUseCase
 import com.hisab.app.domain.usecase.DeleteTransactionUseCase
 import com.hisab.app.domain.usecase.EditTransactionUseCase
@@ -52,6 +53,7 @@ class AppContainer(context: Context) {
     val personRepository by lazy { PersonRepository(database.personDao(), database.transactionDao()) }
     val categoryDao by lazy { database.categoryDao() }
     val budgetRepository by lazy { BudgetRepository(database.budgetDao(), database.transactionDao()) }
+    val trashRepository by lazy { TrashRepository(database.trashDao()) }
     val savingsGoalRepository by lazy { SavingsGoalRepository(database.savingsGoalDao()) }
     val recurringTransactionRepository by lazy { RecurringTransactionRepository(database.recurringTransactionDao()) }
 
@@ -75,7 +77,7 @@ class AppContainer(context: Context) {
     init {
         applicationScope.launch {
             seeder.seedIfNeeded(userId)
-            seeder.seedIncomeCategoriesIfMissing(userId) // additive + idempotent, safe for existing installs too
+            seeder.seedMissingDefaultCategories(userId) // additive + idempotent, safe for existing installs too
             executeRecurringTransactionsUseCase(userId) // catch up immediately, don't wait for the daily job
         }
         scheduleRecurringTransactionWorker()

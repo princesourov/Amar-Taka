@@ -42,6 +42,15 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    sourceSets {
+        // Exported Room schemas double as test assets for migration tests.
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {

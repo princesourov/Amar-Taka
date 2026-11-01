@@ -2,6 +2,7 @@ package com.hisab.app.data.local.database
 
 import com.hisab.app.data.local.entity.AccountEntity
 import com.hisab.app.data.local.entity.CategoryEntity
+import com.hisab.app.domain.category.CategoryCatalog
 import com.hisab.app.domain.model.AccountType
 import com.hisab.app.domain.model.SyncStatus
 import java.util.UUID
@@ -15,8 +16,11 @@ import java.util.UUID
 class DefaultDataSeeder(private val database: HisabDatabase) {
 
     suspend fun seedIfNeeded(userId: String) {
-        val existing = database.accountDao().getActiveAccountsOnce(userId)
-        if (existing.isNotEmpty()) return
+        // "First run" means the user has never had any account/category — counting INACTIVE rows too,
+        // otherwise deleting every account would make the next launch re-seed duplicates.
+        val seedAccounts = database.accountDao().countAll(userId) == 0
+        val seedCategories = database.categoryDao().getAllCategoriesOnce(userId).isEmpty()
+        if (!seedAccounts && !seedCategories) return
 
         val now = System.currentTimeMillis()
 
@@ -40,11 +44,34 @@ class DefaultDataSeeder(private val database: HisabDatabase) {
                 syncStatus = SyncStatus.PENDING.name
             )
         }
-        database.accountDao().insertAll(defaultAccounts)
+        if (seedAccounts) database.accountDao().insertAll(defaultAccounts)
 
         val defaultCategoryNames = listOf(
-            "Food", "Transport", "Shopping", "Home", "Mobile", "Bills", "Education",
-            "Medical", "Entertainment", "Snacks", "Clothing", "Technology", "Gift", "Loan", "Other"
+            "Food",
+            "Snacks",
+            "Transport",
+            "University Transport",
+            "University Adda",
+            "Education",
+            "Shopping",
+            "Clothing",
+            "Mobile & Internet",
+            "Bills",
+            "Home",
+            "Medical",
+            "Personal Care",
+            "Entertainment",
+            "Relationship",
+            "Gift",
+            "Family",
+            "Salary",
+            "Freelancing",
+            "Business",
+            "Development",
+            "Family Support",
+            "Loan",
+            "Savings",
+            "Other"
         )
         val defaultCategories = defaultCategoryNames.map { name ->
             CategoryEntity(
@@ -58,36 +85,31 @@ class DefaultDataSeeder(private val database: HisabDatabase) {
                 isActive = true
             )
         }
-        database.categoryDao().insertAll(defaultCategories)
+        if (seedCategories) database.categoryDao().insertAll(defaultCategories)
     }
 
     /**
-     * Income-oriented categories didn't exist before the Add Money feature. Unlike
-     * [seedIfNeeded], this runs on EVERY app start and is purely additive: it checks
-     * existing category names first and only inserts ones that are missing, so it's
-     * safe to call for both brand-new installs and existing ones with real transaction
-     * history already in place — nothing existing is touched.
+     * Adds any default categories (see CategoryCatalog) the user doesn't already have. Purely
+     * additive and idempotent: it compares against EVERY existing category (including deactivated
+     * ones, so a default the user deleted is not resurrected) by normalised name + aliases, and
+     * never updates or removes an existing row.
      */
-    suspend fun seedIncomeCategoriesIfMissing(userId: String) {
-        val existingNames = database.categoryDao().getActiveCategoriesOnce(userId)
-            .map { it.name.lowercase() }
-            .toSet()
-
-        val incomeCategoryNames = listOf("Salary", "Business Income", "Gift Received", "Refund", "Other Income")
-        val toAdd = incomeCategoryNames.filter { it.lowercase() !in existingNames }
+    suspend fun seedMissingDefaultCategories(userId: String) {
+        val existingNames = database.categoryDao().getAllCategoriesOnce(userId).map { it.name }
+        val toAdd = CategoryCatalog.missing(existingNames)
         if (toAdd.isEmpty()) return
-
         database.categoryDao().insertAll(
-            toAdd.map { name ->
+            toAdd.map { c ->
                 CategoryEntity(
                     id = UUID.randomUUID().toString(),
                     userId = userId,
-                    name = name,
-                    iconKey = name.lowercase().replace(" ", "_"),
-                    colorHex = null,
+                    name = c.name,
+                    iconKey = c.iconKey,
+                    colorHex = c.colorHex,
                     monthlyBudgetMinor = null,
                     isCustom = false,
-                    isActive = true
+                    isActive = true,
+                    kind = c.kind.name
                 )
             }
         )

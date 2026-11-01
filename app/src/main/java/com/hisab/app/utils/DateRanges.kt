@@ -25,6 +25,9 @@ data class DateRange(
 
 object DateRanges {
     internal fun zone(): ZoneId = ZoneId.systemDefault()
+
+    /** The device locale's first day of the week (same rule thisWeekRange uses). */
+    fun firstDayOfWeek(): java.time.DayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
     private fun LocalDate.startMillis(): Long = atStartOfDay(zone()).toInstant().toEpochMilli()
     private fun LocalDate.endMillis(): Long = plusDays(1).startMillis() - 1L
     private fun LocalDate.dayRange() = DateRange(DateRangeType.CUSTOM, this, this)

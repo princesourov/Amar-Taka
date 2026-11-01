@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.hisab.app.HisabApplication
 import com.hisab.app.R
@@ -17,70 +19,57 @@ import com.hisab.app.databinding.FragmentCreateBudgetBinding
 import com.hisab.app.di.ViewModelFactory
 import com.hisab.app.domain.model.BudgetScope
 import kotlinx.coroutines.launch
-import java.time.YearMonth
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.Locale
 
+/** Add / edit sheet. All state lives in [BudgetEditorViewModel], so rotation never loses input. */
 class CreateBudgetFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentCreateBudgetBinding? = null
     private val binding get() = _binding!!
-    private val monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
 
-    private val scopes = listOf(BudgetScope.DAILY, BudgetScope.WEEKLY, BudgetScope.MONTHLY)
-    private var selectedScope = BudgetScope.MONTHLY
-    private var selectedCategoryId: String? = null
-    private var selectedMonth = YearMonth.now()
-    private var editingId: String? = null
-    private var editingActive: Boolean = true
-
-    private val viewModel: BudgetsViewModel by viewModels {
-        ViewModelFactory((requireActivity().application as HisabApplication).container)
+    private val viewModel: BudgetEditorViewModel by viewModels {
+        ViewModelFactory(
+            (requireActivity().application as HisabApplication).container,
+            budgetId = arguments?.getString("budgetId")
+        )
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    private val scopes = listOf(BudgetScope.DAILY, BudgetScope.WEEKLY, BudgetScope.MONTHLY)
+    private var populatedFromDraft = false
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentCreateBudgetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        editingId = arguments?.getString("budgetId")
-        binding.titleText.text = if (editingId == null) getString(R.string.create_budget_title) else getString(R.string.edit_budget_title)
+        binding.titleText.setText(if (viewModel.isEditing) R.string.edit_budget_title else R.string.create_budget_title)
+        binding.recurrenceHint.setText(R.string.budget_recurrence_hint)
 
-        val scopeLabels = listOf(
-            getString(R.string.scope_daily),
-            getString(R.string.scope_weekly),
-            getString(R.string.scope_monthly)
-        )
+        val scopeLabels = listOf(R.string.scope_daily, R.string.scope_weekly, R.string.scope_monthly).map(::getString)
         binding.scopeDropdown.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, scopeLabels))
-        binding.scopeDropdown.setText(scopeLabels[2], false)
-        binding.scopeDropdown.setOnItemClickListener { _, _, position, _ -> selectedScope = scopes[position] }
-        renderMonth()
-        binding.monthPrevButton.setOnClickListener {
-            selectedMonth = selectedMonth.minusMonths(1)
-            renderMonth()
-        }
-        binding.monthNextButton.setOnClickListener {
-            selectedMonth = selectedMonth.plusMonths(1)
-            renderMonth()
-        }
+        binding.scopeDropdown.setOnItemClickListener { _, _, pos, _ -> viewModel.update { it.copy(scope = scopes[pos]) } }
 
-        binding.saveButton.setOnClickListener {
-            val state = BudgetEditorState(
-                budgetId = editingId,
-                scope = selectedScope,
-                categoryId = selectedCategoryId,
-                amountText = binding.amountInput.text.toString(),
-                month = selectedMonth,
-                isActive = editingActive
-            )
-            viewModel.saveBudget(state)
+        binding.nameInput.doAfterTextChanged { t ->
+            binding.nameLayout.error = null
+            val s = t?.toString().orEmpty()
+            if (s != viewModel.draft.value.name) viewModel.update { it.copy(name = s) }
         }
-
-        editingId?.let { viewModel.loadBudgetForEdit(it) }
+        binding.amountInput.doAfterTextChanged { t ->
+            binding.amountLayout.error = null
+            val s = t?.toString().orEmpty()
+            if (s != viewModel.draft.value.amountText) viewModel.update { it.copy(amountText = s) }
+        }
+        binding.activeSwitch.setOnCheckedChangeListener { _, checked ->
+            if (checked != viewModel.draft.value.isActive) viewModel.update { it.copy(isActive = checked) }
+        }
+        binding.startDateButton.setOnClickListener { pickStartDate() }
+        binding.cancelButton.setOnClickListener { dismiss() }
+        binding.saveButton.setOnClickListener { viewModel.save() }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -88,42 +77,68 @@ class CreateBudgetFragment : BottomSheetDialogFragment() {
                     viewModel.categories.collect { list ->
                         val labels = listOf(getString(R.string.budget_overall_option)) + list.map { it.name }
                         binding.categoryDropdown.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, labels))
-                        val selectedIndex = selectedCategoryId?.let { id -> list.indexOfFirst { it.id == id } + 1 } ?: 0
-                        binding.categoryDropdown.setText(labels.getOrElse(selectedIndex) { labels[0] }, false)
-                        binding.categoryDropdown.setOnItemClickListener { _, _, position, _ ->
-                            selectedCategoryId = if (position == 0) null else list[position - 1].id
+                        binding.categoryDropdown.setOnItemClickListener { _, _, pos, _ ->
+                            viewModel.update { it.copy(categoryId = if (pos == 0) null else list[pos - 1].id) }
                         }
+                        val id = viewModel.draft.value.categoryId
+                        val idx = id?.let { cid -> list.indexOfFirst { it.id == cid } + 1 } ?: 0
+                        binding.categoryDropdown.setText(labels.getOrElse(idx) { labels[0] }, false)
                     }
                 }
-                launch {
-                    viewModel.events.collect { event ->
-                        when (event) {
-                            is BudgetEvent.Saved -> dismiss()
-                            is BudgetEvent.ValidationError ->
-                                Snackbar.make(binding.root, R.string.error_amount_required, Snackbar.LENGTH_SHORT).show()
-                            is BudgetEvent.EditReady -> bindEditorState(event.state)
-                        }
+                launch { viewModel.loaded.collect { loaded ->
+                    binding.loadingBar.visibility = if (loaded) View.GONE else View.VISIBLE
+                    binding.saveButton.isEnabled = loaded
+                    // Text fields are filled once the draft is ready; afterwards the user owns them.
+                    if (loaded && !populatedFromDraft) {
+                        val d = viewModel.draft.value
+                        binding.nameInput.setText(d.name)
+                        binding.amountInput.setText(d.amountText)
+                        populatedFromDraft = true
                     }
-                }
+                } }
+                launch { viewModel.saving.collect { binding.saveButton.isEnabled = !it && viewModel.loaded.value } }
+                launch { viewModel.draft.collect(::renderDraft) }
+                launch { viewModel.events.collect(::onEvent) }
             }
         }
     }
 
-    private fun bindEditorState(state: BudgetEditorState) {
-        editingId = state.budgetId
-        selectedScope = state.scope
-        selectedCategoryId = state.categoryId
-        selectedMonth = state.month
-        editingActive = state.isActive
-        binding.amountInput.setText(state.amountText)
-        val scopeIndex = scopes.indexOf(selectedScope).coerceAtLeast(0)
-        val scopeLabels = listOf(getString(R.string.scope_daily), getString(R.string.scope_weekly), getString(R.string.scope_monthly))
-        binding.scopeDropdown.setText(scopeLabels[scopeIndex], false)
-        renderMonth()
+    private fun renderDraft(d: BudgetDraft) {
+        binding.scopeDropdown.setText(getString(
+            when (d.scope) {
+                BudgetScope.DAILY -> R.string.scope_daily
+                BudgetScope.WEEKLY -> R.string.scope_weekly
+                BudgetScope.MONTHLY -> R.string.scope_monthly
+            }
+        ), false)
+        if (binding.activeSwitch.isChecked != d.isActive) binding.activeSwitch.isChecked = d.isActive
+        val date = LocalDate.ofEpochDay(d.startEpochDay)
+        binding.startDateButton.text = getString(
+            R.string.budget_start_date,
+            date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.getDefault()))
+        )
     }
 
-    private fun renderMonth() {
-        binding.monthLabel.text = selectedMonth.format(monthFormatter)
+    private fun onEvent(event: EditorEvent) {
+        when (event) {
+            EditorEvent.Saved -> dismiss()
+            is EditorEvent.FieldError -> {
+                val layout = if (event.field == EditorEvent.Field.NAME) binding.nameLayout else binding.amountLayout
+                layout.error = getString(event.messageRes)
+            }
+            is EditorEvent.Error -> Snackbar.make(binding.root, event.messageRes, Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    private fun pickStartDate() {
+        val current = LocalDate.ofEpochDay(viewModel.draft.value.startEpochDay)
+        val utcMillis = current.atStartOfDay(java.time.ZoneOffset.UTC).toInstant().toEpochMilli()
+        val picker = MaterialDatePicker.Builder.datePicker().setSelection(utcMillis).build()
+        picker.addOnPositiveButtonClickListener { sel ->
+            val day = java.time.Instant.ofEpochMilli(sel).atZone(java.time.ZoneOffset.UTC).toLocalDate().toEpochDay()
+            viewModel.update { it.copy(startEpochDay = day) }
+        }
+        picker.show(childFragmentManager, "budget_start")
     }
 
     override fun onDestroyView() {

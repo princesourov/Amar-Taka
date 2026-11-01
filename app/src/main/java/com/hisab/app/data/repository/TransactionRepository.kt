@@ -85,6 +85,7 @@ class TransactionRepository(private val transactionDao: TransactionDao) {
         transactionDao.softDelete(id, System.currentTimeMillis())
     }
 
+    /** Restoring puts the row back into every balance, budget and report automatically (they are all derived live). */
     suspend fun restoreTransaction(id: String) {
         transactionDao.restore(id, System.currentTimeMillis())
     }

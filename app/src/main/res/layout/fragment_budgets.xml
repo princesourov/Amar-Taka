@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,27 +9,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_lg">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/budgets_title"
-            android:textAppearance="?attr/textAppearanceHeadlineSmall" />
+        android:paddingStart="@dimen/spacing_lg"
+        android:paddingTop="@dimen/spacing_lg"
+        android:paddingEnd="@dimen/spacing_lg">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_sm"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/budgets_title"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall" />
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/previousMonthButton"
+                android:id="@+id/openTrashButton"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="←" />
+                android:text="@string/nav_trash" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/previousMonthButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/budget_previous_month"
+                android:src="@drawable/ic_chevron_left" />
 
             <TextView
                 android:id="@+id/currentMonthLabel"
@@ -39,14 +55,15 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
-                tools:text="January 2026" />
+                tools:text="November 2026" />
 
-            <com.google.android.material.button.MaterialButton
+            <ImageButton
                 android:id="@+id/nextMonthButton"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="→" />
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/budget_next_month"
+                android:src="@drawable/ic_chevron_right" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -54,43 +71,168 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="@string/action_return_current_month" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/budgetList"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/summaryCard"
+            style="@style/Widget.Material3.CardView.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:visibility="gone"
+            app:cardCornerRadius="16dp"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_md">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.75"
+                    android:text="@string/budget_summary_title"
+                    android:textAppearance="?attr/textAppearanceLabelMedium" />
+
+                <TextView
+                    android:id="@+id/summaryAmounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
+                    tools:text="৳6,200.00 of ৳9,000.00" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/summaryProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_sm"
+                    android:max="100"
+                    app:trackCornerRadius="6dp"
+                    app:trackThickness="10dp" />
+
+                <TextView
+                    android:id="@+id/summaryDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    tools:text="৳2,800.00 left · 1 over budget" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/statusChips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:selectionRequired="true"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipActive"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/budget_filter_active" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipPaused"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/budget_filter_paused" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipStatusAll"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filter_all" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/kindChips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:selectionRequired="true"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipKindAll"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/budget_kind_all" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipKindOverall"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/budget_kind_overall" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipKindCategory"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/budget_kind_category" />
+                </com.google.android.material.chip.ChipGroup>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/spacing_md"
-            android:clipToPadding="false"
-            android:paddingBottom="80dp"
-            tools:listitem="@layout/item_budget_progress" />
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/emptyState"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_xl"
-            android:alpha="0.7"
-            android:gravity="center"
-            android:text="@string/budgets_empty_state"
-            android:visibility="gone" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/budgetList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/spacing_sm"
+                android:paddingBottom="96dp"
+                tools:listitem="@layout/item_budget_progress" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/viewHistoryButton"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_view_budget_history" />
-
+            <TextView
+                android:id="@+id/emptyState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:alpha="0.8"
+                android:gravity="center"
+                android:padding="@dimen/spacing_lg"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:visibility="gone" />
+        </FrameLayout>
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabCreateBudget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/spacing_lg"
-        app:srcCompat="@drawable/ic_add" />
+        android:text="@string/action_add_budget"
+        app:icon="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
