@@ -52,10 +52,6 @@
             android:id="@+id/action_budgets_to_createBudget"
             app:destination="@id/createBudgetFragment" />
 
-        <action
-            android:id="@+id/action_budgets_to_trash"
-            app:destination="@id/trashFragment" />
-
     </fragment>
 
 
@@ -276,28 +272,7 @@
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.hisab.app.presentation.reports.ReportsFragment"
-        android:label="@string/nav_reports">
-
-        <action
-            android:id="@+id/action_reports_to_editTransaction"
-            app:destination="@id/editTransactionFragment" />
-
-        <action
-            android:id="@+id/action_reports_to_budgets"
-            app:destination="@id/budgetsFragment" />
-
-        <action
-            android:id="@+id/action_reports_to_trash"
-            app:destination="@id/trashFragment" />
-
-    </fragment>
-
-
-    <!-- Trash -->
-    <fragment
-        android:id="@+id/trashFragment"
-        android:name="com.hisab.app.presentation.trash.TrashFragment"
-        android:label="@string/nav_trash" />
+        android:label="@string/nav_reports" />
 
 
     <!-- Add Expense -->

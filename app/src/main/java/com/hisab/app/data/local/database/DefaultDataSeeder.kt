@@ -2,7 +2,6 @@ package com.hisab.app.data.local.database
 
 import com.hisab.app.data.local.entity.AccountEntity
 import com.hisab.app.data.local.entity.CategoryEntity
-import com.hisab.app.domain.category.CategoryCatalog
 import com.hisab.app.domain.model.AccountType
 import com.hisab.app.domain.model.SyncStatus
 import java.util.UUID
@@ -16,11 +15,8 @@ import java.util.UUID
 class DefaultDataSeeder(private val database: HisabDatabase) {
 
     suspend fun seedIfNeeded(userId: String) {
-        // "First run" means the user has never had any account/category — counting INACTIVE rows too,
-        // otherwise deleting every account would make the next launch re-seed duplicates.
-        val seedAccounts = database.accountDao().countAll(userId) == 0
-        val seedCategories = database.categoryDao().getAllCategoriesOnce(userId).isEmpty()
-        if (!seedAccounts && !seedCategories) return
+        val existing = database.accountDao().getActiveAccountsOnce(userId)
+        if (existing.isNotEmpty()) return
 
         val now = System.currentTimeMillis()
 
@@ -44,7 +40,7 @@ class DefaultDataSeeder(private val database: HisabDatabase) {
                 syncStatus = SyncStatus.PENDING.name
             )
         }
-        if (seedAccounts) database.accountDao().insertAll(defaultAccounts)
+        database.accountDao().insertAll(defaultAccounts)
 
         val defaultCategoryNames = listOf(
             "Food",
@@ -85,31 +81,47 @@ class DefaultDataSeeder(private val database: HisabDatabase) {
                 isActive = true
             )
         }
-        if (seedCategories) database.categoryDao().insertAll(defaultCategories)
+        database.categoryDao().insertAll(defaultCategories)
     }
 
     /**
-     * Adds any default categories (see CategoryCatalog) the user doesn't already have. Purely
-     * additive and idempotent: it compares against EVERY existing category (including deactivated
-     * ones, so a default the user deleted is not resurrected) by normalised name + aliases, and
-     * never updates or removes an existing row.
+     * Income-oriented categories didn't exist before the Add Money feature. Unlike
+     * [seedIfNeeded], this runs on EVERY app start and is purely additive: it checks
+     * existing category names first and only inserts ones that are missing, so it's
+     * safe to call for both brand-new installs and existing ones with real transaction
+     * history already in place — nothing existing is touched.
      */
-    suspend fun seedMissingDefaultCategories(userId: String) {
-        val existingNames = database.categoryDao().getAllCategoriesOnce(userId).map { it.name }
-        val toAdd = CategoryCatalog.missing(existingNames)
+    suspend fun seedIncomeCategoriesIfMissing(userId: String) {
+        val existingNames = database.categoryDao().getActiveCategoriesOnce(userId)
+            .map { it.name.lowercase() }
+            .toSet()
+
+        val incomeCategoryNames = listOf(
+            "Salary",
+            "Freelancing",
+            "Development",
+            "Business Income",
+            "Investment Return",
+            "Family Support",
+            "Gift Received",
+            "Refund",
+            "Loan Received",
+            "Other Income"
+        )
+        val toAdd = incomeCategoryNames.filter { it.lowercase() !in existingNames }
         if (toAdd.isEmpty()) return
+
         database.categoryDao().insertAll(
-            toAdd.map { c ->
+            toAdd.map { name ->
                 CategoryEntity(
                     id = UUID.randomUUID().toString(),
                     userId = userId,
-                    name = c.name,
-                    iconKey = c.iconKey,
-                    colorHex = c.colorHex,
+                    name = name,
+                    iconKey = name.lowercase().replace(" ", "_"),
+                    colorHex = null,
                     monthlyBudgetMinor = null,
                     isCustom = false,
-                    isActive = true,
-                    kind = c.kind.name
+                    isActive = true
                 )
             }
         )
