@@ -10,6 +10,7 @@ import com.hisab.app.presentation.income.AddMoneyViewModel
 import com.hisab.app.presentation.people.PeopleViewModel
 import com.hisab.app.presentation.people.PersonDetailViewModel
 import com.hisab.app.presentation.recurring.RecurringViewModel
+import com.hisab.app.presentation.reports.ReportsViewModel
 import com.hisab.app.presentation.savings.SavingsGoalsViewModel
 import com.hisab.app.presentation.transactions.EditTransactionViewModel
 import com.hisab.app.presentation.transactions.TransactionsViewModel
@@ -26,9 +27,11 @@ class ViewModelFactory(
     private val transactionId: String? = null,
     private val personId: String? = null
 ) : ViewModelProvider.Factory {
+
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
+
             DashboardViewModel::class.java -> DashboardViewModel(
                 container.userId,
                 container.accountRepository,
@@ -71,6 +74,14 @@ class ViewModelFactory(
                 container.categoryDao
             ) as T
 
+            ReportsViewModel::class.java -> ReportsViewModel(
+                container.userId,
+                container.transactionRepository,
+                container.accountRepository,
+                container.personRepository,
+                container.budgetRepository
+            ) as T
+
             AccountsViewModel::class.java -> AccountsViewModel(
                 container.userId,
                 container.accountRepository
@@ -87,7 +98,9 @@ class ViewModelFactory(
 
             EditTransactionViewModel::class.java -> EditTransactionViewModel(
                 container.userId,
-                requireNotNull(transactionId) { "transactionId is required to create an EditTransactionViewModel" },
+                requireNotNull(transactionId) {
+                    "transactionId is required to create an EditTransactionViewModel"
+                },
                 container.transactionRepository,
                 container.accountRepository,
                 container.categoryDao,
@@ -107,7 +120,9 @@ class ViewModelFactory(
 
             PersonDetailViewModel::class.java -> PersonDetailViewModel(
                 container.userId,
-                requireNotNull(personId) { "personId is required to create a PersonDetailViewModel" },
+                requireNotNull(personId) {
+                    "personId is required to create a PersonDetailViewModel"
+                },
                 container.personRepository,
                 container.accountRepository,
                 container.categoryDao,
@@ -118,7 +133,9 @@ class ViewModelFactory(
                 container.deleteTransactionUseCase
             ) as T
 
-            else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+            else -> throw IllegalArgumentException(
+                "Unknown ViewModel class: ${modelClass.name}"
+            )
         }
     }
 }

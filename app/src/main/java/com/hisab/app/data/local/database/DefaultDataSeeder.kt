@@ -43,8 +43,31 @@ class DefaultDataSeeder(private val database: HisabDatabase) {
         database.accountDao().insertAll(defaultAccounts)
 
         val defaultCategoryNames = listOf(
-            "Food", "Transport", "Shopping", "Home", "Mobile", "Bills", "Education",
-            "Medical", "Entertainment", "Snacks", "Clothing", "Technology", "Gift", "Loan", "Other"
+            "Food",
+            "Snacks",
+            "Transport",
+            "University Transport",
+            "University Adda",
+            "Education",
+            "Shopping",
+            "Clothing",
+            "Mobile & Internet",
+            "Bills",
+            "Home",
+            "Medical",
+            "Personal Care",
+            "Entertainment",
+            "Relationship",
+            "Gift",
+            "Family",
+            "Salary",
+            "Freelancing",
+            "Business",
+            "Development",
+            "Family Support",
+            "Loan",
+            "Savings",
+            "Other"
         )
         val defaultCategories = defaultCategoryNames.map { name ->
             CategoryEntity(
@@ -73,7 +96,18 @@ class DefaultDataSeeder(private val database: HisabDatabase) {
             .map { it.name.lowercase() }
             .toSet()
 
-        val incomeCategoryNames = listOf("Salary", "Business Income", "Gift Received", "Refund", "Other Income")
+        val incomeCategoryNames = listOf(
+            "Salary",
+            "Freelancing",
+            "Development",
+            "Business Income",
+            "Investment Return",
+            "Family Support",
+            "Gift Received",
+            "Refund",
+            "Loan Received",
+            "Other Income"
+        )
         val toAdd = incomeCategoryNames.filter { it.lowercase() !in existingNames }
         if (toAdd.isEmpty()) return
 

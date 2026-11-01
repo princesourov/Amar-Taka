@@ -271,15 +271,8 @@
     <!-- Reports -->
     <fragment
         android:id="@+id/reportsFragment"
-        android:name="com.hisab.app.presentation.common.ComingSoonFragment"
-        android:label="@string/nav_reports">
-
-        <argument
-            android:name="screenTitle"
-            app:argType="string"
-            android:defaultValue="Reports" />
-
-    </fragment>
+        android:name="com.hisab.app.presentation.reports.ReportsFragment"
+        android:label="@string/nav_reports" />
 
 
     <!-- Add Expense -->
