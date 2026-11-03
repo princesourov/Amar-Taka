@@ -41,8 +41,14 @@ class EditTransactionViewModel(
         accountRepository.getActiveAccounts(userId)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    /** Categories offered for THIS transaction's type (plus its current one), so income can't get an expense category. */
     val categories: StateFlow<List<CategoryEntity>> =
-        categoryDao.getActiveCategories(userId)
+        kotlinx.coroutines.flow.combine(categoryDao.getAllCategories(userId), _original) { all, orig ->
+            val forIncome = orig?.type == com.hisab.app.domain.model.TransactionType.INCOME.name
+            all.filter {
+                com.hisab.app.domain.category.CategoryRules.isOffered(it.kind, it.isActive, forIncome, it.id == orig?.categoryId)
+            }
+        }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _isSaving = MutableStateFlow(false)

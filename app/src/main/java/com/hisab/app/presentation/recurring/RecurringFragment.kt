@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hisab.app.HisabApplication
 import com.hisab.app.R
 import com.hisab.app.databinding.FragmentRecurringBinding
@@ -21,7 +22,17 @@ class RecurringFragment : Fragment() {
 
     private var _binding: FragmentRecurringBinding? = null
     private val binding get() = _binding!!
-    private val adapter = RecurringTransactionAdapter()
+    private val adapter = RecurringTransactionAdapter(
+        onToggle = { viewModel.setActive(it.id, !it.isActive) },
+        onDelete = { item ->
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.recurring_delete_title)
+                .setMessage(R.string.recurring_delete_message)
+                .setNegativeButton(R.string.action_cancel, null)
+                .setPositiveButton(R.string.action_delete) { _, _ -> viewModel.delete(item.id) }
+                .show()
+        }
+    )
 
     private val viewModel: RecurringViewModel by viewModels {
         ViewModelFactory((requireActivity().application as HisabApplication).container)

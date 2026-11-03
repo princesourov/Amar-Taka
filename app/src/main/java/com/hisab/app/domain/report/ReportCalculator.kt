@@ -244,7 +244,7 @@ object ReportCalculator {
     private fun bump(map: MutableMap<String?, LongArray>, key: String?, amount: Long) {
         val slot = map.getOrPut(key) { LongArray(2) }
         slot[0] += amount
-        slot[1] += 1
+        slot[1] = slot[1] + 1L
     }
 
     /**

@@ -3,7 +3,10 @@ package com.hisab.app.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.hisab.app.presentation.accounts.AccountsViewModel
+import com.hisab.app.presentation.budgets.BudgetEditorViewModel
+import com.hisab.app.presentation.categories.CategoriesViewModel
 import com.hisab.app.presentation.budgets.BudgetsViewModel
+import com.hisab.app.presentation.trash.TrashViewModel
 import com.hisab.app.presentation.dashboard.DashboardViewModel
 import com.hisab.app.presentation.expense.AddExpenseViewModel
 import com.hisab.app.presentation.income.AddMoneyViewModel
@@ -17,6 +20,7 @@ import com.hisab.app.presentation.transactions.TransactionsViewModel
 import com.hisab.app.presentation.transfer.TransferMoneyViewModel
 
 /**
+ * [budgetId] is only needed by [BudgetEditorViewModel] (null = creating a new budget).
  * [transactionId] is only needed by [EditTransactionViewModel] and [personId] only by
  * [PersonDetailViewModel] — screens that each revolve around one specific existing row.
  * Every other ViewModel here is parameterless beyond the container, so this stays a single
@@ -25,7 +29,8 @@ import com.hisab.app.presentation.transfer.TransferMoneyViewModel
 class ViewModelFactory(
     private val container: AppContainer,
     private val transactionId: String? = null,
-    private val personId: String? = null
+    private val personId: String? = null,
+    private val budgetId: String? = null
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -62,6 +67,27 @@ class ViewModelFactory(
                 container.categoryDao
             ) as T
 
+            BudgetEditorViewModel::class.java -> BudgetEditorViewModel(
+                container.userId,
+                budgetId,
+                container.budgetRepository,
+                container.categoryDao
+            ) as T
+
+            CategoriesViewModel::class.java -> CategoriesViewModel(
+                container.userId,
+                container.categoryDao
+            ) as T
+
+            TrashViewModel::class.java -> TrashViewModel(
+                container.userId,
+                container.transactionRepository,
+                container.budgetRepository,
+                container.trashRepository,
+                container.accountRepository,
+                container.categoryDao
+            ) as T
+
             SavingsGoalsViewModel::class.java -> SavingsGoalsViewModel(
                 container.userId,
                 container.savingsGoalRepository
@@ -71,15 +97,17 @@ class ViewModelFactory(
                 container.userId,
                 container.recurringTransactionRepository,
                 container.accountRepository,
-                container.categoryDao
+                container.categoryDao,
+                container.executeRecurringTransactionsUseCase
             ) as T
 
             ReportsViewModel::class.java -> ReportsViewModel(
                 container.userId,
                 container.transactionRepository,
                 container.accountRepository,
-                container.personRepository,
-                container.budgetRepository
+                container.categoryDao,
+                container.budgetRepository,
+                container.deleteTransactionUseCase
             ) as T
 
             AccountsViewModel::class.java -> AccountsViewModel(

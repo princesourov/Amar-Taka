@@ -72,4 +72,37 @@ object RecurrenceSchedule {
         }
         return null
     }
+
+    /** Outcome of running a schedule up to today. */
+    data class Plan(
+        /** Occurrence dates to turn into transactions (oldest first). */
+        val toGenerate: List<Long>,
+        /** Value to store as the new nextRunEpochDay. */
+        val newNextRunEpochDay: Long,
+        /** False once the schedule has no occurrence left on or before its end date. */
+        val stillActive: Boolean
+    )
+
+    /**
+     * What to do for a schedule today. When nothing is due, the stored state is returned unchanged,
+     * so applying a plan twice is harmless.
+     */
+    fun plan(
+        frequency: RecurrenceFrequency,
+        startEpochDay: Long,
+        nextRunEpochDay: Long,
+        endEpochDay: Long?,
+        todayEpochDay: Long,
+        isActive: Boolean = true
+    ): Plan {
+        val due = dueOccurrences(frequency, startEpochDay, nextRunEpochDay, endEpochDay, todayEpochDay)
+        if (due.isEmpty()) {
+            // Nothing due; also finish a schedule whose next run is already past its end date.
+            val finished = endEpochDay != null && nextRunEpochDay > endEpochDay
+            return Plan(emptyList(), nextRunEpochDay, isActive && !finished)
+        }
+        val last = due.last()
+        val next = nextAfter(frequency, startEpochDay, last, endEpochDay)
+        return Plan(due, next ?: (last + 1), next != null)
+    }
 }

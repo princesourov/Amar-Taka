@@ -33,7 +33,10 @@ import com.hisab.app.data.local.entity.UserProfileEntity
     version = 2,
     // Schemas are exported to app/schemas (see the ksp arg in build.gradle.kts). Commit them: they
     // are what future migrations are tested against.
-    exportSchema = true
+    // Room 2.8.x schema export currently crashes inside its bundled kotlinx-serialization
+    // serializer under the Kotlin compiler classloader. Keep the committed v2 JSON as a test asset.
+    // Re-enable after upgrading to a Room release that fixes the serializer ABI mismatch.
+    exportSchema = false
 )
 abstract class HisabDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao

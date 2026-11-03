@@ -111,6 +111,16 @@ interface RecurringTransactionDao {
     @Update suspend fun update(recurring: RecurringTransactionEntity)
     @Query("SELECT * FROM recurring_transactions WHERE userId = :userId AND isActive = 1")
     fun getActiveRecurring(userId: String): Flow<List<RecurringTransactionEntity>>
+    /** Active AND paused schedules, so a paused one stays visible and can be resumed. */
+    @Query("SELECT * FROM recurring_transactions WHERE userId = :userId ORDER BY isActive DESC, nextRunEpochDay ASC")
+    fun getAllRecurring(userId: String): Flow<List<RecurringTransactionEntity>>
+    @Query("UPDATE recurring_transactions SET isActive = :active WHERE id = :id")
+    suspend fun setActive(id: String, active: Boolean)
+    /** Removes the schedule only; transactions it already generated are untouched. */
+    @Query("DELETE FROM recurring_transactions WHERE id = :id")
+    suspend fun deleteById(id: String)
+    @Query("SELECT * FROM recurring_transactions WHERE id = :id")
+    suspend fun getById(id: String): RecurringTransactionEntity?
     @Query("SELECT * FROM recurring_transactions WHERE isActive = 1 AND nextRunEpochDay <= :todayEpochDay")
     suspend fun getDueForExecution(todayEpochDay: Long): List<RecurringTransactionEntity>
 }

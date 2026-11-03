@@ -13,16 +13,23 @@ import com.hisab.app.utils.formatMinorAsCurrency
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class RecurringTransactionAdapter : ListAdapter<RecurringTransactionEntity, RecurringTransactionAdapter.ViewHolder>(DIFF_CALLBACK) {
+class RecurringTransactionAdapter(
+    private val onToggle: (RecurringTransactionEntity) -> Unit,
+    private val onDelete: (RecurringTransactionEntity) -> Unit
+) : ListAdapter<RecurringTransactionEntity, RecurringTransactionAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRecurringTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(binding, onToggle, onDelete)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
 
-    class ViewHolder(private val binding: ItemRecurringTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(
+        private val binding: ItemRecurringTransactionBinding,
+        private val onToggle: (RecurringTransactionEntity) -> Unit,
+        private val onDelete: (RecurringTransactionEntity) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RecurringTransactionEntity) {
             val context = binding.root.context
             val frequencyLabel = frequencyLabelFor(context, item.frequency)
@@ -30,10 +37,14 @@ class RecurringTransactionAdapter : ListAdapter<RecurringTransactionEntity, Recu
                 ?: context.getString(R.string.recurring_untitled)
             binding.recurringAmount.text = formatMinorAsCurrency(item.amountMinor)
             binding.recurringFrequency.text = frequencyLabel
-            binding.recurringNextRun.text = context.getString(
+            binding.recurringNextRun.text = if (item.isActive) context.getString(
                 R.string.recurring_next_run,
-                LocalDate.ofEpochDay(item.nextRunEpochDay).format(DateTimeFormatter.ofPattern("d MMM"))
-            )
+                LocalDate.ofEpochDay(item.nextRunEpochDay).format(DateTimeFormatter.ofPattern("d MMM yyyy"))
+            ) else context.getString(R.string.recurring_paused)
+            binding.root.alpha = if (item.isActive) 1f else 0.6f
+            binding.recurringToggle.setText(if (item.isActive) R.string.budget_action_pause else R.string.budget_action_enable)
+            binding.recurringToggle.setOnClickListener { onToggle(item) }
+            binding.recurringDelete.setOnClickListener { onDelete(item) }
         }
 
         private fun frequencyLabelFor(context: android.content.Context, frequency: String): String =

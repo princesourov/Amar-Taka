@@ -12,6 +12,15 @@ class RecurringTransactionRepository(private val recurringDao: RecurringTransact
     fun getActiveRecurring(userId: String): Flow<List<RecurringTransactionEntity>> =
         recurringDao.getActiveRecurring(userId)
 
+    /** Active and paused schedules. */
+    fun getAllRecurring(userId: String): Flow<List<RecurringTransactionEntity>> =
+        recurringDao.getAllRecurring(userId)
+
+    suspend fun setActive(id: String, active: Boolean) = recurringDao.setActive(id, active)
+
+    /** Deletes the schedule only; transactions it already created stay in the ledger. */
+    suspend fun delete(id: String) = recurringDao.deleteById(id)
+
     suspend fun createRecurring(
         userId: String,
         type: TransactionType,

@@ -56,6 +56,12 @@ interface CategoryDao {
 
     @Update suspend fun update(category: CategoryEntity)
 
+    @Query("UPDATE categories SET isActive = :active WHERE id = :id")
+    suspend fun setActive(id: String, active: Boolean)
+
+    @Query("SELECT COUNT(*) FROM transactions WHERE categoryId = :id AND isDeleted = 0")
+    suspend fun countTransactionsUsing(id: String): Int
+
     @Query("UPDATE categories SET isActive = 0 WHERE id = :id")
     suspend fun deactivate(id: String)
 }

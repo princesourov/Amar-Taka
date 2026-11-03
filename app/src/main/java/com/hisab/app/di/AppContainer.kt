@@ -67,7 +67,9 @@ class AppContainer(context: Context) {
     val editTransactionUseCase by lazy { EditTransactionUseCase(transactionRepository) }
     val deleteTransactionUseCase by lazy { DeleteTransactionUseCase(transactionRepository) }
     val executeRecurringTransactionsUseCase by lazy {
-        ExecuteRecurringTransactionsUseCase(database.recurringTransactionDao(), recordExpenseUseCase, recordIncomeUseCase)
+        ExecuteRecurringTransactionsUseCase(
+            database, database.recurringTransactionDao(), database.transactionDao(), database.accountDao()
+        )
     }
 
     val authRepository by lazy { AuthRepository() }

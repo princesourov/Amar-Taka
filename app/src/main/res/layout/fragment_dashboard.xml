@@ -358,6 +358,14 @@
                 android:layout_gravity="start"
                 android:text="@string/recurring_title" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/categoriesLink"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/categories_title" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

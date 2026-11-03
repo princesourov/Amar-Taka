@@ -8,6 +8,7 @@ import com.hisab.app.data.local.entity.CategoryEntity
 import com.hisab.app.data.local.entity.RecurringTransactionEntity
 import com.hisab.app.data.repository.AccountRepository
 import com.hisab.app.data.repository.RecurringTransactionRepository
+import com.hisab.app.domain.budget.MoneyParser
 import com.hisab.app.domain.model.RecurrenceFrequency
 import com.hisab.app.domain.model.TransactionType
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,11 +28,12 @@ class RecurringViewModel(
     private val userId: String,
     private val recurringRepository: RecurringTransactionRepository,
     accountRepository: AccountRepository,
-    categoryDao: CategoryDao
+    categoryDao: CategoryDao,
+    private val executeRecurring: com.hisab.app.domain.usecase.ExecuteRecurringTransactionsUseCase
 ) : ViewModel() {
 
     val recurringTransactions: StateFlow<List<RecurringTransactionEntity>> =
-        recurringRepository.getActiveRecurring(userId)
+        recurringRepository.getAllRecurring(userId)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val accounts: StateFlow<List<AccountEntity>> =
@@ -54,17 +56,28 @@ class RecurringViewModel(
         note: String?
     ) {
         viewModelScope.launch {
-            val amountMinor = amountMajor.trim().toDoubleOrNull()?.let { Math.round(it * 100) }
+            val amountMinor = (MoneyParser.parsePositive(amountMajor) as? MoneyParser.Result.Ok)?.minorUnits
             val invalid = amountMinor == null || amountMinor <= 0 || accountId == null ||
                 (type == TransactionType.EXPENSE && categoryId == null)
-            if (invalid) {
+            if (invalid || amountMinor == null || accountId == null) {
                 _events.emit(RecurringEvent.ValidationError); return@launch
             }
             recurringRepository.createRecurring(
-                userId, type, amountMinor!!, categoryId, accountId!!, frequency,
+                userId, type, amountMinor, categoryId, accountId, frequency,
                 startDateEpochDay = LocalDate.now().toEpochDay(), note = note?.ifBlank { null }
             )
+            // A schedule starting today should produce its first transaction now, not at the next app launch.
+            executeRecurring(userId)
             _events.emit(RecurringEvent.Saved)
         }
+    }
+
+    fun setActive(id: String, active: Boolean) {
+        viewModelScope.launch { recurringRepository.setActive(id, active) }
+    }
+
+    /** Removes the schedule; already generated transactions are kept. */
+    fun delete(id: String) {
+        viewModelScope.launch { recurringRepository.delete(id) }
     }
 }

@@ -59,4 +59,43 @@ class RecurrenceScheduleTest {
         val due = RecurrenceSchedule.dueOccurrences(RecurrenceFrequency.DAILY, start, start, null, e(2026, 1, 1))
         assertEquals(RecurrenceSchedule.MAX_CATCH_UP, due.size)
     }
+
+    @Test fun plan_catches_up_and_moves_next_run_past_today() {
+        val start = e(2026, 1, 31)
+        val p = RecurrenceSchedule.plan(RecurrenceFrequency.MONTHLY, start, start, null, e(2026, 3, 15))
+        assertEquals(listOf("2026-01-31", "2026-02-28"), days(p.toGenerate))
+        assertEquals("2026-03-31", LocalDate.ofEpochDay(p.newNextRunEpochDay).toString())
+        assertTrue(p.stillActive)
+    }
+
+    @Test fun plan_is_idempotent_once_applied() {
+        val start = e(2026, 3, 1)
+        val first = RecurrenceSchedule.plan(RecurrenceFrequency.DAILY, start, start, null, e(2026, 3, 3))
+        val second = RecurrenceSchedule.plan(RecurrenceFrequency.DAILY, start, first.newNextRunEpochDay, null, e(2026, 3, 3))
+        assertEquals(3, first.toGenerate.size)
+        assertTrue(second.toGenerate.isEmpty())
+        assertEquals(first.newNextRunEpochDay, second.newNextRunEpochDay)
+    }
+
+    @Test fun plan_finishes_schedule_at_end_date() {
+        val start = e(2026, 3, 1)
+        val p = RecurrenceSchedule.plan(RecurrenceFrequency.DAILY, start, start, e(2026, 3, 2), e(2026, 3, 10))
+        assertEquals(2, p.toGenerate.size)
+        assertEquals(false, p.stillActive)
+    }
+
+    @Test fun plan_with_nothing_due_changes_nothing() {
+        val start = e(2026, 5, 1)
+        val p = RecurrenceSchedule.plan(RecurrenceFrequency.WEEKLY, start, start, null, e(2026, 4, 1))
+        assertTrue(p.toGenerate.isEmpty())
+        assertEquals(start, p.newNextRunEpochDay)
+        assertTrue(p.stillActive)
+    }
+
+    @Test fun plan_respects_catch_up_cap_and_resumes_next_run() {
+        val start = e(2020, 1, 1)
+        val p = RecurrenceSchedule.plan(RecurrenceFrequency.DAILY, start, start, null, e(2026, 1, 1))
+        assertEquals(RecurrenceSchedule.MAX_CATCH_UP, p.toGenerate.size)
+        assertEquals(p.toGenerate.last() + 1, p.newNextRunEpochDay)
+    }
 }

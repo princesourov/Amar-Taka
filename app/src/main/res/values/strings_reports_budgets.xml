@@ -177,4 +177,36 @@
     <string name="trash_restored">Restored</string>
     <string name="trash_budget_subtitle">Budget · %1$s</string>
     <string name="trash_deleted_on">Deleted %1$s</string>
+
+    <!-- Recurring -->
+    <string name="recurring_paused">Paused</string>
+    <string name="recurring_delete_title">Delete this recurring entry?</string>
+    <string name="recurring_delete_message">Future runs stop. Transactions it already created stay in your history.</string>
+
+    <!-- Categories -->
+    <string name="categories_title">Categories</string>
+    <string name="categories_explainer">Hidden categories disappear from pickers but stay on past transactions, reports and budgets.</string>
+    <string name="categories_hidden_tab">Hidden</string>
+    <string name="categories_empty">Nothing here yet.</string>
+    <string name="categories_add">Add category</string>
+    <string name="categories_edit">Edit category</string>
+    <string name="hint_category_name">Category name</string>
+    <string name="category_used_for">Used for</string>
+    <string name="category_kind_both">Both</string>
+    <string name="category_custom">Custom</string>
+    <string name="category_default">Default</string>
+    <string name="category_meta">%1$s · %2$s</string>
+    <string name="category_hide">Hide</string>
+    <string name="category_hide_title">Hide “%1$s”?</string>
+    <plurals name="category_hide_message">
+        <item quantity="zero">No transactions use it. You can restore it any time from the Hidden tab.</item>
+        <item quantity="one">%d transaction uses it. It stays in your history, and you can restore the category from the Hidden tab.</item>
+        <item quantity="other">%d transactions use it. They stay in your history, and you can restore the category from the Hidden tab.</item>
+    </plurals>
+    <string name="category_hidden">Category hidden</string>
+    <string name="category_restored">Category restored</string>
+    <string name="error_category_name_required">Enter a name</string>
+    <string name="error_category_name_long">Name is too long (max 40 characters)</string>
+    <string name="error_category_duplicate">A category with this name already exists</string>
+    <string name="error_category_duplicate_hidden">A hidden category has this name — restore it from the Hidden tab</string>
 </resources>

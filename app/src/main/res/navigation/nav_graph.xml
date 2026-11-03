@@ -32,6 +32,10 @@
             app:destination="@id/recurringFragment" />
 
         <action
+            android:id="@+id/action_dashboard_to_categories"
+            app:destination="@id/categoriesFragment" />
+
+        <action
             android:id="@+id/action_dashboard_to_transactions"
             app:destination="@id/transactionsFragment" />
 
@@ -51,6 +55,10 @@
         <action
             android:id="@+id/action_budgets_to_createBudget"
             app:destination="@id/createBudgetFragment" />
+
+        <action
+            android:id="@+id/action_budgets_to_trash"
+            app:destination="@id/trashFragment" />
 
     </fragment>
 
@@ -272,7 +280,35 @@
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.hisab.app.presentation.reports.ReportsFragment"
-        android:label="@string/nav_reports" />
+        android:label="@string/nav_reports">
+
+        <action
+            android:id="@+id/action_reports_to_editTransaction"
+            app:destination="@id/editTransactionFragment" />
+
+        <action
+            android:id="@+id/action_reports_to_budgets"
+            app:destination="@id/budgetsFragment" />
+
+        <action
+            android:id="@+id/action_reports_to_trash"
+            app:destination="@id/trashFragment" />
+
+    </fragment>
+
+
+    <!-- Categories -->
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.hisab.app.presentation.categories.CategoriesFragment"
+        android:label="@string/categories_title" />
+
+
+    <!-- Trash -->
+    <fragment
+        android:id="@+id/trashFragment"
+        android:name="com.hisab.app.presentation.trash.TrashFragment"
+        android:label="@string/nav_trash" />
 
 
     <!-- Add Expense -->

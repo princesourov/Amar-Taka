@@ -13,6 +13,10 @@ interface TransactionDao {
     @Insert
     suspend fun insert(transaction: TransactionEntity)
 
+    /** Insert unless a row with this id exists (even a trashed one). Returns -1 when ignored. Used for recurring runs. */
+    @Insert(onConflict = androidx.room.OnConflictStrategy.IGNORE)
+    suspend fun insertIfAbsent(transaction: TransactionEntity): Long
+
     @Update
     suspend fun update(transaction: TransactionEntity)
 

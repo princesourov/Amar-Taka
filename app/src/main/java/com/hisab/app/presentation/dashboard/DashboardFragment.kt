@@ -184,6 +184,10 @@ class DashboardFragment : Fragment() {
             )
         }
 
+        binding.categoriesLink.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboard_to_categories)
+        }
+
         binding.seeAllTransactions.setOnClickListener {
             findNavController().navigate(
                 R.id.action_dashboard_to_transactions
