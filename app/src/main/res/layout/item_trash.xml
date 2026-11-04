@@ -33,12 +33,20 @@
                     tools:text="Food · Expense" />
 
                 <TextView
+                    android:id="@+id/trashMeta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.75"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    tools:text="Transaction · Pocket" />
+
+                <TextView
                     android:id="@+id/trashSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:alpha="0.75"
                     android:textAppearance="?attr/textAppearanceBodySmall"
-                    tools:text="Pocket · 20 Aug 2026" />
+                    tools:text="Date: 20 Aug 2026 · Deleted: 21 Aug 2026" />
             </LinearLayout>
 
             <TextView

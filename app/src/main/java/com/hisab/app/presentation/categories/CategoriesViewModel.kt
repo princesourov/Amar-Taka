@@ -83,14 +83,14 @@ class CategoriesViewModel(
     /** "Delete" hides the category: pickers stop offering it, but old transactions, reports and budgets keep resolving it. */
     fun hide(c: CategoryEntity) {
         viewModelScope.launch {
-            categoryDao.setActive(c.id, false)
+            categoryDao.setActive(c.id, false, System.currentTimeMillis())
             _events.emit(CategoryEvent.Message(R.string.category_hidden))
         }
     }
 
     fun restore(c: CategoryEntity) {
         viewModelScope.launch {
-            categoryDao.setActive(c.id, true)
+            categoryDao.setActive(c.id, true, null)
             _events.emit(CategoryEvent.Message(R.string.category_restored))
         }
     }

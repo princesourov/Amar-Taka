@@ -50,10 +50,15 @@ class TrashFragment : Fragment() {
         binding.trashList.layoutManager = LinearLayoutManager(requireContext())
         binding.trashList.adapter = adapter
 
+        val tabs = TrashTab.values()
+        val labels = mapOf(
+            TrashTab.TRANSACTIONS to R.string.trash_tab_transactions, TrashTab.BUDGETS to R.string.trash_tab_budgets,
+            TrashTab.GOALS to R.string.trash_tab_goals, TrashTab.CATEGORIES to R.string.trash_tab_categories,
+            TrashTab.ACCOUNTS to R.string.trash_tab_accounts, TrashTab.PEOPLE to R.string.trash_tab_people
+        )
+        tabs.forEach { binding.trashTabs.addTab(binding.trashTabs.newTab().setText(labels.getValue(it))) }
         binding.trashTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                viewModel.selectTab(if (tab.position == 0) TrashTab.TRANSACTIONS else TrashTab.BUDGETS)
-            }
+            override fun onTabSelected(tab: TabLayout.Tab) { viewModel.selectTab(tabs[tab.position]) }
             override fun onTabUnselected(tab: TabLayout.Tab) = Unit
             override fun onTabReselected(tab: TabLayout.Tab) = Unit
         })
@@ -72,13 +77,16 @@ class TrashFragment : Fragment() {
                     viewModel.uiState.collect { s ->
                         adapter.submitList(s.entries)
                         binding.emptyState.visibility = if (s.entries.isEmpty()) View.VISIBLE else View.GONE
-                        binding.emptyState.setText(R.string.trash_empty_state)
+                        binding.emptyState.setText(R.string.trash_empty_tab_state)
                         binding.emptyTrashButton.isEnabled = !s.isEmptyOverall
-                        val want = if (s.tab == TrashTab.TRANSACTIONS) 0 else 1
-                        if (binding.trashTabs.selectedTabPosition != want) binding.trashTabs.getTabAt(want)?.select()
+                        tabs.forEachIndexed { i, t ->
+                            val n = s.counts[t] ?: 0
+                            binding.trashTabs.getTabAt(i)?.text = getString(labels.getValue(t)) + if (n > 0) " ($n)" else ""
+                        }
+                        if (binding.trashTabs.selectedTabPosition != s.tab.ordinal) binding.trashTabs.getTabAt(s.tab.ordinal)?.select()
                     }
                 }
-                launch { viewModel.messages.collect { Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show() } }
+                launch { viewModel.messages.collect { Snackbar.make(binding.root, getString(it.res, *it.args.toTypedArray()), Snackbar.LENGTH_SHORT).show() } }
             }
         }
     }

@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.hisab.app.data.local.entity.BudgetEntity
+import com.hisab.app.data.local.entity.GoalContributionEntity
 import com.hisab.app.data.local.entity.RecurringTransactionEntity
 import com.hisab.app.data.local.entity.ReminderEntity
 import com.hisab.app.data.local.entity.SavingsGoalEntity
@@ -93,16 +94,96 @@ abstract class BudgetDao {
     }
 }
 
-@Dao
-interface SavingsGoalDao {
-    @Insert suspend fun insert(goal: SavingsGoalEntity)
-    @Update suspend fun update(goal: SavingsGoalEntity)
-    @Query("SELECT * FROM savings_goals WHERE userId = :userId AND isActive = 1 ORDER BY createdAtMillis DESC")
-    fun getActiveGoals(userId: String): Flow<List<SavingsGoalEntity>>
+/** Sum of a goal's contribution rows. */
+data class GoalTotal(val goalId: String, val totalMinor: Long)
 
-    // Atomic increment — avoids a read-modify-write race between two contributions.
-    @Query("UPDATE savings_goals SET savedAmountMinor = savedAmountMinor + :amountMinor WHERE id = :id")
-    suspend fun addToSaved(id: String, amountMinor: Long)
+/** Money earmarked for goals from one account; [accountId] null = carried over from before v3. */
+data class AccountAllocation(val accountId: String?, val totalMinor: Long)
+
+/**
+ * Goals + their allocation ledger. A goal is "live" while isActive = 1; isActive = 0 is the Trash
+ * state (the rows are kept so Restore brings everything back, and a trashed goal stops reserving money
+ * because every allocation query below joins on live goals only).
+ */
+@Dao
+abstract class SavingsGoalDao {
+    @Insert abstract suspend fun insert(goal: SavingsGoalEntity)
+    @Update abstract suspend fun update(goal: SavingsGoalEntity)
+    @Insert abstract suspend fun insertContribution(contribution: GoalContributionEntity)
+
+    @Query("SELECT * FROM savings_goals WHERE userId = :userId AND isActive = 1 ORDER BY createdAtMillis DESC")
+    abstract fun getActiveGoals(userId: String): Flow<List<SavingsGoalEntity>>
+
+    @Query("SELECT * FROM savings_goals WHERE userId = :userId AND isActive = 0 ORDER BY deletedAtMillis DESC")
+    abstract fun getDeletedGoals(userId: String): Flow<List<SavingsGoalEntity>>
+
+    @Query("SELECT * FROM savings_goals WHERE userId = :userId AND isActive = 0")
+    abstract suspend fun getDeletedGoalsOnce(userId: String): List<SavingsGoalEntity>
+
+    @Query("SELECT * FROM savings_goals WHERE id = :id")
+    abstract suspend fun getById(id: String): SavingsGoalEntity?
+
+    @Query("SELECT * FROM savings_goals WHERE id = :id")
+    abstract fun observeById(id: String): Flow<SavingsGoalEntity?>
+
+    /** Saved total per live goal (goals with no contributions simply have no row). */
+    @Query("""
+        SELECT c.goalId AS goalId, COALESCE(SUM(c.amountMinor), 0) AS totalMinor
+        FROM goal_contributions c JOIN savings_goals g ON g.id = c.goalId
+        WHERE g.userId = :userId AND g.isActive = 1
+        GROUP BY c.goalId
+    """)
+    abstract fun observeGoalTotals(userId: String): Flow<List<GoalTotal>>
+
+    /** Allocated money per account across live goals. */
+    @Query("""
+        SELECT c.accountId AS accountId, COALESCE(SUM(c.amountMinor), 0) AS totalMinor
+        FROM goal_contributions c JOIN savings_goals g ON g.id = c.goalId
+        WHERE g.userId = :userId AND g.isActive = 1
+        GROUP BY c.accountId
+    """)
+    abstract fun observeAllocationsByAccount(userId: String): Flow<List<AccountAllocation>>
+
+    @Query("SELECT * FROM goal_contributions WHERE goalId = :goalId ORDER BY dateMillis DESC, createdAtMillis DESC")
+    abstract fun observeContributions(goalId: String): Flow<List<GoalContributionEntity>>
+
+    /** Everything one goal has allocated from one account (accountId null = the carried-over bucket). */
+    @Query("SELECT COALESCE(SUM(amountMinor), 0) FROM goal_contributions WHERE goalId = :goalId AND accountId IS :accountId")
+    abstract suspend fun getGoalAllocationOnce(goalId: String, accountId: String?): Long
+
+    @Query("SELECT COALESCE(SUM(amountMinor), 0) FROM goal_contributions WHERE goalId = :goalId")
+    abstract suspend fun getGoalSavedOnce(goalId: String): Long
+
+    /** Allocated from one account across live goals. */
+    @Query("""
+        SELECT COALESCE(SUM(c.amountMinor), 0)
+        FROM goal_contributions c JOIN savings_goals g ON g.id = c.goalId
+        WHERE g.isActive = 1 AND c.accountId = :accountId
+    """)
+    abstract suspend fun getAccountAllocatedOnce(accountId: String): Long
+
+    /** How many goal rows (goals + contributions) point at an account; used to block purging it. */
+    @Query("SELECT (SELECT COUNT(*) FROM goal_contributions WHERE accountId = :accountId) + (SELECT COUNT(*) FROM savings_goals WHERE accountId = :accountId)")
+    abstract suspend fun countReferencingAccount(accountId: String): Int
+
+    @Query("UPDATE savings_goals SET isActive = 0, deletedAtMillis = :nowMillis, updatedAtMillis = :nowMillis WHERE id = :id")
+    abstract suspend fun softDelete(id: String, nowMillis: Long)
+
+    @Query("UPDATE savings_goals SET isActive = 1, deletedAtMillis = NULL, updatedAtMillis = :nowMillis WHERE id = :id")
+    abstract suspend fun restore(id: String, nowMillis: Long)
+
+    @Query("DELETE FROM goal_contributions WHERE goalId = :goalId AND goalId IN (SELECT id FROM savings_goals WHERE id = :goalId AND isActive = 0)")
+    protected abstract suspend fun deleteContributionsOfTrashedGoal(goalId: String)
+
+    @Query("DELETE FROM savings_goals WHERE id = :id AND isActive = 0")
+    protected abstract suspend fun deleteTrashedGoal(id: String)
+
+    /** Permanently removes a goal that is already in Trash, together with its contribution rows. */
+    @Transaction
+    open suspend fun purge(goalId: String) {
+        deleteContributionsOfTrashedGoal(goalId)
+        deleteTrashedGoal(goalId)
+    }
 }
 
 @Dao
@@ -121,6 +202,12 @@ interface RecurringTransactionDao {
     suspend fun deleteById(id: String)
     @Query("SELECT * FROM recurring_transactions WHERE id = :id")
     suspend fun getById(id: String): RecurringTransactionEntity?
+    @Query("SELECT COUNT(*) FROM recurring_transactions WHERE accountId = :accountId AND isActive = 1")
+    suspend fun countActiveForAccount(accountId: String): Int
+    @Query("SELECT COUNT(*) FROM recurring_transactions WHERE accountId = :accountId")
+    suspend fun countForAccount(accountId: String): Int
+    @Query("SELECT COUNT(*) FROM recurring_transactions WHERE categoryId = :categoryId")
+    suspend fun countForCategory(categoryId: String): Int
     @Query("SELECT * FROM recurring_transactions WHERE isActive = 1 AND nextRunEpochDay <= :todayEpochDay")
     suspend fun getDueForExecution(todayEpochDay: Long): List<RecurringTransactionEntity>
 }

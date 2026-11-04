@@ -38,3 +38,10 @@ fun formatMinorAsCurrency(minorUnits: Long, symbol: String = CurrencyConfig.symb
     val grouped = "%,d".format(major)
     return (if (negative) "-" else "") + symbol + grouped + "." + "%02d".format(minor)
 }
+
+/** Minor units as editable text for an input field: "500" or "12.50" (no symbol, no grouping, no float math). */
+fun formatAmountForInput(amountMinor: Long): String {
+    val abs = kotlin.math.abs(amountMinor)
+    val sign = if (amountMinor < 0) "-" else ""
+    return if (abs % 100 == 0L) sign + (abs / 100) else sign + (abs / 100) + "." + "%02d".format(abs % 100)
+}

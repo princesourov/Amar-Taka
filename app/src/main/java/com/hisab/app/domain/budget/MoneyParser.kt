@@ -33,6 +33,24 @@ object MoneyParser {
         return Result.Ok(minor.longValueExact())
     }
 
+    /** Convenience for forms: the exact minor units of a valid positive amount, else null. */
+    fun parsePositiveMinor(text: String?): Long? = (parsePositive(text) as? Result.Ok)?.minorUnits
+
+    /**
+     * Opening-balance style input: blank = 0, a leading minus is allowed (a starting debt), at most two
+     * decimals. Exact (BigDecimal), null when invalid.
+     */
+    fun parseSignedOrZero(text: String?): Long? {
+        val cleaned = text?.trim()?.replace(",", "")?.replace(" ", "").orEmpty()
+        if (cleaned.isEmpty()) return 0L
+        if (!Regex("""^-?\d*\.?\d*$""").matches(cleaned) || cleaned == "-" || cleaned == "." || cleaned == "-.") return null
+        val value = try { BigDecimal(cleaned) } catch (e: NumberFormatException) { return null }
+        if (value.stripTrailingZeros().scale() > 2) return null
+        val minor = value.movePointRight(2)
+        if (minor.abs() > BigDecimal.valueOf(MAX_MINOR)) return null
+        return minor.longValueExact()
+    }
+
     /** "1234.5" for 123450 — plain decimal used to pre-fill edit fields and CSV (no grouping, no symbol). */
     fun toPlainDecimal(minorUnits: Long): String {
         val negative = minorUnits < 0

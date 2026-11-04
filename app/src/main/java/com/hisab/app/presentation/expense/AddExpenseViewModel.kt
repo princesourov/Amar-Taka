@@ -1,5 +1,6 @@
 package com.hisab.app.presentation.expense
 
+import com.hisab.app.domain.budget.MoneyParser
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -70,6 +71,7 @@ class AddExpenseViewModel(
                     is TransactionRepository.RecordResult.PossibleDuplicate ->
                         _events.emit(AddExpenseEvent.DuplicateWarning(amountMajor, categoryId, accountId, note))
                     is TransactionRepository.RecordResult.ExceedsOutstanding,
+                    is TransactionRepository.RecordResult.BelowRepaid,
                     is TransactionRepository.RecordResult.InvalidInput ->
                         Unit // not reachable for a plain expense
                 }
@@ -80,5 +82,5 @@ class AddExpenseViewModel(
     }
 
     private fun parseAmountToMinor(input: String): Long? =
-        input.trim().toDoubleOrNull()?.let { Math.round(it * 100) }
+        MoneyParser.parsePositiveMinor(input)
 }

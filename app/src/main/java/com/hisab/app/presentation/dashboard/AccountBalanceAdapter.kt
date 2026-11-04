@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.hisab.app.R
 import com.hisab.app.databinding.ItemAccountBalanceBinding
 import com.hisab.app.utils.formatMinorAsCurrency
 
@@ -21,6 +22,9 @@ class AccountBalanceAdapter : ListAdapter<AccountBalanceItem, AccountBalanceAdap
         fun bind(item: AccountBalanceItem) {
             binding.accountName.text = item.name
             binding.accountBalance.text = formatMinorAsCurrency(item.balanceMinor)
+            val ctx = binding.root.context
+            binding.accountFree.visibility = if (item.allocatedMinor > 0) android.view.View.VISIBLE else android.view.View.GONE
+            binding.accountFree.text = ctx.getString(R.string.dash_account_free, formatMinorAsCurrency(item.availableMinor))
         }
     }
 

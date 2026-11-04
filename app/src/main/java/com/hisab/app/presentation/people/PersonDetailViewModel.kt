@@ -1,5 +1,6 @@
 package com.hisab.app.presentation.people
 
+import com.hisab.app.domain.budget.MoneyParser
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hisab.app.data.local.dao.CategoryDao
@@ -8,6 +9,8 @@ import com.hisab.app.data.local.entity.PersonEntity
 import com.hisab.app.data.repository.AccountRepository
 import com.hisab.app.data.repository.PersonRepository
 import com.hisab.app.data.repository.TransactionRepository
+import com.hisab.app.domain.debt.DebtLedger
+import com.hisab.app.domain.debt.PersonDebt
 import com.hisab.app.domain.model.TransactionDisplayItem
 import com.hisab.app.domain.usecase.BorrowMoneyUseCase
 import com.hisab.app.domain.usecase.DeleteTransactionUseCase
@@ -52,9 +55,10 @@ class PersonDetailViewModel(
         personRepository.observePerson(personId)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
-    val netBalanceMinor: StateFlow<Long> =
-        personRepository.getNetBalance(userId, personId)
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0L)
+    /** Open debts per direction + every lent/borrowed record with its repayments and status. */
+    val debt: StateFlow<PersonDebt> =
+        personRepository.observePersonDebt(userId, personId)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DebtLedger.build(emptyList()))
 
     val transactions: StateFlow<List<TransactionDisplayItem>> = combine(
         personRepository.getTransactionsForPerson(userId, personId),
@@ -90,7 +94,7 @@ class PersonDetailViewModel(
         viewModelScope.launch {
             _isSaving.value = true
             try {
-                val amountMinor = amountMajor.trim().toDoubleOrNull()?.let { Math.round(it * 100) }
+                val amountMinor = MoneyParser.parsePositiveMinor(amountMajor)
                 if (amountMinor == null || amountMinor <= 0 || accountId == null) {
                     _events.emit(PersonActionEvent.ValidationError); return@launch
                 }
@@ -112,8 +116,9 @@ class PersonDetailViewModel(
                         _events.emit(PersonActionEvent.ExceedsOutstanding(result.outstandingMinor))
                     is TransactionRepository.RecordResult.PossibleDuplicate ->
                         _events.emit(PersonActionEvent.DuplicateWarning(action, amountMajor, accountId, note))
-                    is TransactionRepository.RecordResult.InvalidInput ->
-                        Unit // not reachable for a person-linked transaction
+                    is TransactionRepository.RecordResult.InvalidInput,
+                    is TransactionRepository.RecordResult.BelowRepaid ->
+                        _events.emit(PersonActionEvent.ValidationError)
                 }
             } finally {
                 _isSaving.value = false

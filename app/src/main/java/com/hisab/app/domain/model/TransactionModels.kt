@@ -4,7 +4,11 @@ import com.hisab.app.data.local.entity.AccountEntity
 import com.hisab.app.data.local.entity.PersonEntity
 import com.hisab.app.data.local.entity.TransactionEntity
 
-data class PersonWithBalance(val person: PersonEntity, val netBalanceMinor: Long) {
+/** [receivableMinor]/[payableMinor] are the person's open debts per direction, already clamped at zero. */
+data class PersonWithBalance(val person: PersonEntity, val receivableMinor: Long, val payableMinor: Long) {
+    /** Positive = they owe the user overall; negative = the user owes them overall. */
+    val netBalanceMinor: Long get() = receivableMinor - payableMinor
+
     val status: PersonStatus
         get() = when {
             netBalanceMinor > 0 -> PersonStatus.YOU_WILL_RECEIVE

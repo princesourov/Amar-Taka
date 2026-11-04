@@ -41,20 +41,8 @@
         android:id="@+id/trashTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_sm">
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabTransactions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nav_transactions" />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabBudgets"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/budgets_title" />
-    </com.google.android.material.tabs.TabLayout>
+        android:layout_marginTop="@dimen/spacing_sm"
+        app:tabMode="scrollable" />
 
     <FrameLayout
         android:layout_width="match_parent"

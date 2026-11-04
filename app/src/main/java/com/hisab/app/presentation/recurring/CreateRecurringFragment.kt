@@ -61,11 +61,37 @@ class CreateRecurringFragment : BottomSheetDialogFragment() {
         binding.frequencyDropdown.setText(frequencyLabels[2], false)
         binding.frequencyDropdown.setOnItemClickListener { _, _, position, _ -> selectedFrequency = frequencies[position] }
 
+        val editingId = arguments?.getString("recurringId")
+        if (editingId != null) {
+            binding.sheetTitle.setText(R.string.recurring_edit_title)
+            if (savedInstanceState == null) viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.load(editingId)?.let { r ->
+                    selectedType = runCatching { TransactionType.valueOf(r.type) }.getOrDefault(TransactionType.EXPENSE)
+                    selectedFrequency = runCatching { RecurrenceFrequency.valueOf(r.frequency) }.getOrDefault(RecurrenceFrequency.MONTHLY)
+                    selectedCategoryId = r.categoryId
+                    selectedAccountId = r.accountId
+                    binding.typeToggle.check(if (selectedType == TransactionType.INCOME) binding.typeIncome.id else binding.typeExpense.id)
+                    binding.amountInput.setText(com.hisab.app.utils.formatAmountForInput(r.amountMinor))
+                    binding.noteInput.setText(r.note)
+                    binding.frequencyDropdown.setText(frequencyLabels[frequencies.indexOf(selectedFrequency).coerceAtLeast(0)], false)
+                    viewModel.categories.value.firstOrNull { it.id == r.categoryId }?.let { binding.categoryDropdown.setText(it.name, false) }
+                    viewModel.accounts.value.firstOrNull { it.id == r.accountId }?.let { binding.accountDropdown.setText(it.name, false) }
+                }
+            }
+        }
+
         binding.saveButton.setOnClickListener {
-            viewModel.create(
-                selectedType, binding.amountInput.text.toString(), selectedCategoryId,
-                selectedAccountId, selectedFrequency, binding.noteInput.text.toString()
-            )
+            if (editingId == null) {
+                viewModel.create(
+                    selectedType, binding.amountInput.text.toString(), selectedCategoryId,
+                    selectedAccountId, selectedFrequency, binding.noteInput.text.toString()
+                )
+            } else {
+                viewModel.update(
+                    editingId, selectedType, binding.amountInput.text.toString(), selectedCategoryId,
+                    selectedAccountId, selectedFrequency, binding.noteInput.text.toString()
+                )
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {

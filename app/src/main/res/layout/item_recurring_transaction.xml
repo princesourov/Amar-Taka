@@ -68,6 +68,15 @@
         </LinearLayout>
     </LinearLayout>
 
+        <TextView
+            android:id="@+id/recurringAttention"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/spacing_md"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="@color/color_warning"
+            android:visibility="gone" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,6 +84,14 @@
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/spacing_sm"
             android:paddingBottom="@dimen/spacing_sm">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/recurringHistory"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/recurring_action_history" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/recurringToggle"

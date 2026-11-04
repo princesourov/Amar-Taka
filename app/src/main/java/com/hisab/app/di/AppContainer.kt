@@ -4,7 +4,14 @@ import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.appcompat.app.AppCompatDelegate
+import com.hisab.app.data.backup.BackupPreferences
 import com.hisab.app.data.local.database.DefaultDataSeeder
+import com.hisab.app.data.local.database.RoomTransactionRunner
+import com.hisab.app.data.repository.BackupPreferenceStore
+import com.hisab.app.data.repository.BackupRepository
+import com.hisab.app.utils.CurrencyConfig
+import com.hisab.app.utils.UserPreferences
 import com.hisab.app.data.local.database.HisabDatabase
 import com.hisab.app.data.remote.AuthRepository
 import com.hisab.app.data.repository.AccountRepository
@@ -48,14 +55,50 @@ class AppContainer(context: Context) {
 
     val userId: String get() = localUserProvider.userId
 
-    val accountRepository by lazy { AccountRepository(database.accountDao(), database.transactionDao()) }
+    private val transactionRunner by lazy { RoomTransactionRunner(database) }
+
+    val accountRepository by lazy {
+        AccountRepository(database.accountDao(), database.transactionDao(), database.savingsGoalDao(), database.recurringTransactionDao())
+    }
     val transactionRepository by lazy { TransactionRepository(database.transactionDao()) }
     val personRepository by lazy { PersonRepository(database.personDao(), database.transactionDao()) }
     val categoryDao by lazy { database.categoryDao() }
     val budgetRepository by lazy { BudgetRepository(database.budgetDao(), database.transactionDao()) }
-    val trashRepository by lazy { TrashRepository(database.trashDao()) }
-    val savingsGoalRepository by lazy { SavingsGoalRepository(database.savingsGoalDao()) }
-    val recurringTransactionRepository by lazy { RecurringTransactionRepository(database.recurringTransactionDao()) }
+    val trashRepository by lazy {
+        TrashRepository(
+            database.trashDao(), database.transactionDao(), database.budgetDao(), database.savingsGoalDao(),
+            database.accountDao(), database.categoryDao(), database.personDao(), database.recurringTransactionDao(),
+            transactionRunner
+        )
+    }
+    val savingsGoalRepository by lazy {
+        SavingsGoalRepository(
+            database.savingsGoalDao(), database.transactionDao(), database.accountDao(), accountRepository, transactionRunner
+        )
+    }
+    val recurringTransactionRepository by lazy {
+        RecurringTransactionRepository(database.recurringTransactionDao(), database.transactionDao())
+    }
+
+    private val userPreferences by lazy { UserPreferences(appContext) }
+    val backupRepository by lazy {
+        BackupRepository(
+            database.backupDao(),
+            object : BackupPreferenceStore {
+                override fun read() = BackupPreferences(
+                    userPreferences.currencySymbol, userPreferences.themeMode, userPreferences.notificationsEnabled
+                )
+                override fun apply(preferences: BackupPreferences) {
+                    userPreferences.currencySymbol = preferences.currencySymbol
+                    userPreferences.themeMode = preferences.themeMode
+                    userPreferences.notificationsEnabled = preferences.notificationsEnabled
+                    CurrencyConfig.symbol = preferences.currencySymbol
+                    AppCompatDelegate.setDefaultNightMode(preferences.themeMode)
+                }
+            },
+            { userId }
+        )
+    }
 
     val recordExpenseUseCase by lazy { RecordExpenseUseCase(transactionRepository) }
     val recordIncomeUseCase by lazy { RecordIncomeUseCase(transactionRepository) }
@@ -68,7 +111,7 @@ class AppContainer(context: Context) {
     val deleteTransactionUseCase by lazy { DeleteTransactionUseCase(transactionRepository) }
     val executeRecurringTransactionsUseCase by lazy {
         ExecuteRecurringTransactionsUseCase(
-            database, database.recurringTransactionDao(), database.transactionDao(), database.accountDao()
+            transactionRunner, database.recurringTransactionDao(), database.transactionDao(), database.accountDao()
         )
     }
 
@@ -77,6 +120,9 @@ class AppContainer(context: Context) {
     private val seeder by lazy { DefaultDataSeeder(database) }
 
     init {
+        // Re-apply saved display preferences (also what a restored backup carries).
+        CurrencyConfig.symbol = userPreferences.currencySymbol
+        AppCompatDelegate.setDefaultNightMode(userPreferences.themeMode)
         applicationScope.launch {
             seeder.seedIfNeeded(userId)
             seeder.seedMissingDefaultCategories(userId) // additive + idempotent, safe for existing installs too

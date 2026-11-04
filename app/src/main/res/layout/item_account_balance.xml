@@ -32,5 +32,14 @@
             android:layout_marginTop="4dp"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             tools:text="৳8,000.00" />
+
+        <TextView
+            android:id="@+id/accountFree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.7"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:visibility="gone"
+            tools:text="৳5,000.00 free" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

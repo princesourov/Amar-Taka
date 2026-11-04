@@ -33,7 +33,9 @@ data class AccountEntity(
     val notes: String? = null,
     val isActive: Boolean = true,
     val createdAtMillis: Long,
-    val syncStatus: String
+    val syncStatus: String,
+    // Added in database v3: when the account was moved to Trash (isActive = false). null = not recorded.
+    val deletedAtMillis: Long? = null
 )
 
 @Entity(tableName = "categories")
@@ -48,7 +50,9 @@ data class CategoryEntity(
     val isActive: Boolean = true,
     // Added in database v2: which pickers show this category. CategoryKind enum name
     // (EXPENSE / INCOME / BOTH). Pre-existing categories were migrated to BOTH.
-    val kind: String = "BOTH"
+    val kind: String = "BOTH",
+    // Added in database v3: when the category was moved to Trash (isActive = false). null = not recorded.
+    val deletedAtMillis: Long? = null
 )
 
 /**
@@ -68,5 +72,7 @@ data class PersonEntity(
     val notes: String? = null,
     val isActive: Boolean = true,
     val createdAtMillis: Long,
-    val syncStatus: String
+    val syncStatus: String,
+    // Added in database v3: when the person was moved to Trash (isActive = false). null = not recorded.
+    val deletedAtMillis: Long? = null
 )

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_continue">Continue</string>
+    <string name="dash_account_free">%1$s free</string>
+    <string name="goal_default_account_hint">Usually funded from (optional)</string>
+    <string name="goal_default_account_none">No default account</string>
+    <string name="goal_edit_title">Edit goal</string>
+    <string name="goal_delete_title">Delete this goal?</string>
+    <string name="goal_delete_message">“%1$s” moves to Trash and the money set aside for it becomes free again. You can restore it from Trash.</string>
+    <string name="goal_of_target_line">of %1$s · %2$s to go</string>
+    <string name="goal_account_hint">Account</string>
+    <string name="goal_note_hint">Note (optional)</string>
+    <string name="goal_clear_date">Clear</string>
+    <string name="goal_withdraw_action">Withdraw</string>
+</resources>

@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.hisab.app.data.local.dao.AccountDao
+import com.hisab.app.data.local.dao.BackupDao
 import com.hisab.app.data.local.dao.BudgetDao
 import com.hisab.app.data.local.dao.CategoryDao
 import com.hisab.app.data.local.dao.PersonDao
@@ -17,6 +18,7 @@ import com.hisab.app.data.local.entity.AccountEntity
 import com.hisab.app.data.local.entity.AttachmentEntity
 import com.hisab.app.data.local.entity.BudgetEntity
 import com.hisab.app.data.local.entity.CategoryEntity
+import com.hisab.app.data.local.entity.GoalContributionEntity
 import com.hisab.app.data.local.entity.PersonEntity
 import com.hisab.app.data.local.entity.RecurringTransactionEntity
 import com.hisab.app.data.local.entity.ReminderEntity
@@ -28,9 +30,10 @@ import com.hisab.app.data.local.entity.UserProfileEntity
     entities = [
         UserProfileEntity::class, AccountEntity::class, CategoryEntity::class, PersonEntity::class,
         TransactionEntity::class, BudgetEntity::class, SavingsGoalEntity::class,
-        RecurringTransactionEntity::class, ReminderEntity::class, AttachmentEntity::class
+        RecurringTransactionEntity::class, ReminderEntity::class, AttachmentEntity::class,
+        GoalContributionEntity::class
     ],
-    version = 2,
+    version = 3,
     // Schemas are exported to app/schemas (see the ksp arg in build.gradle.kts). Commit them: they
     // are what future migrations are tested against.
     // Room 2.8.x schema export currently crashes inside its bundled kotlinx-serialization
@@ -45,6 +48,7 @@ abstract class HisabDatabase : RoomDatabase() {
     abstract fun categoryDao(): CategoryDao
     abstract fun budgetDao(): BudgetDao
     abstract fun savingsGoalDao(): SavingsGoalDao
+    abstract fun backupDao(): BackupDao
     abstract fun recurringTransactionDao(): RecurringTransactionDao
     abstract fun reminderDao(): ReminderDao
     abstract fun trashDao(): TrashDao
@@ -60,7 +64,7 @@ abstract class HisabDatabase : RoomDatabase() {
                     "hisab.db"
                 )
                     // NEVER fallbackToDestructiveMigration(): users' financial data must survive upgrades.
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build().also { INSTANCE = it }
             }
     }

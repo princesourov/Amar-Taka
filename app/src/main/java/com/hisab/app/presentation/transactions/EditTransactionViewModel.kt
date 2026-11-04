@@ -1,5 +1,6 @@
 package com.hisab.app.presentation.transactions
 
+import com.hisab.app.domain.budget.MoneyParser
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hisab.app.data.local.dao.CategoryDao
@@ -22,6 +23,8 @@ sealed interface EditTransactionEvent {
     data object Saved : EditTransactionEvent
     data object ValidationError : EditTransactionEvent
     data class ExceedsOutstanding(val outstandingMinor: Long) : EditTransactionEvent
+    /** The loan is being edited below what has already been repaid against it. */
+    data class BelowRepaid(val minimumMinor: Long) : EditTransactionEvent
     data object InvalidAccounts : EditTransactionEvent
 }
 
@@ -77,7 +80,7 @@ class EditTransactionViewModel(
         viewModelScope.launch {
             _isSaving.value = true
             try {
-                val amountMinor = amountMajor.trim().toDoubleOrNull()?.let { Math.round(it * 100) }
+                val amountMinor = MoneyParser.parsePositiveMinor(amountMajor)
                 if (amountMinor == null || amountMinor <= 0) {
                     _events.emit(EditTransactionEvent.ValidationError); return@launch
                 }
@@ -100,6 +103,8 @@ class EditTransactionViewModel(
                     }
                     is TransactionRepository.RecordResult.ExceedsOutstanding ->
                         _events.emit(EditTransactionEvent.ExceedsOutstanding(result.outstandingMinor))
+                    is TransactionRepository.RecordResult.BelowRepaid ->
+                        _events.emit(EditTransactionEvent.BelowRepaid(result.minimumMinor))
                     is TransactionRepository.RecordResult.InvalidInput ->
                         _events.emit(EditTransactionEvent.InvalidAccounts)
                     is TransactionRepository.RecordResult.PossibleDuplicate ->

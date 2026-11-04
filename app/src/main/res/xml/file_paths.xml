@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Only the app's private cache sub-folder used for one-off "Share backup" files is exposed, and
+     only through a non-exported FileProvider that grants per-intent read access. -->
+<paths>
+    <cache-path name="shared_backups" path="shared_backups/" />
+</paths>

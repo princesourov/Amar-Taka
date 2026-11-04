@@ -43,6 +43,34 @@
             android:id="@+id/action_dashboard_to_editTransaction"
             app:destination="@id/editTransactionFragment" />
 
+        <action
+            android:id="@+id/action_dashboard_to_accounts"
+            app:destination="@id/accountsFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_people"
+            app:destination="@id/peopleFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_reports"
+            app:destination="@id/reportsFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_transfer"
+            app:destination="@id/transferMoneyFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_createGoal"
+            app:destination="@id/createGoalFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_trash"
+            app:destination="@id/trashFragment" />
+
+        <action
+            android:id="@+id/action_dashboard_to_backup"
+            app:destination="@id/backupFragment" />
+
     </fragment>
 
 
@@ -90,6 +118,10 @@
             android:id="@+id/action_savingsGoals_to_contributeGoal"
             app:destination="@id/contributeToGoalFragment" />
 
+        <action
+            android:id="@+id/action_savingsGoals_to_goalDetail"
+            app:destination="@id/goalDetailFragment" />
+
     </fragment>
 
 
@@ -97,7 +129,43 @@
     <dialog
         android:id="@+id/createGoalFragment"
         android:name="com.hisab.app.presentation.savings.CreateGoalFragment"
-        android:label="@string/create_goal_title" />
+        android:label="@string/create_goal_title">
+
+        <argument
+            android:name="goalId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
+    </dialog>
+
+
+    <!-- Goal Detail -->
+    <fragment
+        android:id="@+id/goalDetailFragment"
+        android:name="com.hisab.app.presentation.savings.GoalDetailFragment"
+        android:label="@string/savings_goals_title">
+
+        <argument
+            android:name="goalId"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_goalDetail_to_createGoal"
+            app:destination="@id/createGoalFragment" />
+
+        <action
+            android:id="@+id/action_goalDetail_to_contributeGoal"
+            app:destination="@id/contributeToGoalFragment" />
+
+    </fragment>
+
+
+    <!-- Backup & Restore -->
+    <fragment
+        android:id="@+id/backupFragment"
+        android:name="com.hisab.app.presentation.backup.BackupFragment"
+        android:label="@string/backup_title" />
 
 
     <!-- Contribute To Goal -->
@@ -113,6 +181,11 @@
         <argument
             android:name="goalName"
             app:argType="string" />
+
+        <argument
+            android:name="mode"
+            app:argType="string"
+            android:defaultValue="add" />
 
     </dialog>
 
@@ -134,7 +207,15 @@
     <dialog
         android:id="@+id/createRecurringFragment"
         android:name="com.hisab.app.presentation.recurring.CreateRecurringFragment"
-        android:label="@string/create_recurring_title" />
+        android:label="@string/create_recurring_title">
+
+        <argument
+            android:name="recurringId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
+    </dialog>
 
 
     <!-- Accounts -->

@@ -1,43 +1,58 @@
-# Hisab — repair & improvement report
+# Hisab 0.2.0 — what changed
 
-## Build repair applied in this delivery (2026-11-03)
-- Fixed the Room KSP `AbstractMethodError` path by disabling Room schema export in `@Database` and removing the `room.schemaLocation` KSP argument. The crash occurs in Room's schema serializer under the Kotlin compiler classloader; changing app dependencies alone does not repair that classloader ABI mismatch. The committed v2 schema JSON is retained as an Android-test asset. Re-enable schema export only after a Room release fixes the serializer ABI issue.
-- Updated Room runtime/ktx/compiler/testing together from 2.8.1 to 2.8.5.
-- Aligned the toolchain: Kotlin 2.2.20 + KSP 2.2.20-2.0.4, and Gradle 8.11.1 for AGP 8.10.0. AGP 8.10 requires Gradle 8.11.1.
-- Made the Linux Gradle wrapper executable and made a LongArray increment explicit (`1L`) for compiler portability.
-- Preserved database version 2, the additive `MIGRATION_1_2`, all application source, and the existing v2 schema JSON. No destructive migration fallback was added.
+Priority order followed: financial correctness → data safety → features → polish.
+**Important:** the Android/Gradle build could not be run in the authoring environment (no Android SDK, Gradle and Maven hosts blocked). See `TEST_REPORT.md` for exactly what was and was not executed. Open the project in Android Studio and run `./gradlew assembleDebug testDebugUnitTest lint` before trusting it on a device.
 
-## Verification in this delivery
-- Static review completed for Gradle configuration, database/migration setup, manifest, and source tree.
-- Full Android Gradle build was **not verifiable in this environment**: there is no Android SDK and Gradle distribution download is blocked by unavailable network/DNS. Do not treat this ZIP as a device-tested APK.
-- The existing migration test still requires the original v1 schema JSON (`app/schemas/.../1.json`), which was not included in the uploaded project. I did not fabricate it.
+## Data safety (nothing destroyed, ever)
+- Database **v2 → v3** by a proper additive Room migration (`MIGRATION_2_3`): only `ADD COLUMN` and `CREATE TABLE`/`INDEX`. No `fallbackToDestructiveMigration`, no table drops, no data reset. Details in `MIGRATION.md`.
+- Every multi-step write (repayments, goal allocation, trash purge, account/person deletion, recurring catch-up, restore) runs inside one Room transaction (`TransactionRunner`), so it either fully happens or not at all.
+- Money is parsed with exact integer arithmetic (`MoneyParser`) everywhere; the old `Double` rounding path was removed from all amount-entry screens.
 
-Legend: **Tested** = executed here (offline harness). **Implemented, unverified** = code written and statically checked, but never compiled/run on Android. **Not done** = absent.
+## Debts (receivable / payable / net)
+- New pure `DebtLedger`: each person's lending and borrowing are tracked as separate records; repayments are allocated oldest-first (FIFO). Statuses: Active, Partially paid, Settled.
+- Dashboard shows **Receivable**, **Payable** and **Net position = receivable − payable**. No double counting, settled debts are zero, history is kept.
+- Repayments above what is owed are rejected; editing a loan or repayment is validated against the position excluding the edited row.
+- Person screen: net position, both directions, per-record cards with progress, filters (All / Open / Settled) and the list of payments against each record.
 
-## Build/test environment (exact limits)
-- **No Android/Gradle build was possible.** The sandbox proxy returns 403 for dl.google.com, services.gradle.org, repo.maven.apache.org and maven.google.com (rechecked at the end), and there is no Android SDK. Nothing that imports Android, Room, Material or Navigation has been compiled.
-- **Executed:** 119 pure-Kotlin unit tests (`app/src/test/.../domain`, compiled with standalone kotlinc + a JUnit shim): **119 passed, 0 failed**.
-- **Executed:** SQL queries and the v1→v2 migration statements in sqlite3 (existing rows preserved); xmllint on every XML file (OK); resource/ViewBinding cross-checker (no missing strings/ids/binding fields; the 11 `simple_list_item_1` hits are Android framework layouts, a checker false positive); bracket-balance check on all Kotlin files.
-- **Written but NOT executed:** `app/src/androidTest/.../MigrationTest.kt` (needs a device/emulator and the exported schema JSONs).
+## Goals (allocation model)
+- A goal **earmarks money inside an account**; no transaction is created, so nothing is counted twice. Every add/withdraw is an append-only `goal_contributions` row, so it is traceable.
+- Account "free to spend" = balance − money set aside for goals; adding more than is free (or withdrawing more than the goal holds in that account) is rejected inside the same transaction.
+- Create, edit (name, target, date, icon, note, default account), delete (to Trash, money becomes free; undo), detail screen with progress, remaining, per-account allocation and history. Old saved amounts are carried over as an "Earlier balance" contribution.
 
-## Requirement matrix
-| Area | Status |
-|---|---|
-| Reports: period filters, totals, savings rate, expense ratio, previous-period comparison, charts (custom Canvas), category drill-down, filters, CSV/text share | Calculation, period and CSV logic **tested** (domain tests). Screens/charts **implemented, unverified** on device |
-| Reports accuracy rules (transfers/loans excluded, refunds reduce spending, one source of truth) | **Tested** (ReportCalculator tests; SQL mirrored in sqlite3) |
-| Budgets: add / edit / delete→Trash / undo / restore / pause-enable, cards, month nav, filters, duplicate guard | Validation, evaluation and money parsing **tested**; DB conflict-safe writes checked in sqlite3 only; UI **implemented, unverified** |
-| Trash screen (transactions + budgets, restore, purge, empty) | **Implemented, unverified** |
-| Categories: expanded idempotent defaults, kind (expense/income/both), seeding that never overwrites | Catalog/seeding logic **tested**; seeder/DAO **unverified** |
-| Category management UI (add, rename, change kind, hide/restore, duplicate + length checks, usage warning; history never touched) | Rules **tested**; screen **implemented, unverified** |
-| Edit-transaction category picker filtered by type (current category always kept) | Rule **tested**; wiring **unverified** |
-| Recurring: catch-up of missed runs, no month-end drift, idempotent deterministic IDs, atomic write, mutex, uncategorised expenses no longer dropped, pause/resume/delete, runs immediately after creating | Schedule/plan logic **tested**; Room/use-case/UI **implemented, unverified** |
-| DB migration v1→v2 (additive, no destructive fallback) | SQL **verified in sqlite3**; Room-level `MigrationTest` **written, not run** |
-| Premium UI across ALL screens | **Partial.** New/rebuilt screens (Reports, Budgets, Trash, Categories, recurring item) use Material 3 with light/dark colours and text-based status. Existing screens (Accounts, People, Savings goals, Add/Edit forms, Transfer, Calendar) were **not redesigned** |
-| General bug audit of the rest of the app (accounts deletion rules, transfer edit/delete, people/loan repayments, savings goals, dashboard) | **Not re-audited in this pass.** Only APIs touched by my changes were checked for consistency |
-| PDF export | **Not done** (CSV + text share only) |
-| Budget limit notifications, app lock changes | **Not done** |
+## Trash
+- Six tabs: Transactions, Budgets, Goals, Categories, Accounts, People. Each row shows name, type, amount (where relevant), original date and deleted date.
+- Restore is referentially safe (a transaction cannot be restored into an archived account/person — you are told which to restore first; budgets re-check duplicates). Delete-forever and Empty Trash have confirmations and keep anything still referenced (and say so).
+- Accounts, categories and people are now soft-deleted (with a deleted timestamp) instead of silently archived.
 
-## Manual steps
-1. Open in Android Studio and run `./gradlew assembleDebug testDebugUnitTest`; fix any compile errors (expect some — see above).
-2. For `MigrationTest`: build the ORIGINAL v1 project once to export `app/schemas/com.hisab.app.data.local.database.HisabDatabase/1.json`, copy it into this project's `schemas` folder next to the generated `2.json`, then run `./gradlew connectedDebugAndroidTest`.
-3. Smoke-test on a device: create/edit/pause/delete/restore a budget; create a recurring entry with a past start date (expect catch-up transactions, no duplicates after restart); hide/restore a category; check Reports totals against the Transactions list.
+## Backup & restore
+- Versioned JSON file (`.hisab`), deterministic, with SHA-256 checksum; optional AES-256-GCM encryption (PBKDF2-HMAC-SHA256, 210,000 iterations).
+- Save through the system file picker (SAF) or share through a non-exported `FileProvider` (private cache, one file at a time).
+- Restore: file is validated (format, version — newer-than-app files are refused —, duplicates, bad values, orphans), a preview with counts of "backup vs. current" is shown, then **explicit confirmation**. A safety copy of current data is written first; the replace happens in one transaction and rolls back on any failure. Nothing is merged or silently overwritten. Backups from another phone are re-owned to the current install.
+
+## Dashboard (rebuilt)
+- Hero balance with "Free to spend" and "In goals", period selector (default This month), summary (income, expense, net cash flow, savings rate), debt card, accounts strip (shows free amount when goals hold some), budget overview, goals overview, recent transactions, quick actions (Income, Expense, Transfer, Lend/borrow, New goal, Reports, Budgets), overflow menu (Categories, Recurring, Trash, Backup & restore). Every card navigates; empty states for accounts, budgets, goals and transactions.
+
+## Recurring
+- Edit (amount, category, account, frequency, note), pause/resume, delete, **history** of generated transactions, and a "needs attention" line when a schedule is skipped (archived/missing account, invalid amount) instead of silently doing nothing. Skipped schedules are not advanced, so nothing is lost.
+- Catch-up is atomic and idempotent (deterministic transaction ids + `insertIfAbsent` + mutex); covered by automated tests with crash-rollback and concurrency cases.
+
+## Accounts / people deletion
+- Deleting an account is blocked while active recurring schedules or goal allocations depend on it, and otherwise moves it to Trash with history intact. People with an open debt cannot be deleted.
+
+## Files added/changed (high level)
+`data/backup/*`, `data/local/dao/BackupDao.kt`, `data/local/database/{Migrations,TransactionRunner,HisabDatabase}.kt`, `domain/{debt,goal,trash,dashboard}/*`, repositories, view models, `presentation/{dashboard,savings,trash,backup,people,recurring}/*`, layouts, `nav_graph.xml`, manifest (FileProvider), `res/xml/file_paths.xml`, `strings_v3*.xml`, `tools/*`.
+
+## Completed vs. not completed
+**Completed (code written; non-UI logic executed in tests, UI unverified on device):** debt model, goals, trash, backup/restore, dashboard, person debt records, recurring edit/history, safe deletion, DB migration, money parsing, tests.
+**Not done / limited:**
+- Recurring "custom interval" (every N days/weeks) — needs a new column; daily/weekly/monthly/yearly are supported.
+- Reports PDF export (CSV and text share exist from the earlier delivery).
+- Reports, Budgets and Category screens were not rewritten in this pass (they already had logic and tests); they were not re-audited screen-by-screen.
+- Room schema JSON for v3 is not generated (schema export is disabled in this project because of a Room/KSP classloader crash noted in `docs/PREVIOUS_DELIVERY_NOTES.md`). An instrumented Room migration test therefore could not be added; the migration SQL was verified against the v2 schema in SQLite instead.
+- No SavingsGoalRepository/BackupDao tests against a real Room database (needs Android).
+- Android auto-backup (`allowBackup=true`) was left as it was; the app's own backup file is separate.
+
+## Known risks to check first in Android Studio
+1. UI code and the Room-generated parts have never been compiled — expect a few compile fixes.
+2. Room validates the migrated schema at first open; if it complains, compare `MIGRATION_2_3` to the generated v3 schema JSON (see `MIGRATION.md`).
+3. Smoke test list is at the end of `TEST_REPORT.md`.

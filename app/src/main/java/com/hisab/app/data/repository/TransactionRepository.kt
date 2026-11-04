@@ -3,7 +3,7 @@ package com.hisab.app.data.repository
 import com.hisab.app.data.local.dao.TransactionDao
 import com.hisab.app.data.local.entity.TransactionEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
+import com.hisab.app.domain.debt.DebtDirection
 
 class TransactionRepository(private val transactionDao: TransactionDao) {
 
@@ -11,6 +11,8 @@ class TransactionRepository(private val transactionDao: TransactionDao) {
         data class Success(val transactionId: String) : RecordResult
         data class PossibleDuplicate(val amountMinor: Long) : RecordResult
         data class ExceedsOutstanding(val outstandingMinor: Long) : RecordResult
+        /** Editing a loan below what has already been repaid against it. */
+        data class BelowRepaid(val minimumMinor: Long) : RecordResult
         data class InvalidInput(val message: String) : RecordResult
     }
 
@@ -56,14 +58,26 @@ class TransactionRepository(private val transactionDao: TransactionDao) {
     fun getTotalIncomeBetween(userId: String, startMillis: Long, endMillis: Long) =
         transactionDao.getTotalIncomeBetween(userId, startMillis, endMillis)
 
-    fun getNetBalanceForPerson(userId: String, personId: String): Flow<Long> =
-        transactionDao.getNetBalanceForPerson(userId, personId)
+    /**
+     * What a person still owes the user (RECEIVABLE) or the user still owes them (PAYABLE), ignoring
+     * [excludeTransactionId] when editing. Never negative.
+     */
+    suspend fun getOutstanding(userId: String, personId: String, direction: DebtDirection, excludeTransactionId: String? = null): Long {
+        val row = transactionDao.getDebtRow(userId, personId, excludeTransactionId)
+        return when (direction) {
+            DebtDirection.RECEIVABLE -> row?.receivableClamped ?: 0L
+            DebtDirection.PAYABLE -> row?.payableClamped ?: 0L
+        }
+    }
 
-    suspend fun getNetBalanceForPersonOnce(userId: String, personId: String): Long =
-        transactionDao.getNetBalanceForPerson(userId, personId).first()
-
-    suspend fun getNetBalanceForPersonExcluding(userId: String, personId: String, excludeTransactionId: String): Long =
-        transactionDao.getNetBalanceForPersonExcluding(userId, personId, excludeTransactionId)
+    /** Unclamped principal-minus-repayments for a direction (can be negative if repayments exceed principal). */
+    suspend fun getRawPosition(userId: String, personId: String, direction: DebtDirection, excludeTransactionId: String? = null): Long {
+        val row = transactionDao.getDebtRow(userId, personId, excludeTransactionId)
+        return when (direction) {
+            DebtDirection.RECEIVABLE -> row?.receivableMinor ?: 0L
+            DebtDirection.PAYABLE -> row?.payableMinor ?: 0L
+        }
+    }
 
     suspend fun getTransactionByIdOnce(id: String): TransactionEntity? = transactionDao.getById(id)
 

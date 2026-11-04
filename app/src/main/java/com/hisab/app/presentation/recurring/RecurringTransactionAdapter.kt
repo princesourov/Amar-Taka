@@ -15,22 +15,30 @@ import java.time.format.DateTimeFormatter
 
 class RecurringTransactionAdapter(
     private val onToggle: (RecurringTransactionEntity) -> Unit,
-    private val onDelete: (RecurringTransactionEntity) -> Unit
+    private val onDelete: (RecurringTransactionEntity) -> Unit,
+    private val onEdit: (RecurringTransactionEntity) -> Unit,
+    private val onHistory: (RecurringTransactionEntity) -> Unit
 ) : ListAdapter<RecurringTransactionEntity, RecurringTransactionAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRecurringTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding, onToggle, onDelete)
+        return ViewHolder(binding, onToggle, onDelete, onEdit, onHistory)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
+    /** Schedules the last run could not process, with a ready-made explanation. */
+    var attention: Map<String, String> = emptyMap()
+        set(value) { field = value; notifyDataSetChanged() }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position), attention[getItem(position).id])
 
     class ViewHolder(
         private val binding: ItemRecurringTransactionBinding,
         private val onToggle: (RecurringTransactionEntity) -> Unit,
-        private val onDelete: (RecurringTransactionEntity) -> Unit
+        private val onDelete: (RecurringTransactionEntity) -> Unit,
+        private val onEdit: (RecurringTransactionEntity) -> Unit,
+        private val onHistory: (RecurringTransactionEntity) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: RecurringTransactionEntity) {
+        fun bind(item: RecurringTransactionEntity, attentionText: String?) {
             val context = binding.root.context
             val frequencyLabel = frequencyLabelFor(context, item.frequency)
             binding.recurringTitle.text = item.note?.takeIf { it.isNotBlank() }
@@ -45,6 +53,10 @@ class RecurringTransactionAdapter(
             binding.recurringToggle.setText(if (item.isActive) R.string.budget_action_pause else R.string.budget_action_enable)
             binding.recurringToggle.setOnClickListener { onToggle(item) }
             binding.recurringDelete.setOnClickListener { onDelete(item) }
+            binding.recurringHistory.setOnClickListener { onHistory(item) }
+            binding.root.setOnClickListener { onEdit(item) }
+            binding.recurringAttention.text = attentionText
+            binding.recurringAttention.visibility = if (attentionText == null) android.view.View.GONE else android.view.View.VISIBLE
         }
 
         private fun frequencyLabelFor(context: android.content.Context, frequency: String): String =

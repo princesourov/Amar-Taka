@@ -1,5 +1,6 @@
 package com.hisab.app.presentation.transfer
 
+import com.hisab.app.domain.budget.MoneyParser
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hisab.app.data.local.entity.AccountEntity
@@ -45,7 +46,7 @@ class TransferMoneyViewModel(
         viewModelScope.launch {
             _isSaving.value = true
             try {
-                val amountMinor = amountMajor.trim().toDoubleOrNull()?.let { Math.round(it * 100) }
+                val amountMinor = MoneyParser.parsePositiveMinor(amountMajor)
                 if (amountMinor == null || amountMinor <= 0 || fromAccountId == null || toAccountId == null) {
                     _events.emit(TransferEvent.ValidationError); return@launch
                 }
@@ -58,7 +59,8 @@ class TransferMoneyViewModel(
                         _events.emit(TransferEvent.SameAccount)
                     is TransactionRepository.RecordResult.PossibleDuplicate ->
                         _events.emit(TransferEvent.DuplicateWarning(amountMajor, fromAccountId, toAccountId, note))
-                    is TransactionRepository.RecordResult.ExceedsOutstanding ->
+                    is TransactionRepository.RecordResult.ExceedsOutstanding,
+                    is TransactionRepository.RecordResult.BelowRepaid ->
                         Unit // not reachable for a transfer
                 }
             } finally {

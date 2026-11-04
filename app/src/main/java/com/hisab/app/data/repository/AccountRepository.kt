@@ -1,10 +1,13 @@
 package com.hisab.app.data.repository
 
 import com.hisab.app.data.local.dao.AccountDao
+import com.hisab.app.data.local.dao.RecurringTransactionDao
+import com.hisab.app.data.local.dao.SavingsGoalDao
 import com.hisab.app.data.local.dao.TransactionDao
 import com.hisab.app.data.local.entity.AccountEntity
 import com.hisab.app.domain.model.AccountType
 import com.hisab.app.domain.model.SyncStatus
+import com.hisab.app.domain.trash.TrashRules
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -12,9 +15,17 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import java.util.UUID
 
+sealed interface AccountDeleteResult {
+    data object Deleted : AccountDeleteResult
+    data class Blocked(val reason: TrashRules.AccountDeleteBlock) : AccountDeleteResult
+    data object NotFound : AccountDeleteResult
+}
+
 class AccountRepository(
     private val accountDao: AccountDao,
-    private val transactionDao: TransactionDao
+    private val transactionDao: TransactionDao,
+    private val goalDao: SavingsGoalDao,
+    private val recurringDao: RecurringTransactionDao
 ) {
     fun getActiveAccounts(userId: String): Flow<List<AccountEntity>> = accountDao.getActiveAccounts(userId)
 
@@ -78,8 +89,25 @@ class AccountRepository(
         accountDao.update(account.copy(name = name, openingBalanceMinor = openingBalanceMinor, notes = notes))
     }
 
-    /** Soft delete via the existing isActive flag — history involving this account stays intact and correct. */
-    suspend fun deactivateAccount(id: String) {
-        accountDao.deactivate(id)
+    fun getAllAccounts(userId: String): Flow<List<AccountEntity>> = accountDao.getAllAccounts(userId)
+
+    fun getDeletedAccounts(userId: String): Flow<List<AccountEntity>> = accountDao.getDeletedAccounts(userId)
+
+    /**
+     * "Delete" = move to Trash (isActive = false): every transaction that touched the account stays in
+     * the ledger and in reports. It is refused while it would hide real money or break a plan - a
+     * non-zero balance (transfer it out first), money earmarked for goals, or an active recurring
+     * schedule posting to it - so deleting an account can never silently make money vanish from the
+     * dashboard total.
+     */
+    suspend fun deleteAccount(id: String): AccountDeleteResult {
+        val account = accountDao.getById(id)?.takeIf { it.isActive } ?: return AccountDeleteResult.NotFound
+        val balance = account.openingBalanceMinor + transactionDao.getNetMovementForAccountOnce(id)
+        val block = TrashRules.accountDeleteBlock(balance, goalDao.getAccountAllocatedOnce(id), recurringDao.countActiveForAccount(id))
+        if (block != null) return AccountDeleteResult.Blocked(block)
+        accountDao.deactivate(id, System.currentTimeMillis())
+        return AccountDeleteResult.Deleted
     }
+
+    suspend fun restoreAccount(id: String) = accountDao.reactivate(id)
 }

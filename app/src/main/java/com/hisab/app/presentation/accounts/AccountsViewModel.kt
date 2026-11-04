@@ -1,8 +1,13 @@
 package com.hisab.app.presentation.accounts
 
+import com.hisab.app.domain.budget.MoneyParser
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hisab.app.R
 import com.hisab.app.data.local.entity.AccountEntity
+import com.hisab.app.data.repository.AccountDeleteResult
+import com.hisab.app.domain.trash.TrashRules
+import com.hisab.app.presentation.common.UiMessage
 import com.hisab.app.data.repository.AccountRepository
 import com.hisab.app.domain.model.AccountType
 import com.hisab.app.domain.model.AccountWithBalance
@@ -75,11 +80,28 @@ class AccountsViewModel(
         }
     }
 
-    fun deactivateAccount(id: String) {
-        viewModelScope.launch { accountRepository.deactivateAccount(id) }
+    private val _messages = MutableSharedFlow<UiMessage>(extraBufferCapacity = 8)
+    val messages = _messages.asSharedFlow()
+
+    /** Moves the account to Trash, unless doing so would hide money or break a plan (see AccountRepository.deleteAccount). */
+    fun deleteAccount(id: String) {
+        viewModelScope.launch {
+            val msg = when (val r = accountRepository.deleteAccount(id)) {
+                AccountDeleteResult.Deleted -> UiMessage(R.string.account_moved_to_trash)
+                AccountDeleteResult.NotFound -> UiMessage(R.string.error_generic)
+                is AccountDeleteResult.Blocked -> UiMessage(
+                    when (r.reason) {
+                        TrashRules.AccountDeleteBlock.NON_ZERO_BALANCE -> R.string.account_delete_blocked_balance
+                        TrashRules.AccountDeleteBlock.HAS_GOAL_ALLOCATION -> R.string.account_delete_blocked_goals
+                        TrashRules.AccountDeleteBlock.HAS_ACTIVE_RECURRING -> R.string.account_delete_blocked_recurring
+                    }
+                )
+            }
+            _messages.emit(msg)
+        }
     }
 
     /** Opening balance may legitimately be blank (defaults to 0) or negative (a starting debt). */
     private fun parseAmount(input: String): Long? =
-        input.trim().ifBlank { "0" }.toDoubleOrNull()?.let { Math.round(it * 100) }
+        MoneyParser.parseSignedOrZero(input)
 }

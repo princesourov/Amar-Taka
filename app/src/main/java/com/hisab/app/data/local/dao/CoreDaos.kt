@@ -28,8 +28,24 @@ interface AccountDao {
     @Query("SELECT COUNT(*) FROM accounts WHERE userId = :userId")
     suspend fun countAll(userId: String): Int
 
-    @Query("UPDATE accounts SET isActive = 0 WHERE id = :id")
-    suspend fun deactivate(id: String)
+    @Query("UPDATE accounts SET isActive = 0, deletedAtMillis = :nowMillis WHERE id = :id")
+    suspend fun deactivate(id: String, nowMillis: Long)
+
+    @Query("UPDATE accounts SET isActive = 1, deletedAtMillis = NULL WHERE id = :id")
+    suspend fun reactivate(id: String)
+
+    @Query("SELECT * FROM accounts WHERE userId = :userId")
+    fun getAllAccounts(userId: String): Flow<List<AccountEntity>>
+
+    @Query("SELECT * FROM accounts WHERE userId = :userId AND isActive = 0 ORDER BY deletedAtMillis DESC")
+    fun getDeletedAccounts(userId: String): Flow<List<AccountEntity>>
+
+    @Query("SELECT * FROM accounts WHERE userId = :userId AND isActive = 0")
+    suspend fun getDeletedAccountsOnce(userId: String): List<AccountEntity>
+
+    /** Only ever removes an account that is already in Trash. */
+    @Query("DELETE FROM accounts WHERE id = :id AND isActive = 0")
+    suspend fun purgeTrashed(id: String)
 }
 
 @Dao
@@ -51,19 +67,33 @@ interface CategoryDao {
     @Query("SELECT * FROM categories WHERE userId = :userId ORDER BY name ASC")
     fun getAllCategories(userId: String): Flow<List<CategoryEntity>>
 
+    @Query("SELECT * FROM categories WHERE id = :id")
+    suspend fun getById(id: String): CategoryEntity?
+
     @Query("SELECT * FROM categories WHERE userId = :userId")
     suspend fun getAllCategoriesOnce(userId: String): List<CategoryEntity>
 
     @Update suspend fun update(category: CategoryEntity)
 
-    @Query("UPDATE categories SET isActive = :active WHERE id = :id")
-    suspend fun setActive(id: String, active: Boolean)
+    @Query("UPDATE categories SET isActive = :active, deletedAtMillis = :deletedAtMillis WHERE id = :id")
+    suspend fun setActive(id: String, active: Boolean, deletedAtMillis: Long?)
+
+    @Query("SELECT * FROM categories WHERE userId = :userId AND isActive = 0 ORDER BY deletedAtMillis DESC, name ASC")
+    fun getDeletedCategories(userId: String): Flow<List<CategoryEntity>>
+
+    @Query("SELECT * FROM categories WHERE userId = :userId AND isActive = 0")
+    suspend fun getDeletedCategoriesOnce(userId: String): List<CategoryEntity>
+
+    /** Only ever removes a category that is already in Trash. */
+    @Query("DELETE FROM categories WHERE id = :id AND isActive = 0")
+    suspend fun purgeTrashed(id: String)
+
+    @Query("SELECT COUNT(*) FROM budgets WHERE categoryId = :id")
+    suspend fun countBudgetsUsing(id: String): Int
 
     @Query("SELECT COUNT(*) FROM transactions WHERE categoryId = :id AND isDeleted = 0")
     suspend fun countTransactionsUsing(id: String): Int
 
-    @Query("UPDATE categories SET isActive = 0 WHERE id = :id")
-    suspend fun deactivate(id: String)
 }
 
 @Dao
@@ -80,6 +110,22 @@ interface PersonDao {
     @Query("SELECT * FROM people WHERE id = :id")
     fun observeById(id: String): Flow<PersonEntity?>
 
-    @Query("UPDATE people SET isActive = 0 WHERE id = :id")
-    suspend fun deactivate(id: String)
+    @Query("UPDATE people SET isActive = 0, deletedAtMillis = :nowMillis WHERE id = :id")
+    suspend fun deactivate(id: String, nowMillis: Long)
+
+    @Query("UPDATE people SET isActive = 1, deletedAtMillis = NULL WHERE id = :id")
+    suspend fun reactivate(id: String)
+
+    @Query("SELECT * FROM people WHERE userId = :userId")
+    fun getAllPeople(userId: String): Flow<List<PersonEntity>>
+
+    @Query("SELECT * FROM people WHERE userId = :userId AND isActive = 0 ORDER BY deletedAtMillis DESC")
+    fun getDeletedPeople(userId: String): Flow<List<PersonEntity>>
+
+    @Query("SELECT * FROM people WHERE userId = :userId AND isActive = 0")
+    suspend fun getDeletedPeopleOnce(userId: String): List<PersonEntity>
+
+    /** Only ever removes a person that is already in Trash. */
+    @Query("DELETE FROM people WHERE id = :id AND isActive = 0")
+    suspend fun purgeTrashed(id: String)
 }

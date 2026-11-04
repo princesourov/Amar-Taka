@@ -1,10 +1,9 @@
 package com.hisab.app.domain.usecase
 
-import androidx.room.withTransaction
 import com.hisab.app.data.local.dao.AccountDao
 import com.hisab.app.data.local.dao.RecurringTransactionDao
 import com.hisab.app.data.local.dao.TransactionDao
-import com.hisab.app.data.local.database.HisabDatabase
+import com.hisab.app.data.local.database.TransactionRunner
 import com.hisab.app.data.local.entity.RecurringTransactionEntity
 import com.hisab.app.data.local.entity.TransactionEntity
 import com.hisab.app.domain.model.RecurrenceFrequency
@@ -29,8 +28,14 @@ import java.time.LocalDate
  *  - Serialised by a mutex (this class is a singleton in AppContainer).
  *  - A schedule whose account is gone/inactive is left untouched (not advanced), so nothing is silently lost.
  */
+enum class SkipReason { UNSUPPORTED_TYPE, INVALID_AMOUNT, ACCOUNT_MISSING_OR_ARCHIVED }
+
+data class SkippedRecurring(val scheduleId: String, val reason: SkipReason)
+
+data class RecurringRunResult(val created: Int, val skipped: List<SkippedRecurring>)
+
 class ExecuteRecurringTransactionsUseCase(
-    private val database: HisabDatabase,
+    private val runner: TransactionRunner,
     private val recurringDao: RecurringTransactionDao,
     private val transactionDao: TransactionDao,
     private val accountDao: AccountDao
@@ -39,30 +44,53 @@ class ExecuteRecurringTransactionsUseCase(
 
     /** @return how many transactions were created. */
     suspend operator fun invoke(userId: String, today: LocalDate = LocalDate.now(DateRanges.zone())): Int =
+        run(userId, today).created
+
+    /**
+     * Same as [invoke] but also reports schedules that were left untouched and why, so the UI can show
+     * "needs attention" instead of the schedule silently doing nothing. A skipped schedule is NOT
+     * advanced: nothing is lost, and it is retried on the next run once the problem is fixed.
+     */
+    suspend fun run(userId: String, today: LocalDate = LocalDate.now(DateRanges.zone())): RecurringRunResult =
         mutex.withLock {
             val zone = DateRanges.zone()
             var created = 0
+            val skipped = mutableListOf<SkippedRecurring>()
             val due = recurringDao.getDueForExecution(today.toEpochDay()).filter { it.userId == userId }
             for (recurring in due) {
                 val type = runCatching { TransactionType.valueOf(recurring.type) }.getOrNull()
-                if (type != TransactionType.EXPENSE && type != TransactionType.INCOME) continue // unsupported kinds are left alone
+                if (type != TransactionType.EXPENSE && type != TransactionType.INCOME) {
+                    skipped += SkippedRecurring(recurring.id, SkipReason.UNSUPPORTED_TYPE); continue
+                }
+                if (recurring.amountMinor <= 0) {
+                    skipped += SkippedRecurring(recurring.id, SkipReason.INVALID_AMOUNT); continue
+                }
                 val account = accountDao.getById(recurring.accountId)
-                if (account == null || !account.isActive) continue
+                if (account == null || !account.isActive) {
+                    skipped += SkippedRecurring(recurring.id, SkipReason.ACCOUNT_MISSING_OR_ARCHIVED); continue
+                }
+                val frequency = runCatching { RecurrenceFrequency.valueOf(recurring.frequency) }.getOrNull()
+                if (frequency == null) {
+                    skipped += SkippedRecurring(recurring.id, SkipReason.UNSUPPORTED_TYPE); continue
+                }
 
                 val plan = RecurrenceSchedule.plan(
-                    RecurrenceFrequency.valueOf(recurring.frequency),
-                    recurring.startDateEpochDay, recurring.nextRunEpochDay,
+                    frequency, recurring.startDateEpochDay, recurring.nextRunEpochDay,
                     recurring.endDateEpochDay, today.toEpochDay(), recurring.isActive
                 )
-                database.withTransaction {
+                // One atomic unit: the generated rows and the schedule's new nextRun commit together or not at all.
+                val madeNow = runner.run {
+                    var n = 0
                     for (day in plan.toGenerate) {
                         val millis = LocalDate.ofEpochDay(day).atStartOfDay(zone).toInstant().toEpochMilli()
-                        if (transactionDao.insertIfAbsent(build(recurring, type, day, millis)) != -1L) created++
+                        if (transactionDao.insertIfAbsent(build(recurring, type, day, millis)) != -1L) n++
                     }
                     recurringDao.update(recurring.copy(nextRunEpochDay = plan.newNextRunEpochDay, isActive = plan.stillActive))
+                    n
                 }
+                created += madeNow
             }
-            created
+            RecurringRunResult(created, skipped)
         }
 
     companion object {

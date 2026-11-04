@@ -2,7 +2,10 @@ package com.hisab.app.presentation.people
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hisab.app.R
 import com.hisab.app.data.local.entity.PersonEntity
+import com.hisab.app.presentation.common.UiMessage
+import com.hisab.app.utils.formatMinorAsCurrency
 import com.hisab.app.data.repository.PersonRepository
 import com.hisab.app.domain.model.PersonWithBalance
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -83,7 +86,20 @@ class PeopleViewModel(
         }
     }
 
-    fun deactivatePerson(id: String) {
-        viewModelScope.launch { personRepository.deactivatePerson(id) }
+    private val _messages = MutableSharedFlow<UiMessage>(extraBufferCapacity = 8)
+    val messages = _messages.asSharedFlow()
+
+    /** Moves the person to Trash, but only when nothing is owed either way (otherwise the debt would vanish from view). */
+    fun deletePerson(id: String) {
+        viewModelScope.launch {
+            val msg = when (val r = personRepository.deletePerson(userId, id)) {
+                PersonRepository.DeleteResult.Deleted -> UiMessage(R.string.person_moved_to_trash)
+                is PersonRepository.DeleteResult.HasOutstanding -> UiMessage(
+                    R.string.person_delete_blocked,
+                    listOf(formatMinorAsCurrency(r.receivableMinor), formatMinorAsCurrency(r.payableMinor))
+                )
+            }
+            _messages.emit(msg)
+        }
     }
 }

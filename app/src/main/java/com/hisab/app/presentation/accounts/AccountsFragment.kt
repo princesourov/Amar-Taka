@@ -37,7 +37,7 @@ class AccountsFragment : Fragment() {
                 .setTitle(R.string.delete_account_title)
                 .setMessage(R.string.delete_account_message)
                 .setNegativeButton(R.string.action_cancel, null)
-                .setPositiveButton(R.string.action_delete) { _, _ -> viewModel.deactivateAccount(item.account.id) }
+                .setPositiveButton(R.string.action_delete) { _, _ -> viewModel.deleteAccount(item.account.id) }
                 .show()
         }
     )
@@ -63,9 +63,19 @@ class AccountsFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.accounts.collect { list ->
-                    adapter.submitList(list)
-                    binding.emptyState.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+                launch {
+                    viewModel.accounts.collect { list ->
+                        adapter.submitList(list)
+                        binding.emptyState.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+                    }
+                }
+                launch {
+                    viewModel.messages.collect { m ->
+                        com.google.android.material.snackbar.Snackbar.make(
+                            binding.root, getString(m.res, *m.args.toTypedArray()),
+                            com.google.android.material.snackbar.Snackbar.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         }

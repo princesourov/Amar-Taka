@@ -7,7 +7,10 @@ import com.hisab.app.domain.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
-class RecurringTransactionRepository(private val recurringDao: RecurringTransactionDao) {
+class RecurringTransactionRepository(
+    private val recurringDao: RecurringTransactionDao,
+    private val transactionDao: com.hisab.app.data.local.dao.TransactionDao
+) {
 
     fun getActiveRecurring(userId: String): Flow<List<RecurringTransactionEntity>> =
         recurringDao.getActiveRecurring(userId)
@@ -20,6 +23,36 @@ class RecurringTransactionRepository(private val recurringDao: RecurringTransact
 
     /** Deletes the schedule only; transactions it already created stay in the ledger. */
     suspend fun delete(id: String) = recurringDao.deleteById(id)
+
+    suspend fun getById(id: String): RecurringTransactionEntity? = recurringDao.getById(id)
+
+    /** Generated transactions of one schedule, newest first (including ones the user later trashed - see isDeleted). */
+    suspend fun history(scheduleId: String) = transactionDao.getGeneratedByRecurring(scheduleId)
+
+    /**
+     * Edits amount / category / account / frequency / end date / note of a schedule. The next run is
+     * NOT moved backwards (that would regenerate history); it moves only if the new start would be later.
+     * Already generated transactions are never rewritten.
+     */
+    suspend fun update(
+        id: String,
+        type: TransactionType,
+        amountMinor: Long,
+        categoryId: String?,
+        accountId: String,
+        frequency: RecurrenceFrequency,
+        endDateEpochDay: Long?,
+        note: String?
+    ): Boolean {
+        val current = recurringDao.getById(id) ?: return false
+        recurringDao.update(
+            current.copy(
+                type = type.name, amountMinor = amountMinor, categoryId = categoryId, accountId = accountId,
+                frequency = frequency.name, endDateEpochDay = endDateEpochDay, note = note
+            )
+        )
+        return true
+    }
 
     suspend fun createRecurring(
         userId: String,

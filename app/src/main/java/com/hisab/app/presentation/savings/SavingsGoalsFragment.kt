@@ -27,16 +27,10 @@ class SavingsGoalsFragment : Fragment() {
     }
 
     private val adapter = SavingsGoalAdapter { goal ->
-        val args = Bundle().apply {
-            putString("goalId", goal.id)
-            putString("goalName", goal.name)
-        }
-        findNavController().navigate(R.id.action_savingsGoals_to_contributeGoal, args)
+        findNavController().navigate(R.id.action_savingsGoals_to_goalDetail, Bundle().apply { putString("goalId", goal.goal.id) })
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSavingsGoalsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -45,16 +39,15 @@ class SavingsGoalsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.goalList.layoutManager = LinearLayoutManager(requireContext())
         binding.goalList.adapter = adapter
-
         binding.fabCreateGoal.setOnClickListener {
             findNavController().navigate(R.id.action_savingsGoals_to_createGoal)
         }
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.goals.collect { list ->
-                    adapter.submitList(list)
-                    binding.emptyState.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+                viewModel.overview.collect { o ->
+                    val items = o?.toListItems().orEmpty()
+                    adapter.submitList(items)
+                    binding.emptyState.visibility = if (o != null && items.isEmpty()) View.VISIBLE else View.GONE
                 }
             }
         }
@@ -62,6 +55,7 @@ class SavingsGoalsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.goalList.adapter = null
         _binding = null
     }
 }

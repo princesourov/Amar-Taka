@@ -14,6 +14,8 @@ import com.hisab.app.presentation.people.PeopleViewModel
 import com.hisab.app.presentation.people.PersonDetailViewModel
 import com.hisab.app.presentation.recurring.RecurringViewModel
 import com.hisab.app.presentation.reports.ReportsViewModel
+import com.hisab.app.presentation.backup.BackupViewModel
+import com.hisab.app.presentation.savings.GoalDetailViewModel
 import com.hisab.app.presentation.savings.SavingsGoalsViewModel
 import com.hisab.app.presentation.transactions.EditTransactionViewModel
 import com.hisab.app.presentation.transactions.TransactionsViewModel
@@ -30,7 +32,10 @@ class ViewModelFactory(
     private val container: AppContainer,
     private val transactionId: String? = null,
     private val personId: String? = null,
-    private val budgetId: String? = null
+    private val budgetId: String? = null,
+    private val goalId: String? = null,
+    private val appVersion: String = "",
+    private val safetyCopyWriter: (suspend (String) -> Unit)? = null
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -82,15 +87,29 @@ class ViewModelFactory(
             TrashViewModel::class.java -> TrashViewModel(
                 container.userId,
                 container.transactionRepository,
-                container.budgetRepository,
                 container.trashRepository,
+                container.savingsGoalRepository,
                 container.accountRepository,
+                container.personRepository,
+                container.budgetRepository,
                 container.categoryDao
             ) as T
 
             SavingsGoalsViewModel::class.java -> SavingsGoalsViewModel(
                 container.userId,
                 container.savingsGoalRepository
+            ) as T
+
+            GoalDetailViewModel::class.java -> GoalDetailViewModel(
+                container.userId,
+                requireNotNull(goalId) { "goalId is required to create a GoalDetailViewModel" },
+                container.savingsGoalRepository
+            ) as T
+
+            BackupViewModel::class.java -> BackupViewModel(
+                container.backupRepository,
+                appVersion,
+                safetyCopyWriter ?: { }
             ) as T
 
             RecurringViewModel::class.java -> RecurringViewModel(

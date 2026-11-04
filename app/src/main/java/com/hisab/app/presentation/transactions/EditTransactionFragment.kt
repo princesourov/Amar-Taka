@@ -129,6 +129,12 @@ class EditTransactionFragment : Fragment() {
                                     getString(R.string.error_exceeds_outstanding, formatMinorAsCurrency(event.outstandingMinor)),
                                     Snackbar.LENGTH_LONG
                                 ).show()
+                            is EditTransactionEvent.BelowRepaid ->
+                                Snackbar.make(
+                                    binding.root,
+                                    getString(R.string.error_below_repaid, formatMinorAsCurrency(event.minimumMinor)),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
                         }
                     }
                 }

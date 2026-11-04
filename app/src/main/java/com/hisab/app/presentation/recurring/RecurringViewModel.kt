@@ -72,6 +72,40 @@ class RecurringViewModel(
         }
     }
 
+    /** Saves changes to an existing schedule. Past generated transactions are never rewritten. */
+    fun update(
+        id: String, type: TransactionType, amountMajor: String, categoryId: String?, accountId: String?,
+        frequency: RecurrenceFrequency, note: String?
+    ) {
+        viewModelScope.launch {
+            val amountMinor = MoneyParser.parsePositiveMinor(amountMajor)
+            if (amountMinor == null || accountId == null || (type == TransactionType.EXPENSE && categoryId == null)) {
+                _events.emit(RecurringEvent.ValidationError); return@launch
+            }
+            val existing = recurringRepository.getById(id)
+            val ok = recurringRepository.update(
+                id, type, amountMinor, categoryId, accountId, frequency, existing?.endDateEpochDay, note?.ifBlank { null }
+            )
+            if (ok) { executeRecurring(userId); _events.emit(RecurringEvent.Saved) } else _events.emit(RecurringEvent.ValidationError)
+        }
+    }
+
+    suspend fun load(id: String): RecurringTransactionEntity? = recurringRepository.getById(id)
+
+    /** Transactions this schedule has generated, newest first (trashed ones are flagged by isDeleted). */
+    suspend fun history(id: String) = recurringRepository.history(id)
+
+    /** Schedules the last run could not process (and why), so the screen can flag them instead of silently doing nothing. */
+    private val _attention = kotlinx.coroutines.flow.MutableStateFlow<Map<String, com.hisab.app.domain.usecase.SkipReason>>(emptyMap())
+    val needsAttention: StateFlow<Map<String, com.hisab.app.domain.usecase.SkipReason>> = _attention
+
+    fun refreshAttention() {
+        viewModelScope.launch {
+            val result = executeRecurring.run(userId)
+            _attention.value = result.skipped.associate { it.scheduleId to it.reason }
+        }
+    }
+
     fun setActive(id: String, active: Boolean) {
         viewModelScope.launch { recurringRepository.setActive(id, active) }
     }

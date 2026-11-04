@@ -1,5 +1,6 @@
 package com.hisab.app.presentation.income
 
+import com.hisab.app.domain.budget.MoneyParser
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -63,7 +64,7 @@ class AddMoneyViewModel(
         viewModelScope.launch {
             _isSaving.value = true
             try {
-                val amountMinor = amountMajor.trim().toDoubleOrNull()?.let { Math.round(it * 100) }
+                val amountMinor = MoneyParser.parsePositiveMinor(amountMajor)
                 if (amountMinor == null || amountMinor <= 0) {
                     _events.emit(AddMoneyEvent.ValidationError(R.string.error_amount_required)); return@launch
                 }
@@ -81,6 +82,7 @@ class AddMoneyViewModel(
                     is TransactionRepository.RecordResult.PossibleDuplicate ->
                         _events.emit(AddMoneyEvent.DuplicateWarning(amountMajor, accountId, categoryId, note, dateMillis))
                     is TransactionRepository.RecordResult.ExceedsOutstanding,
+                    is TransactionRepository.RecordResult.BelowRepaid,
                     is TransactionRepository.RecordResult.InvalidInput ->
                         Unit // not reachable for a plain income entry
                 }

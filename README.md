@@ -11,7 +11,9 @@ An offline-first personal finance manager for Bangladesh, built with native Andr
 - Category management and type-aware category selection.
 - Recurring transactions with catch-up execution and deterministic transaction IDs.
 - Reports with period filters, comparisons, category breakdowns, charts, insights, and CSV/text sharing.
-- Savings goals and contributions.
+- Savings goals as an allocation inside accounts (add / withdraw / history), debts with receivable, payable and net position, Trash for six item types, encrypted backup & restore.
+
+See `CHANGES.md`, `TEST_REPORT.md`, `MIGRATION.md`, `BACKUP_RESTORE.md`.
 
 ## Tech stack
 

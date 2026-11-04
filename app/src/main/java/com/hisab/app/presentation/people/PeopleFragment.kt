@@ -43,7 +43,7 @@ class PeopleFragment : Fragment() {
                 .setTitle(R.string.delete_person_title)
                 .setMessage(R.string.delete_person_message)
                 .setNegativeButton(R.string.action_cancel, null)
-                .setPositiveButton(R.string.action_delete) { _, _ -> viewModel.deactivatePerson(item.person.id) }
+                .setPositiveButton(R.string.action_delete) { _, _ -> viewModel.deletePerson(item.person.id) }
                 .show()
         }
     )
@@ -74,9 +74,19 @@ class PeopleFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.people.collect { list ->
-                    adapter.submitList(list)
-                    binding.emptyState.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+                launch {
+                    viewModel.people.collect { list ->
+                        adapter.submitList(list)
+                        binding.emptyState.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+                    }
+                }
+                launch {
+                    viewModel.messages.collect { m ->
+                        com.google.android.material.snackbar.Snackbar.make(
+                            binding.root, getString(m.res, *m.args.toTypedArray()),
+                            com.google.android.material.snackbar.Snackbar.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         }
