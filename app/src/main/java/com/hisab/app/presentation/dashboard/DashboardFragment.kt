@@ -74,9 +74,20 @@ class DashboardFragment : Fragment() {
         binding.recentTransactionsList.adapter = recentTransactionsAdapter
         binding.greeting.text = greetingForNow()
 
-        binding.dateRangeDropdown.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, dateRanges.map(::displayName)))
-        binding.dateRangeDropdown.setText(displayName(viewModel.rangeType.value), false)
-        binding.dateRangeDropdown.setOnItemClickListener { _, _, position, _ -> viewModel.setRangeType(dateRanges[position]) }
+        binding.dateRangeDropdown.setAdapter(
+            ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_list_item_1,
+                dateRanges.map(::displayName)
+            )
+        )
+
+        viewModel.setRangeType(DateRangeType.TODAY)
+        binding.dateRangeDropdown.setText(displayName(DateRangeType.TODAY), false)
+
+        binding.dateRangeDropdown.setOnItemClickListener { _, _, position, _ ->
+            viewModel.setRangeType(dateRanges[position])
+        }
 
         // Every card goes somewhere.
         binding.heroCard.setOnClickListener { nav.navigate(R.id.action_dashboard_to_accounts) }
