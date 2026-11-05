@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_primary">#145C4B</color>
-    <color name="color_primary_variant">#0D3F34</color>
+    <color name="color_primary">#087A52</color>
+    <color name="color_primary_variant">#075C43</color>
     <color name="color_on_primary">#FFFFFF</color>
-    <color name="color_secondary">#D9A441</color>
-    <color name="color_on_secondary">#241A00</color>
-    <color name="color_background">#F7F6F2</color>
+    <color name="color_secondary">#DDF4E7</color>
+    <color name="color_on_secondary">#075C43</color>
+    <color name="color_background">#F8F7F2</color>
     <color name="color_surface">#FFFFFF</color>
-    <color name="color_on_surface">#1B1F1E</color>
-    <color name="color_positive">#1E8A5F</color>
-    <color name="color_negative">#C0453A</color>
-    <color name="color_outline">#E1DED6</color>
+    <color name="color_on_surface">#171B35</color>
+    <color name="color_positive">#078451</color>
+    <color name="color_negative">#E05252</color>
+    <color name="color_outline">#EAEAE7</color>
 
     <color name="color_warning">#B7791F</color>
-    <color name="chart_1">#2A7F6F</color>
-    <color name="chart_2">#D9822B</color>
-    <color name="chart_3">#4A6FA5</color>
-    <color name="chart_4">#B5527A</color>
-    <color name="chart_5">#7A9E3D</color>
-    <color name="chart_6">#8C6BB1</color>
-    <color name="chart_7">#C4553D</color>
-    <color name="chart_8">#3E9CB5</color>
+    <color name="color_surface_variant">#F1F4EF</color>
+    <color name="color_text_secondary">#777985</color>
+    <color name="chart_1">#087A52</color>
+    <color name="chart_2">#42B883</color>
+    <color name="chart_3">#7BC9A5</color>
+    <color name="chart_4">#E05252</color>
+    <color name="chart_5">#E5B85C</color>
+    <color name="chart_6">#6A86C7</color>
+    <color name="chart_7">#B66B9E</color>
+    <color name="chart_8">#4E9FB7</color>
     <color name="chart_9">#A3893A</color>
     <color name="chart_10">#6B7A8F</color>
 

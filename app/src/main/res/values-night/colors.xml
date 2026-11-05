@@ -11,6 +11,8 @@
     <color name="color_positive">#4FD08A</color>
     <color name="color_negative">#E4695D</color>
     <color name="color_outline">#333B38</color>
+    <color name="color_surface_variant">#242C29</color>
+    <color name="color_text_secondary">#A7B0AB</color>
     <color name="color_warning">#E8B85B</color>
     <color name="chart_1">#4FBF9E</color>
     <color name="chart_2">#F0A04B</color>

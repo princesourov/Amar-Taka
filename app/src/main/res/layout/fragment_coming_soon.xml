@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="@dimen/spacing_xl">
+    android:padding="@dimen/spacing_xl"
+    android:background="@color/color_background">
 
     <TextView
         android:id="@+id/title"
