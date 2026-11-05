@@ -92,7 +92,12 @@ class DashboardFragment : Fragment() {
         // Every card goes somewhere.
         binding.heroCard.setOnClickListener { nav.navigate(R.id.action_dashboard_to_accounts) }
         binding.seeAllAccounts.setOnClickListener { nav.navigate(R.id.action_dashboard_to_accounts) }
-        binding.summaryCard.setOnClickListener { nav.navigate(R.id.action_dashboard_to_transactions) }
+
+        // The four summary figures open the Last 30 Days history; the card around them keeps its own click.
+        binding.summaryCard.setOnClickListener { nav.navigate(R.id.action_dashboard_to_financialHistory) }
+        listOf(binding.summaryIncome, binding.summaryExpense, binding.summaryNet, binding.summaryRate).forEach {
+            it.setOnClickListener { nav.navigate(R.id.action_dashboard_to_financialHistory) }
+        }
         binding.debtCard.setOnClickListener { nav.navigate(R.id.action_dashboard_to_people) }
         binding.budgetsCard.setOnClickListener { nav.navigate(R.id.action_dashboard_to_budgets) }
         binding.seeAllBudgets.setOnClickListener { nav.navigate(R.id.action_dashboard_to_budgets) }
@@ -137,6 +142,8 @@ class DashboardFragment : Fragment() {
         binding.totalBalance.text = formatMinorAsCurrency(state.totalBalanceMinor)
         binding.availableAmount.text = formatMinorAsCurrency(state.availableMinor)
         binding.inGoalsAmount.text = formatMinorAsCurrency(state.allocatedToGoalsMinor)
+        binding.lentBorrowed.text = formatMinorAsCurrency(state.debt.netMinor)
+        binding.netMoney.text = formatMinorAsCurrency(state.debt.netMinor+state.totalBalanceMinor)
 
         accountAdapter.submitList(state.accounts)
         binding.accountsEmpty.visibility = if (!state.isLoading && state.accounts.isEmpty()) View.VISIBLE else View.GONE
@@ -206,14 +213,20 @@ class DashboardFragment : Fragment() {
     )
 
     private fun greetingForNow(): String {
-        val hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)
-        return getString(
-            when {
-                hour < 12 -> R.string.greeting_morning
-                hour < 17 -> R.string.greeting_afternoon
-                else -> R.string.greeting_evening
-            }
-        )
+        val hour = java.time.LocalTime.now().hour
+
+        val greetingRes = when (hour) {
+            in 5..7 -> R.string.greeting_early_morning
+            in 8..11 -> R.string.greeting_morning
+            in 12..13 -> R.string.greeting_noon
+            in 14..16 -> R.string.greeting_afternoon
+            in 17..18 -> R.string.greeting_evening
+            in 19..21 -> R.string.greeting_night
+            in 22..23 -> R.string.greeting_late_night
+            else -> R.string.greeting_midnight
+        }
+
+        return getString(greetingRes)
     }
 
     override fun onDestroyView() {

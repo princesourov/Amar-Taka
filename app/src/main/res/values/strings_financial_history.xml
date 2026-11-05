@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_title">Last 30 Days</string>
+    <string name="history_subtitle">Daily income, expense, net cash flow and savings rate, newest first.</string>
+    <string name="history_empty">No income or expense recorded in the last 30 days.</string>
+    <string name="history_error">Couldn\'t load your history. Please try again.</string>
+    <string name="history_retry">Retry</string>
+    <string name="history_back">Back</string>
+</resources>

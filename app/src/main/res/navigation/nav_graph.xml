@@ -71,7 +71,19 @@
             android:id="@+id/action_dashboard_to_backup"
             app:destination="@id/backupFragment" />
 
+        <action
+            android:id="@+id/action_dashboard_to_financialHistory"
+            app:destination="@id/financialHistoryFragment" />
+
     </fragment>
+
+
+    <!-- Last 30 Days Financial History -->
+    <fragment
+        android:id="@+id/financialHistoryFragment"
+        android:name="com.hisab.app.presentation.dashboard.FinancialHistoryFragment"
+        android:label="@string/history_title" />
+
 
 
     <!-- Budgets -->

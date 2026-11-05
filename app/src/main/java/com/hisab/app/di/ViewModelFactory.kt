@@ -8,6 +8,7 @@ import com.hisab.app.presentation.categories.CategoriesViewModel
 import com.hisab.app.presentation.budgets.BudgetsViewModel
 import com.hisab.app.presentation.trash.TrashViewModel
 import com.hisab.app.presentation.dashboard.DashboardViewModel
+import com.hisab.app.presentation.dashboard.FinancialHistoryViewModel
 import com.hisab.app.presentation.expense.AddExpenseViewModel
 import com.hisab.app.presentation.income.AddMoneyViewModel
 import com.hisab.app.presentation.people.PeopleViewModel
@@ -50,6 +51,11 @@ class ViewModelFactory(
                 container.budgetRepository,
                 container.savingsGoalRepository,
                 container.categoryDao
+            ) as T
+
+            FinancialHistoryViewModel::class.java -> FinancialHistoryViewModel(
+                container.userId,
+                container.transactionRepository
             ) as T
 
             AddExpenseViewModel::class.java -> AddExpenseViewModel(
