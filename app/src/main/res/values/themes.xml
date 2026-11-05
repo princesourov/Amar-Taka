@@ -17,8 +17,8 @@
         <item name="colorSurfaceVariant">@color/color_surface_variant</item>
         <item name="android:fontFamily">sans</item>
         <item name="fontFamily">sans</item>
-        <item name="textColorPrimary">@color/color_on_surface</item>
-        <item name="textColorSecondary">@color/color_text_secondary</item>
+        <item name="android:textColorPrimary">@color/color_on_surface</item>
+        <item name="android:textColorSecondary">@color/color_text_secondary</item>
         <item name="materialButtonStyle">@style/HisabButton</item>
         <item name="textInputStyle">@style/HisabTextInput</item>
         <item name="bottomNavigationStyle">@style/HisabBottomNavigation</item>
