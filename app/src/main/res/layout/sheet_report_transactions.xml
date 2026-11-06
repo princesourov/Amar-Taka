@@ -10,6 +10,7 @@
         android:id="@+id/sheetTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
         android:textAppearance="?attr/textAppearanceTitleLarge"
         tools:text="Food &amp; Dining" />
 
@@ -18,8 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:alpha="0.75"
+        android:fontFamily="@font/poppins_semibold"
         android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
         tools:text="12 transactions · ৳4,500.00 · 1 Nov – 30 Nov 2026" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -35,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_lg"
+        android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
         android:text="@string/report_sheet_empty"
         android:visibility="gone" />

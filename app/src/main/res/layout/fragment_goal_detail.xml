@@ -21,8 +21,9 @@
 
             <TextView
                 android:id="@+id/detailIcon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_icon_square"
                 android:gravity="center"
                 android:textSize="30sp"
                 tools:text="📱" />
@@ -45,14 +46,14 @@
                     android:id="@+id/detailStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="0.75"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAppearance="?attr/textAppearanceBodySmall"
                     tools:text="In progress · Target: 1 Jan 2027" />
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/editGoalButton"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Hisab.Button.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/action_edit" />
@@ -63,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_sm"
-            android:alpha="0.8"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:visibility="gone"
             tools:text="Note" />
@@ -80,7 +81,7 @@
             android:id="@+id/detailOfTarget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.75"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             tools:text="of ৳50,000.00 · ৳30,000.00 to go" />
 
@@ -118,7 +119,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/withdrawButton"
-                style="@style/Widget.Material3.Button.TonalButton"
+                style="@style/Widget.Hisab.Button.Tonal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -155,14 +156,14 @@
             android:id="@+id/historyEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:text="@string/goal_history_empty"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteGoalButton"
-            style="@style/Widget.Material3.Button.TextButton"
+            style="@style/Widget.Hisab.Button.Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_lg"

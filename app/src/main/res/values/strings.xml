@@ -208,6 +208,9 @@
     <string name="report_lending_borrowing">Lending &amp; Borrowing: %1$s</string>
     <string name="lent_borrowed">Lent-Borrowed</string>
     <string name="net_money">Net money</string>
+    <string name="last_30_days">Last 30 Days</string>
+    <string name="trash">Trash</string>
+    <string name="recurring">Recurring</string>
 
 
 </resources>

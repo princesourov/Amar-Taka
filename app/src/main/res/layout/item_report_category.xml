@@ -30,6 +30,7 @@
             android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:ellipsize="end"
+            android:fontFamily="@font/poppins_semibold"
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             tools:text="Food &amp; Dining" />
@@ -39,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:fontFamily="@font/poppins_bold"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             tools:text="৳4,500.00" />
     </LinearLayout>
@@ -58,8 +60,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:alpha="0.75"
+        android:fontFamily="@font/poppins_semibold"
         android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
         tools:text="38% of spending · 12 transactions · ▲ 15% vs previous" />
 
     <TextView
@@ -67,6 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
+        android:fontFamily="@font/poppins_semibold"
         android:textAppearance="?attr/textAppearanceBodySmall"
         android:visibility="gone"
         tools:text="Budget: 80% used (৳1,000.00 left)"

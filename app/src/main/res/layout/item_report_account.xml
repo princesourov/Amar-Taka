@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_weight="1"
+        android:fontFamily="@font/poppins_semibold"
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="?attr/textAppearanceBodyLarge"
@@ -27,15 +28,17 @@
 
     <TextView
         android:id="@+id/accountShare"
+        android:fontFamily="@font/poppins_semibold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:alpha="0.7"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:textAppearance="?attr/textAppearanceBodySmall"
         tools:text="32%" />
 
     <TextView
         android:id="@+id/accountBalance"
         android:layout_width="wrap_content"
+        android:fontFamily="@font/poppins_bold"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:textAppearance="?attr/textAppearanceTitleSmall"

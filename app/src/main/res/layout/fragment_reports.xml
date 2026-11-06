@@ -30,14 +30,14 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/exportButton"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Hisab.Button.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/report_export" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/openTrashButton"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Hisab.Button.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/nav_trash" />
@@ -59,63 +59,63 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipToday"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.Hisab.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/period_today" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipYesterday"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.Hisab.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/period_yesterday" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipThisWeek"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.Hisab.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/period_this_week" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipLastWeek"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.Hisab.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/period_last_week" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipThisMonth"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.Hisab.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/period_this_month" android:checked="true" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipLastMonth"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.Hisab.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/period_last_month" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipLast3Months"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.Hisab.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/period_last_3_months" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipThisYear"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.Hisab.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/period_this_year" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipCustom"
-                    style="@style/Widget.Material3.Chip.Filter"
+                    style="@style/Widget.Hisab.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/period_custom" />
@@ -134,16 +134,15 @@
             android:id="@+id/comparisonLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textAppearance="?attr/textAppearanceBodySmall" />
 
         <com.google.android.material.card.MaterialCardView
             
-            style="@style/Widget.Material3.CardView.Outlined"
+            style="@style/Widget.Hisab.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="16dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -168,7 +167,7 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTypeAll"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.Hisab.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
@@ -176,14 +175,14 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTypeIncome"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.Hisab.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/type_income" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipTypeExpense"
-                        style="@style/Widget.Material3.Chip.Filter"
+                        style="@style/Widget.Hisab.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/type_expense" />
@@ -197,7 +196,7 @@
                     android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    style="@style/Widget.Hisab.TextInput.Dropdown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -215,7 +214,7 @@
                         android:layout_height="0dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    style="@style/Widget.Hisab.TextInput.Dropdown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -231,7 +230,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Hisab.TextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -249,7 +248,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/clearFiltersButton"
-                    style="@style/Widget.Material3.Button.TextButton"
+                    style="@style/Widget.Hisab.Button.Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/report_clear_filters" />
@@ -271,7 +270,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xl"
-            android:alpha="0.8"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:gravity="center"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             android:visibility="gone" />
@@ -284,11 +283,10 @@
 
         <com.google.android.material.card.MaterialCardView
             
-            style="@style/Widget.Material3.CardView.Outlined"
+            style="@style/Widget.Hisab.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="16dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -299,7 +297,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="0.75"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:text="@string/report_net_cash_flow_label"
                     android:textAppearance="?attr/textAppearanceLabelMedium" />
 
@@ -314,7 +312,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:alpha="0.8"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAppearance="?attr/textAppearanceBodySmall" />
 
                 <LinearLayout
@@ -333,7 +331,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.75"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:text="@string/report_income_label"
                             android:textAppearance="?attr/textAppearanceLabelMedium" />
 
@@ -348,7 +346,7 @@
                             android:id="@+id/incomeDelta"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.8"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAppearance="?attr/textAppearanceBodySmall" />
 
                     </LinearLayout>
@@ -363,7 +361,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.75"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:text="@string/report_expense_label"
                             android:textAppearance="?attr/textAppearanceLabelMedium" />
 
@@ -378,7 +376,7 @@
                             android:id="@+id/expenseDelta"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.8"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAppearance="?attr/textAppearanceBodySmall" />
 
                     </LinearLayout>
@@ -401,7 +399,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.75"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:text="@string/report_savings_rate_label"
                             android:textAppearance="?attr/textAppearanceLabelMedium" />
 
@@ -416,7 +414,7 @@
                             android:id="@+id/savingsRateNote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.8"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAppearance="?attr/textAppearanceBodySmall" />
 
                     </LinearLayout>
@@ -431,7 +429,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.75"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:text="@string/report_expense_ratio_label"
                             android:textAppearance="?attr/textAppearanceLabelMedium" />
 
@@ -446,7 +444,7 @@
                             android:id="@+id/expenseRatioNote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.8"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAppearance="?attr/textAppearanceBodySmall" />
 
                     </LinearLayout>
@@ -458,7 +456,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:alpha="0.75"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAppearance="?attr/textAppearanceBodySmall" />
 
                 <TextView
@@ -466,7 +464,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:alpha="0.75"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAppearance="?attr/textAppearanceBodySmall" />
 
                 <TextView
@@ -474,7 +472,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:alpha="0.75"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAppearance="?attr/textAppearanceBodySmall" />
 
             </LinearLayout>
@@ -482,11 +480,10 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/insightsCard"
-            style="@style/Widget.Material3.CardView.Outlined"
+            style="@style/Widget.Hisab.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="16dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -513,11 +510,10 @@
 
         <com.google.android.material.card.MaterialCardView
             
-            style="@style/Widget.Material3.CardView.Outlined"
+            style="@style/Widget.Hisab.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="16dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -581,11 +577,10 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/expenseCategoryCard"
-            style="@style/Widget.Material3.CardView.Outlined"
+            style="@style/Widget.Hisab.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="16dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -618,7 +613,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:alpha="0.65"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAppearance="?attr/textAppearanceBodySmall" />
 
             </LinearLayout>
@@ -626,11 +621,10 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/incomeCategoryCard"
-            style="@style/Widget.Material3.CardView.Outlined"
+            style="@style/Widget.Hisab.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="16dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -657,11 +651,10 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/comparisonCard"
-            style="@style/Widget.Material3.CardView.Outlined"
+            style="@style/Widget.Hisab.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="16dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -717,7 +710,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:alpha="0.8"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAppearance="?attr/textAppearanceBodySmall" />
 
             </LinearLayout>
@@ -725,11 +718,10 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/accountCard"
-            style="@style/Widget.Material3.CardView.Outlined"
+            style="@style/Widget.Hisab.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="16dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -762,7 +754,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:alpha="0.65"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAppearance="?attr/textAppearanceBodySmall" />
 
             </LinearLayout>
@@ -770,11 +762,10 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/budgetCard"
-            style="@style/Widget.Material3.CardView.Outlined"
+            style="@style/Widget.Hisab.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="16dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -798,7 +789,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/manageBudgetsButton"
-                    style="@style/Widget.Material3.Button.TextButton"
+                    style="@style/Widget.Hisab.Button.Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/report_manage_budgets" />
@@ -808,11 +799,10 @@
 
         <com.google.android.material.card.MaterialCardView
             
-            style="@style/Widget.Material3.CardView.Outlined"
+            style="@style/Widget.Hisab.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="16dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -836,7 +826,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/seeAllButton"
-                    style="@style/Widget.Material3.Button.TextButton"
+                    style="@style/Widget.Hisab.Button.Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/report_see_all_transactions" />

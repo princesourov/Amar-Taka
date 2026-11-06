@@ -2,11 +2,10 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.Material3.CardView.Outlined"
+    style="@style/Widget.Hisab.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_md"
-    app:cardCornerRadius="16dp">
+    android:layout_marginBottom="@dimen/spacing_md">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ellipsize="end"
+                android:fontFamily="@font/poppins_semibold"
                 android:maxLines="1"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 tools:text="Food &amp; Dining" />
@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/bg_badge"
+                android:fontFamily="@font/poppins_semibold"
                 android:paddingStart="8dp"
                 android:paddingTop="2dp"
                 android:paddingEnd="8dp"
@@ -49,8 +50,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:alpha="0.75"
+            android:fontFamily="@font/poppins_semibold"
             android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
             tools:text="Monthly · November 2026" />
 
         <TextView
@@ -58,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_sm"
+            android:fontFamily="@font/poppins_semibold"
             android:textAppearance="?attr/textAppearanceTitleLarge"
             tools:text="৳2,200.00 of ৳3,000.00" />
 
@@ -76,6 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:fontFamily="@font/poppins_semibold"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             tools:text="73% used · ৳800.00 left" />
 
@@ -87,15 +91,16 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/budgetEdit"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Hisab.Button.Text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
                 android:text="@string/action_edit" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/budgetToggle"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Hisab.Button.Text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -103,10 +108,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/budgetDelete"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Hisab.Button.Text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
                 android:text="@string/action_delete" />
         </LinearLayout>
     </LinearLayout>

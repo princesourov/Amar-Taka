@@ -94,10 +94,9 @@ class DashboardFragment : Fragment() {
         binding.seeAllAccounts.setOnClickListener { nav.navigate(R.id.action_dashboard_to_accounts) }
 
         // The four summary figures open the Last 30 Days history; the card around them keeps its own click.
-        binding.summaryCard.setOnClickListener { nav.navigate(R.id.action_dashboard_to_financialHistory) }
-        listOf(binding.summaryIncome, binding.summaryExpense, binding.summaryNet, binding.summaryRate).forEach {
-            it.setOnClickListener { nav.navigate(R.id.action_dashboard_to_financialHistory) }
-        }
+        binding.fullSummary.setOnClickListener { nav.navigate(R.id.action_dashboard_to_financialHistory) }
+        binding.summaryCard.setOnClickListener { nav.navigate(R.id.action_dashboard_to_transactions) }
+
         binding.debtCard.setOnClickListener { nav.navigate(R.id.action_dashboard_to_people) }
         binding.budgetsCard.setOnClickListener { nav.navigate(R.id.action_dashboard_to_budgets) }
         binding.seeAllBudgets.setOnClickListener { nav.navigate(R.id.action_dashboard_to_budgets) }
@@ -108,10 +107,11 @@ class DashboardFragment : Fragment() {
         binding.qaIncome.setOnClickListener { nav.navigate(R.id.action_dashboard_to_addMoney) }
         binding.qaExpense.setOnClickListener { nav.navigate(R.id.action_dashboard_to_addExpense) }
         binding.qaTransfer.setOnClickListener { nav.navigate(R.id.action_dashboard_to_transfer) }
-        binding.qaLend.setOnClickListener { nav.navigate(R.id.action_dashboard_to_people) }
+        binding.qaRecurring.setOnClickListener { nav.navigate(R.id.action_dashboard_to_recurring) }
         binding.qaGoal.setOnClickListener { nav.navigate(R.id.action_dashboard_to_createGoal) }
-        binding.qaReports.setOnClickListener { nav.navigate(R.id.action_dashboard_to_reports) }
+        binding.qaCategories.setOnClickListener { nav.navigate(R.id.action_dashboard_to_categories) }
         binding.qaBudgets.setOnClickListener { nav.navigate(R.id.action_dashboard_to_budgets) }
+        binding.qaTrash.setOnClickListener { nav.navigate(R.id.action_dashboard_to_trash) }
 
         binding.moreButton.setOnClickListener { anchor ->
             PopupMenu(requireContext(), anchor).apply {

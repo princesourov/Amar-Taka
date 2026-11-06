@@ -2,11 +2,10 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.Material3.CardView.Outlined"
+    style="@style/Widget.Hisab.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_sm"
-    app:cardCornerRadius="16dp">
+    android:layout_marginBottom="@dimen/spacing_sm">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,6 +28,7 @@
                     android:id="@+id/trashTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     tools:text="Food · Expense" />
 
@@ -36,7 +36,8 @@
                     android:id="@+id/trashMeta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="0.75"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAppearance="?attr/textAppearanceBodySmall"
                     tools:text="Transaction · Pocket" />
 
@@ -44,7 +45,8 @@
                     android:id="@+id/trashSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="0.75"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textAppearance="?attr/textAppearanceBodySmall"
                     tools:text="Date: 20 Aug 2026 · Deleted: 21 Aug 2026" />
             </LinearLayout>
@@ -52,6 +54,7 @@
             <TextView
                 android:id="@+id/trashAmount"
                 android:layout_width="wrap_content"
+                android:fontFamily="@font/poppins_bold"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
@@ -65,17 +68,19 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/trashRestore"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Hisab.Button.Text"
                 android:layout_width="0dp"
+                android:fontFamily="@font/poppins_semibold"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/trash_restore" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/trashPurge"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Hisab.Button.Text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
                 android:layout_weight="1"
                 android:text="@string/trash_delete_forever" />
         </LinearLayout>

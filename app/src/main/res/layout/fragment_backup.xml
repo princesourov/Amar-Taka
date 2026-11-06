@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:alpha="0.75"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:text="@string/backup_intro"
             android:textAppearance="?attr/textAppearanceBodyMedium" />
 
@@ -36,11 +36,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="1dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:alpha="0.75"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:text="@string/backup_create_body"
                     android:textAppearance="?attr/textAppearanceBodySmall" />
 
@@ -78,7 +74,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/shareButton"
-                        style="@style/Widget.Material3.Button.TonalButton"
+                        style="@style/Widget.Hisab.Button.Tonal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -90,11 +86,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="1dp">
+            android:layout_marginTop="@dimen/spacing_md">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -112,13 +104,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:alpha="0.75"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:text="@string/backup_restore_body"
                     android:textAppearance="?attr/textAppearanceBodySmall" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/restoreButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.Hisab.Button.Outlined"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_md"
@@ -130,7 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_md"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:text="@string/backup_last_safety_copy"
             android:textAppearance="?attr/textAppearanceBodySmall" />
     </LinearLayout>

@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.75"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:text="@string/categories_explainer"
             android:textAppearance="?attr/textAppearanceBodySmall" />
 
@@ -62,13 +62,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:alpha="0.8"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:gravity="center"
         android:padding="@dimen/spacing_lg"
         android:text="@string/categories_empty"
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        app:backgroundTint="?attr/colorPrimary"
+        app:iconTint="?attr/colorOnPrimary"
+        android:textColor="?attr/colorOnPrimary"
+        android:textStyle="bold"
         android:id="@+id/fabAddCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

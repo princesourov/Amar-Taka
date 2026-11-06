@@ -23,7 +23,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/typeExpense"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            style="@style/Widget.Hisab.Button.Outlined"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -32,7 +32,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/typeIncome"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            style="@style/Widget.Hisab.Button.Outlined"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -59,7 +59,7 @@
         android:layout_marginTop="@dimen/spacing_sm"
         android:hint="@string/hint_category"
         app:endIconMode="dropdown_menu"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        style="@style/Widget.Hisab.TextInput.Dropdown">
 
         <AutoCompleteTextView
             android:id="@+id/categoryDropdown"
@@ -74,7 +74,7 @@
         android:layout_marginTop="@dimen/spacing_sm"
         android:hint="@string/hint_paid_from"
         app:endIconMode="dropdown_menu"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        style="@style/Widget.Hisab.TextInput.Dropdown">
 
         <AutoCompleteTextView
             android:id="@+id/accountDropdown"
@@ -89,7 +89,7 @@
         android:layout_marginTop="@dimen/spacing_sm"
         android:hint="@string/hint_period"
         app:endIconMode="dropdown_menu"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        style="@style/Widget.Hisab.TextInput.Dropdown">
 
         <AutoCompleteTextView
             android:id="@+id/frequencyDropdown"

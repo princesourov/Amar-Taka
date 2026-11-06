@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_primary">#145C4B</color>
-    <color name="color_primary_variant">#0D3F34</color>
+    <!-- HISAB premium design system: palette -->
+    <color name="color_primary">#087A52</color>
+    <color name="color_primary_variant">#075C43</color>
     <color name="color_on_primary">#FFFFFF</color>
-    <color name="color_secondary">#D9A441</color>
-    <color name="color_on_secondary">#241A00</color>
-    <color name="color_background">#F7F6F2</color>
+    <!-- "Secondary green": soft mint used for tonal surfaces, selected states and icon badges -->
+    <color name="color_secondary">#DDF4E7</color>
+    <color name="color_on_secondary">#075C43</color>
+    <color name="color_background">#F8F7F2</color>
     <color name="color_surface">#FFFFFF</color>
-    <color name="color_on_surface">#1B1F1E</color>
-    <color name="color_positive">#1E8A5F</color>
-    <color name="color_negative">#C0453A</color>
-    <color name="color_outline">#E1DED6</color>
+    <color name="color_surface_variant">#F1F5F1</color>
+    <color name="color_on_surface">#171B35</color>
+    <color name="color_text_secondary">#777985</color>
+    <color name="color_positive">#078451</color>
+    <color name="color_negative">#E05252</color>
+    <color name="color_negative_soft">#FCE8E8</color>
+    <color name="color_outline">#EAEAE7</color>
+    <color name="color_divider">#EAEAE7</color>
+    <color name="color_status_bar">#075C43</color>
+    <color name="color_shadow">#3D087A52</color>
+
+    <color name="color_hero_start">#075C43</color>
+    <color name="color_hero_mid">#087A52</color>
+    <color name="color_hero_end">#2AA86E</color>
+    <color name="color_on_hero">#FFFFFF</color>
+    <color name="color_on_hero_muted">#CDEBDD</color>
+    <color name="color_hero_overlay">#26FFFFFF</color>
+    <color name="color_hero_line">#40FFFFFF</color>
 
     <color name="color_warning">#B7791F</color>
-    <color name="chart_1">#2A7F6F</color>
-    <color name="chart_2">#D9822B</color>
-    <color name="chart_3">#4A6FA5</color>
-    <color name="chart_4">#B5527A</color>
-    <color name="chart_5">#7A9E3D</color>
-    <color name="chart_6">#8C6BB1</color>
-    <color name="chart_7">#C4553D</color>
-    <color name="chart_8">#3E9CB5</color>
-    <color name="chart_9">#A3893A</color>
+    <color name="chart_1">#087A52</color>
+    <color name="chart_2">#E0A24A</color>
+    <color name="chart_3">#3E7CB1</color>
+    <color name="chart_4">#D2677A</color>
+    <color name="chart_5">#7FB069</color>
+    <color name="chart_6">#8A6FBF</color>
+    <color name="chart_7">#E05252</color>
+    <color name="chart_8">#3AA6B9</color>
+    <color name="chart_9">#B08D57</color>
     <color name="chart_10">#6B7A8F</color>
 
-    <!-- Not overridden in values-night — the launcher icon background should
-         stay constant regardless of the in-app theme. -->
+    <!-- Not overridden in values-night — the launcher icon background stays constant. -->
     <color name="ic_launcher_background">#145C4B</color>
 </resources>

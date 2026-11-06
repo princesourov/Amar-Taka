@@ -1,712 +1,1456 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <ImageView
+        android:layout_width="280dp"
+        android:layout_height="210dp"
+        android:layout_gravity="top|end"
+        android:importantForAccessibility="no"
+        android:scaleType="fitEnd"
+        android:src="@drawable/deco_header_blob" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/spacing_lg"
-        android:paddingTop="@dimen/spacing_lg"
-        android:paddingEnd="@dimen/spacing_lg"
-        android:paddingBottom="@dimen/spacing_xl">
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingStart="18dp"
+            android:paddingTop="@dimen/spacing_lg"
+            android:paddingEnd="18dp"
+            android:paddingBottom="@dimen/spacing_xl">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/greeting"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.7"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    tools:text="Good evening" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/moreButton"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/dash_more_menu"
-                app:icon="@drawable/ic_more_vert" />
-        </LinearLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/heroCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="?attr/colorPrimary"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="0dp">
-
+            <!-- Greeting + branding -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.8"
-                    android:text="@string/dash_available_label"
-                    android:textAppearance="?attr/textAppearanceLabelLarge"
-                    android:textColor="?attr/colorOnPrimary" />
-
-                <TextView
-                    android:id="@+id/availableAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textAppearance="?attr/textAppearanceDisplaySmall"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textStyle="bold"
-                    tools:text="৳57,000.00" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_md"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.75"
-                            android:text="@string/label_total_money"
-                            android:textAppearance="?attr/textAppearanceLabelMedium"
-                            android:textColor="?attr/colorOnPrimary" />
-
-                        <TextView
-                            android:id="@+id/totalBalance"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textColor="?attr/colorOnPrimary"
-                            tools:text="৳45,000.00" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.75"
-                            android:text="@string/dash_in_goals_label"
-                            android:textAppearance="?attr/textAppearanceLabelMedium"
-                            android:textColor="?attr/colorOnPrimary" />
-
-                        <TextView
-                            android:id="@+id/inGoalsAmount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textColor="?attr/colorOnPrimary"
-                            tools:text="৳12,000.00" />
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_md"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.75"
-                            android:text="@string/lent_borrowed"
-                            android:textAppearance="?attr/textAppearanceLabelMedium"
-                            android:textColor="?attr/colorOnPrimary" />
-
-                        <TextView
-                            android:id="@+id/lentBorrowed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textColor="?attr/colorOnPrimary"
-                            tools:text="৳45,000.00" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.75"
-                            android:text="@string/net_money"
-                            android:textAppearance="?attr/textAppearanceLabelMedium"
-                            android:textColor="?attr/colorOnPrimary" />
-
-                        <TextView
-                            android:id="@+id/netMoney"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textColor="?attr/colorOnPrimary"
-                            tools:text="৳12,000.00" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md">
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/dateRangeDropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/summaryCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/spacing_lg">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dash_summary_title"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_sm"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/summaryIncome"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:text="@string/dash_income"
-                            android:textAppearance="?attr/textAppearanceLabelMedium" />
-
-                        <TextView
-                            android:id="@+id/summaryIncomeValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            tools:text="৳0.00" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/summaryExpense"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:text="@string/dash_expense"
-                            android:textAppearance="?attr/textAppearanceLabelMedium" />
-
-                        <TextView
-                            android:id="@+id/summaryExpenseValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            tools:text="৳0.00" />
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_sm"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/summaryNet"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:text="@string/dash_net_cash_flow"
-                            android:textAppearance="?attr/textAppearanceLabelMedium" />
-
-                        <TextView
-                            android:id="@+id/summaryNetValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            tools:text="৳0.00" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/summaryRate"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:text="@string/dash_savings_rate"
-                            android:textAppearance="?attr/textAppearanceLabelMedium" />
-
-                        <TextView
-                            android:id="@+id/summaryRateValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            tools:text="৳0.00" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_lg"
-            android:text="@string/dash_quick_actions"
-            android:textAppearance="?attr/textAppearanceTitleMedium" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="-4dp"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.google.android.material.chip.Chip
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/greeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="17sp"
+                        tools:text="Good evening" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                        android:textColor="?attr/colorOnSecondaryContainer"
+                        android:textSize="34sp" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/moreButton"
+                    style="@style/Widget.Hisab.Button.IconCircle"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@string/dash_more_menu"
+                    app:icon="@drawable/ic_more_vert"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="22dp" />
+            </LinearLayout>
+
+            <!-- Hero: free to spend -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/heroCard"
+                style="@style/Widget.Hisab.Card.Hero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:clickable="true"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:focusable="true"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="32dp"
+                app:rippleColor="@color/color_on_hero"
+                app:strokeWidth="0dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:background="@drawable/bg_hero_gradient">
+
+                    <ImageView
+                        android:layout_width="104dp"
+                        android:layout_height="84dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginEnd="14dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/deco_hero_chart" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_icon_square_hero"
+                                android:importantForAccessibility="no"
+                                android:padding="11dp"
+                                android:src="@drawable/ic_accounts"
+                                app:tint="@color/color_on_hero" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@string/dash_available_label"
+                                android:textColor="@color/color_on_hero"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="6dp"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_chevron_right"
+                                app:tint="@color/color_on_hero" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/availableAmount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:autoSizeMaxTextSize="40sp"
+                            android:autoSizeMinTextSize="20sp"
+                            android:autoSizeStepGranularity="1sp"
+                            android:autoSizeTextType="uniform"
+                            android:ellipsize="none"
+                            android:fontFamily="@font/poppins_bold"
+                            android:gravity="start|center_vertical"
+                            android:includeFontPadding="true"
+                            android:maxLines="1"
+                            android:textColor="@color/color_on_hero"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            tools:text="৳7,945.10" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/bg_hero_divider" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="0dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:background="@drawable/bg_icon_circle_hero"
+                                        android:importantForAccessibility="no"
+                                        android:padding="10dp"
+                                        android:src="@drawable/ic_coins"
+                                        app:tint="@color/color_on_hero" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/poppins_semibold"
+                                            android:text="@string/label_total_money"
+                                            android:textColor="@color/color_on_hero_muted"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:id="@+id/totalBalance"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:autoSizeMaxTextSize="17sp"
+                                            android:autoSizeMinTextSize="11sp"
+                                            android:autoSizeTextType="uniform"
+                                            android:maxLines="1"
+                                            android:textColor="@color/color_on_hero"
+                                            android:textStyle="bold"
+                                            tools:text="৳10,945.10" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:background="@drawable/bg_icon_circle_hero"
+                                        android:importantForAccessibility="no"
+                                        android:padding="10dp"
+                                        android:src="@drawable/ic_people"
+                                        app:tint="@color/color_on_hero" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/poppins_semibold"
+                                            android:text="@string/lent_borrowed"
+                                            android:textColor="@color/color_on_hero_muted"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:id="@+id/lentBorrowed"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:autoSizeMaxTextSize="17sp"
+                                            android:autoSizeMinTextSize="11sp"
+                                            android:autoSizeTextType="uniform"
+                                            android:maxLines="1"
+                                            android:textColor="@color/color_on_hero"
+                                            android:textStyle="bold"
+                                            tools:text="৳10,110.75" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="12dp"
+                                android:background="@drawable/bg_hero_divider" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="0dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:background="@drawable/bg_icon_circle_hero"
+                                        android:importantForAccessibility="no"
+                                        android:padding="10dp"
+                                        android:src="@drawable/ic_target"
+                                        app:tint="@color/color_on_hero" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/poppins_semibold"
+                                            android:text="@string/dash_in_goals_label"
+                                            android:textColor="@color/color_on_hero_muted"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:id="@+id/inGoalsAmount"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:autoSizeMaxTextSize="17sp"
+                                            android:autoSizeMinTextSize="11sp"
+                                            android:autoSizeTextType="uniform"
+                                            android:maxLines="1"
+                                            android:textColor="@color/color_on_hero"
+                                            android:textStyle="bold"
+                                            tools:text="৳3,000.00" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:background="@drawable/bg_icon_circle_hero"
+                                        android:importantForAccessibility="no"
+                                        android:padding="10dp"
+                                        android:src="@drawable/ic_accounts"
+                                        app:tint="@color/color_on_hero" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/poppins_semibold"
+                                            android:text="@string/net_money"
+                                            android:textColor="@color/color_on_hero_muted"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:id="@+id/netMoney"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:autoSizeMaxTextSize="17sp"
+                                            android:autoSizeMinTextSize="11sp"
+                                            android:autoSizeTextType="uniform"
+                                            android:maxLines="1"
+                                            android:textColor="@color/color_on_hero"
+                                            android:textStyle="bold"
+                                            tools:text="৳21,055.85" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:elevation="30dp"
+                    android:importantForAccessibility="no"
+                    android:padding="10dp"
+                    android:src="@drawable/account"
+                    app:tint="?attr/colorOnSecondaryContainer" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="12dp"
+                    android:text="@string/dash_accounts_title"
+                    android:textAppearance="@style/TextAppearance.Hisab.SectionTitle" />
+
+                <TextView
+                    android:id="@+id/seeAllAccounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_arrow_forward"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="?attr/colorPrimary"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center_vertical"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:text="@string/action_see_all"
+                    android:textAppearance="@style/TextAppearance.Hisab.Link" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/accountList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_account_balance" />
+
+            <TextView
+                android:id="@+id/accountsEmpty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dash_add_first_account"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:visibility="gone" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Hisab.TextInput.Dropdown.Pill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:elevation="36dp"
+                android:translationZ="8dp"
+                app:startIconDrawable="@drawable/ic_calendar"
+                app:startIconTint="@color/chart_1">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/dateRangeDropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center_vertical"
+                    android:inputType="none"
+                    android:minHeight="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Summary -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/summaryCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:clickable="true"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:elevation="36dp"
+                android:focusable="true"
+                android:translationZ="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_icon_circle_primary"
+                            android:elevation="30dp"
+                            android:importantForAccessibility="no"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_reports"
+                            app:tint="?attr/colorOnPrimary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@string/dash_summary_title"
+                            android:textAppearance="@style/TextAppearance.Hisab.SectionTitle"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/fullSummary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:drawableEnd="@drawable/ic_arrow_forward"
+                            android:drawablePadding="4dp"
+                            android:drawableTint="?attr/colorPrimary"
+                            android:focusable="true"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center_vertical"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:text="@string/last_30_days"
+                            android:textAppearance="@style/TextAppearance.Hisab.Link" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/summaryIncome"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_icon_circle"
+                                android:importantForAccessibility="no"
+                                android:padding="10dp"
+                                android:src="@drawable/ic_arrow_up"
+                                app:tint="@color/color_positive" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@string/dash_income"
+                                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/summaryIncomeValue"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:autoSizeMaxTextSize="18sp"
+                                    android:autoSizeMinTextSize="11sp"
+                                    android:autoSizeTextType="uniform"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:maxLines="1"
+                                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                                    android:textStyle="bold"
+                                    tools:text="৳0.00" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/bg_vertical_divider" />
+
+                        <LinearLayout
+                            android:id="@+id/summaryExpense"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_icon_circle_negative"
+                                android:importantForAccessibility="no"
+                                android:padding="10dp"
+                                android:src="@drawable/ic_arrow_down"
+                                app:tint="@color/color_negative" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@string/dash_expense"
+                                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/summaryExpenseValue"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:autoSizeMaxTextSize="18sp"
+                                    android:autoSizeMinTextSize="11sp"
+                                    android:autoSizeTextType="uniform"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:maxLines="1"
+                                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                                    android:textStyle="bold"
+                                    tools:text="৳0.00" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/bg_vertical_divider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/summaryNet"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_icon_circle"
+                                android:importantForAccessibility="no"
+                                android:padding="10dp"
+                                android:src="@drawable/ic_accounts"
+                                app:tint="?attr/colorPrimary" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@string/dash_net_cash_flow"
+                                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/summaryNetValue"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:autoSizeMaxTextSize="18sp"
+                                    android:autoSizeMinTextSize="11sp"
+                                    android:autoSizeTextType="uniform"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:maxLines="1"
+                                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                                    android:textStyle="bold"
+                                    tools:text="৳0.00" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/bg_vertical_divider" />
+
+                        <LinearLayout
+                            android:id="@+id/summaryRate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_icon_circle"
+                                android:importantForAccessibility="no"
+                                android:padding="10dp"
+                                android:src="@drawable/ic_trending_up"
+                                app:tint="?attr/colorPrimary" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@string/dash_savings_rate"
+                                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/summaryRateValue"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:autoSizeMaxTextSize="18sp"
+                                    android:autoSizeMinTextSize="11sp"
+                                    android:autoSizeTextType="uniform"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:maxLines="1"
+                                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                                    android:textStyle="bold"
+                                    tools:text="৳0.00" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginEnd="8dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_flash"
+                    app:tint="?attr/colorOnSecondaryContainer" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/dash_quick_actions"
+                    android:textAppearance="@style/TextAppearance.Hisab.SectionTitle" />
+
+            </LinearLayout>
+
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:alignmentMode="alignMargins"
+                android:columnCount="4"
+                android:rowCount="2"
+                android:useDefaultMargins="false">
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/qaIncome"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.Hisab.Card.Tonal"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/dash_qa_income" />
-                <com.google.android.material.chip.Chip
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:elevation="8dp"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_icon_circle_surface"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_arrow_down"
+                            app:tint="@color/color_on_hero" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:maxLines="2"
+                            android:text="@string/dash_qa_income"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/qaExpense"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.Hisab.Card.Tonal"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/dash_qa_expense" />
-                <com.google.android.material.chip.Chip
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:elevation="8dp"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/bg_icon_circle_surface"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_arrow_up"
+                            app:tint="@color/color_surface_variant" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:maxLines="2"
+                            android:text="@string/dash_qa_expense"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/qaTransfer"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.Hisab.Card.Tonal"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/dash_qa_transfer" />
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/qaLend"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dash_qa_lend" />
-                <com.google.android.material.chip.Chip
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:elevation="8dp"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_transactions"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:maxLines="2"
+                            android:text="@string/dash_qa_transfer"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/qaGoal"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.Hisab.Card.Tonal"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/dash_qa_goal" />
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/qaReports"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:elevation="8dp"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_target"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:text="@string/dash_qa_goal"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/qaRecurring"
+                    style="@style/Widget.Hisab.Card.Tonal"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/dash_qa_reports" />
-                <com.google.android.material.chip.Chip
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:elevation="8dp"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_recurrence"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:maxLines="2"
+                            android:text="@string/recurring"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/qaCategories"
+                    style="@style/Widget.Hisab.Card.Tonal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:elevation="8dp"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_category"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:maxLines="2"
+                            android:text="Categories"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/qaBudgets"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.Hisab.Card.Tonal"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/dash_qa_budgets" />
-            </LinearLayout>
-        </HorizontalScrollView>
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:elevation="8dp"
+                    android:focusable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/debtCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
-            <LinearLayout
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_pie"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:maxLines="2"
+                            android:text="@string/dash_qa_budgets"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/qaTrash"
+                    style="@style/Widget.Hisab.Card.Tonal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:elevation="8dp"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_trash"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center"
+                            android:maxLines="2"
+                            android:text="@string/trash"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </GridLayout>
+
+            <!-- Debts & lending -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/spacing_lg">
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:elevation="36dp"
+                android:translationZ="12dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dash_debts_title"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_sm"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="bottom|end"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/deco_money_bag" />
 
                     <LinearLayout
-                        android:id="@+id/debtReceivable"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="7dp">
 
-                        <TextView
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_handshake"
+                                app:tint="?attr/colorPrimary" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@string/dash_debts_title"
+                                android:textAppearance="@style/TextAppearance.Hisab.SectionTitle" />
+
+                            <TextView
+                                android:id="@+id/debtCard"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableEnd="@drawable/ic_arrow_forward"
+                                android:drawablePadding="4dp"
+                                android:drawableTint="?attr/colorPrimary"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:gravity="center_vertical"
+                                android:paddingTop="6dp"
+                                android:paddingBottom="6dp"
+                                android:text="@string/action_see_all"
+                                android:textAppearance="@style/TextAppearance.Hisab.Link" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/debtReceivable"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@string/debt_receivable"
+                                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/debtReceivableValue"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:autoSizeMaxTextSize="20sp"
+                                    android:autoSizeMinTextSize="12sp"
+                                    android:autoSizeTextType="uniform"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:maxLines="1"
+                                    android:textAppearance="?attr/textAppearanceTitleLarge"
+                                    android:textColor="?attr/colorPrimary"
+                                    tools:text="৳0.00" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="12dp"
+                                android:background="@drawable/bg_vertical_divider" />
+
+                            <LinearLayout
+                                android:id="@+id/debtPayable"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:text="@string/debt_payable"
+                                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/debtPayableValue"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:autoSizeMaxTextSize="20sp"
+                                    android:autoSizeMinTextSize="12sp"
+                                    android:autoSizeTextType="uniform"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:maxLines="1"
+                                    android:textAppearance="?attr/textAppearanceTitleLarge"
+                                    android:textColor="?attr/colorPrimary"
+                                    tools:text="৳0.00" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/debtNet"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:text="@string/debt_receivable"
-                            android:textAppearance="?attr/textAppearanceLabelMedium" />
+                            android:layout_marginTop="4dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/debtReceivableValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            tools:text="৳0.00" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
+                                android:text="@string/debt_net_position"
+                                android:textAppearance="?attr/textAppearanceLabelMedium"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/debtNetValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_bold"
+                                android:textAppearance="?attr/textAppearanceTitleLarge"
+                                android:textColor="?attr/colorPrimary"
+                                tools:text="৳10,110.75" />
+                        </LinearLayout>
                     </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/debtPayable"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:text="@string/debt_payable"
-                            android:textAppearance="?attr/textAppearanceLabelMedium" />
-
-                        <TextView
-                            android:id="@+id/debtPayableValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            tools:text="৳0.00" />
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_sm"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/debtNet"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.7"
-                            android:text="@string/debt_net_position"
-                            android:textAppearance="?attr/textAppearanceLabelMedium" />
-
-                        <TextView
-                            android:id="@+id/debtNetValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            tools:text="৳0.00" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_lg"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/dash_accounts_title"
-                android:textAppearance="?attr/textAppearanceTitleMedium" />
-
-            <TextView
-                android:id="@+id/seeAllAccounts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/action_see_all"
-                android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:textColor="?attr/colorPrimary" />
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/accountList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_sm"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
-            tools:listitem="@layout/item_account_balance" />
-
-        <TextView
-            android:id="@+id/accountsEmpty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="0.7"
-            android:text="@string/dash_add_first_account"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:visibility="gone" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/budgetsCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
+            <!-- Budgets -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/budgetsCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/spacing_lg">
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:clickable="true"
+                android:elevation="36dp"
+                android:focusable="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-                    <TextView
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/dash_budgets_title"
-                        android:textAppearance="?attr/textAppearanceTitleMedium" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_circle_primary"
+                            android:importantForAccessibility="no"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_pie"
+                            app:tint="?attr/colorOnPrimary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@string/dash_budgets_title"
+                            android:textAppearance="@style/TextAppearance.Hisab.SectionTitle" />
+
+                        <TextView
+                            android:id="@+id/seeAllBudgets"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableEnd="@drawable/ic_arrow_forward"
+                            android:drawablePadding="4dp"
+                            android:drawableTint="?attr/colorPrimary"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center_vertical"
+                            android:text="@string/action_see_all"
+                            android:textAppearance="@style/TextAppearance.Hisab.Link" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/seeAllBudgets"
+                        android:id="@+id/budgetsSummaryText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/action_see_all"
-                        android:textAppearance="?attr/textAppearanceLabelLarge"
-                        android:textColor="?attr/colorPrimary" />
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:id="@+id/budgetRows"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:orientation="vertical" />
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/budgetsSummaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:alpha="0.75"
-                    android:textAppearance="?attr/textAppearanceBodySmall" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Goals -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/goalsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:clickable="true"
+                android:elevation="36dp"
+                android:focusable="true">
 
                 <LinearLayout
-                    android:id="@+id/budgetRows"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/goalsCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_circle_primary"
+                            android:importantForAccessibility="no"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_target"
+                            app:tint="?attr/colorOnPrimary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@string/dash_goals_title"
+                            android:textAppearance="@style/TextAppearance.Hisab.SectionTitle" />
+
+                        <TextView
+                            android:id="@+id/seeAllGoals"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableEnd="@drawable/ic_arrow_forward"
+                            android:drawablePadding="4dp"
+                            android:drawableTint="?attr/colorPrimary"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:gravity="center_vertical"
+                            android:text="@string/action_see_all"
+                            android:textAppearance="@style/TextAppearance.Hisab.Link" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/goalsSummaryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:id="@+id/goalRows"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:orientation="vertical" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/spacing_lg">
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginEnd="8dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_receipt"
+                    app:tint="?attr/colorOnSecondaryContainer" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/dash_goals_title"
-                        android:textAppearance="?attr/textAppearanceTitleMedium" />
-
-                    <TextView
-                        android:id="@+id/seeAllGoals"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/action_see_all"
-                        android:textAppearance="?attr/textAppearanceLabelLarge"
-                        android:textColor="?attr/colorPrimary" />
-                </LinearLayout>
                 <TextView
-                    android:id="@+id/goalsSummaryText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/label_recent_transactions"
+                    android:textAppearance="@style/TextAppearance.Hisab.SectionTitle" />
+
+                <TextView
+                    android:id="@+id/seeAllTransactions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:alpha="0.75"
-                    android:textAppearance="?attr/textAppearanceBodySmall" />
-
-                <LinearLayout
-                    android:id="@+id/goalRows"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:drawableEnd="@drawable/ic_arrow_forward"
+                    android:drawablePadding="4dp"
+                    android:drawableTint="?attr/colorPrimary"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center_vertical"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:text="@string/action_see_all"
+                    android:textAppearance="@style/TextAppearance.Hisab.Link" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_lg"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recentTransactionsList"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/label_recent_transactions"
-                android:textAppearance="?attr/textAppearanceTitleMedium" />
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_transaction" />
 
             <TextView
-                android:id="@+id/seeAllTransactions"
+                android:id="@+id/recentTransactionsEmpty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/action_see_all"
-                android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:textColor="?attr/colorPrimary" />
+                android:text="@string/transactions_empty_state"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:visibility="gone" />
         </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recentTransactionsList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_sm"
-            android:nestedScrollingEnabled="false"
-            tools:listitem="@layout/item_transaction" />
-
-        <TextView
-            android:id="@+id/recentTransactionsEmpty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="0.7"
-            android:text="@string/transactions_empty_state"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:visibility="gone" />
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</FrameLayout>

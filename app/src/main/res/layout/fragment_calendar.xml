@@ -14,7 +14,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/previousMonthButton"
-            style="@style/Widget.Material3.Button.TextButton"
+            style="@style/Widget.Hisab.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="←" />
@@ -30,7 +30,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextMonthButton"
-            style="@style/Widget.Material3.Button.TextButton"
+            style="@style/Widget.Hisab.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="→" />
@@ -38,7 +38,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/currentMonthButton"
-        style="@style/Widget.Material3.Button.TextButton"
+        style="@style/Widget.Hisab.Button.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/action_return_current_month" />
@@ -72,7 +72,7 @@
         android:id="@+id/emptyState"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0.7"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:gravity="center"
         android:text="@string/calendar_empty_day"
         android:visibility="gone" />

@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:visibility="gone"
             tools:text="+880 1XX-XXXXXXX  ·  rahim@example.com"
@@ -34,9 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_md"
-            app:cardBackgroundColor="?attr/colorPrimary"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp">
+            app:cardBackgroundColor="?attr/colorPrimary">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,7 +45,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="0.85"
                     android:text="@string/debt_net_position"
                     android:textColor="?attr/colorOnPrimary" />
 
@@ -64,7 +61,6 @@
                     android:id="@+id/personNetHint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="0.8"
                     android:textAppearance="?attr/textAppearanceBodySmall"
                     android:textColor="?attr/colorOnPrimary"
                     tools:text="They owe you more than you owe them" />
@@ -84,7 +80,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.8"
                             android:text="@string/debt_receivable"
                             android:textAppearance="?attr/textAppearanceLabelMedium"
                             android:textColor="?attr/colorOnPrimary" />
@@ -107,7 +102,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.8"
                             android:text="@string/debt_payable"
                             android:textAppearance="?attr/textAppearanceLabelMedium"
                             android:textColor="?attr/colorOnPrimary" />
@@ -129,7 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_sm"
-            android:alpha="0.8"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textAppearance="?attr/textAppearanceBodySmall"
             android:visibility="gone" />
 
@@ -141,7 +135,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/giveButton"
-                style="@style/Widget.Material3.Button.TonalButton"
+                style="@style/Widget.Hisab.Button.Tonal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -150,7 +144,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/takeButton"
-                style="@style/Widget.Material3.Button.TonalButton"
+                style="@style/Widget.Hisab.Button.Tonal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -165,7 +159,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/receiveRepaymentButton"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Widget.Hisab.Button.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -175,7 +169,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/makeRepaymentButton"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Widget.Hisab.Button.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -199,7 +193,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/filterAll"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.Hisab.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
@@ -207,14 +201,14 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/filterOpen"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.Hisab.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/debt_filter_open" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/filterSettled"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.Hisab.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/debt_filter_settled" />
@@ -230,7 +224,7 @@
             android:id="@+id/debtRecordsEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:text="@string/debt_records_empty"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:visibility="gone" />
@@ -259,7 +253,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_sm"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:gravity="center"
             android:text="@string/person_no_history"
             android:visibility="gone" />

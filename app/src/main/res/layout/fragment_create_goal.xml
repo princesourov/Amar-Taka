@@ -44,7 +44,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            style="@style/Widget.Hisab.TextInput.Dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_sm"
@@ -65,7 +65,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/dateButton"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Widget.Hisab.Button.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -73,7 +73,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/clearDateButton"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Hisab.Button.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/goal_clear_date" />

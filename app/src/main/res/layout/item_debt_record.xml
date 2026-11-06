@@ -4,11 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spacing_sm"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    app:strokeColor="?attr/colorOutlineVariant"
-    app:strokeWidth="1dp">
+    android:layout_marginTop="@dimen/spacing_sm">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,6 +27,7 @@
                     android:id="@+id/recordTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     tools:text="You lent · ৳5,000.00" />
 
@@ -38,8 +35,9 @@
                     android:id="@+id/recordSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="0.75"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     tools:text="12 Oct 2026" />
             </LinearLayout>
 
@@ -47,6 +45,7 @@
                 android:id="@+id/recordStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
                 tools:text="Partially paid" />
         </LinearLayout>
@@ -65,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_semibold"
             android:textAppearance="?attr/textAppearanceBodySmall"
             tools:text="৳2,000.00 paid · ৳3,000.00 left of ৳5,000.00" />
 
@@ -73,8 +73,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:alpha="0.75"
+            android:fontFamily="@font/poppins_semibold"
             android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:visibility="gone"
             tools:text="৳2,000.00 on 20 Oct 2026" />
     </LinearLayout>

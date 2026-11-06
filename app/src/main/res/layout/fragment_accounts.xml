@@ -20,7 +20,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/transferButton"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.Hisab.Button.Tonal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_sm"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xl"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:gravity="center"
             android:text="@string/accounts_empty_state"
             android:visibility="gone" />

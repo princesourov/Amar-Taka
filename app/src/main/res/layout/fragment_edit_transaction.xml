@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:visibility="gone"
             tools:text="With Rahim Ahmed"
@@ -50,7 +50,7 @@
             android:layout_marginTop="@dimen/spacing_sm"
             android:hint="@string/hint_category"
             app:endIconMode="dropdown_menu"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            style="@style/Widget.Hisab.TextInput.Dropdown">
 
             <AutoCompleteTextView
                 android:id="@+id/categoryDropdown"
@@ -66,7 +66,7 @@
             android:layout_marginTop="@dimen/spacing_sm"
             android:hint="@string/hint_paid_from"
             app:endIconMode="dropdown_menu"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            style="@style/Widget.Hisab.TextInput.Dropdown">
 
             <AutoCompleteTextView
                 android:id="@+id/primaryAccountDropdown"
@@ -83,7 +83,7 @@
             android:hint="@string/hint_into_account"
             android:visibility="gone"
             app:endIconMode="dropdown_menu"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            style="@style/Widget.Hisab.TextInput.Dropdown">
 
             <AutoCompleteTextView
                 android:id="@+id/secondaryAccountDropdown"

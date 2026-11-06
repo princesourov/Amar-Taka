@@ -33,7 +33,7 @@
         android:layout_marginTop="@dimen/spacing_sm"
         android:hint="@string/hint_account_type"
         app:endIconMode="dropdown_menu"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        style="@style/Widget.Hisab.TextInput.Dropdown">
 
         <AutoCompleteTextView
             android:id="@+id/typeDropdown"

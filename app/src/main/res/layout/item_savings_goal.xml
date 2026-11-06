@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spacing_sm"
     android:clickable="true"
-    android:focusable="true"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="?attr/colorOutlineVariant">
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,8 +22,9 @@
 
             <TextView
                 android:id="@+id/goalIcon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:background="@drawable/bg_icon_square"
                 android:gravity="center"
                 android:textSize="24sp"
                 tools:text="📱" />
@@ -36,7 +32,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_sm"
+                android:layout_marginStart="@dimen/spacing_md"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -44,6 +40,7 @@
                     android:id="@+id/goalName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     tools:text="New Phone" />
 
@@ -51,8 +48,9 @@
                     android:id="@+id/goalStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:alpha="0.75"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     tools:text="In progress · Target: 1 Jan 2027" />
             </LinearLayout>
 
@@ -60,6 +58,7 @@
                 android:id="@+id/goalPercent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 tools:text="40%" />
         </LinearLayout>
@@ -84,6 +83,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
                 android:textAppearance="?attr/textAppearanceBodySmall"
                 tools:text="৳20,000.00 of ৳50,000.00" />
 
@@ -91,8 +91,9 @@
                 android:id="@+id/goalRemaining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:alpha="0.75"
+                android:fontFamily="@font/poppins_semibold"
                 android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 tools:text="৳30,000.00 to go" />
         </LinearLayout>
     </LinearLayout>

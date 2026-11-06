@@ -24,7 +24,7 @@
             android:layout_marginTop="@dimen/spacing_md"
             android:hint="@string/hint_search_people"
             app:startIconDrawable="@drawable/ic_search"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense">
+            style="@style/Widget.Hisab.TextInput.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/searchInput"
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xl"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:gravity="center"
             android:text="@string/people_empty_state"
             android:visibility="gone" />

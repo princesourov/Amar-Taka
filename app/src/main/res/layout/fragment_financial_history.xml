@@ -17,7 +17,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/backButton"
-            style="@style/Widget.Material3.Button.IconButton"
+            style="@style/Widget.Hisab.Button.IconCircle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="-12dp"
@@ -35,7 +35,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0.75"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:text="@string/history_subtitle"
         android:textAppearance="?attr/textAppearanceBodySmall" />
 
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_md"
-        android:alpha="0.8"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:text="@string/history_empty"
         android:textAppearance="?attr/textAppearanceBodyMedium"
         android:visibility="gone" />
@@ -84,14 +84,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:alpha="0.8"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:gravity="center"
                 android:text="@string/history_error"
                 android:textAppearance="?attr/textAppearanceBodyLarge" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/retryButton"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Hisab.Button.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_sm"

@@ -19,7 +19,7 @@
         android:layout_marginTop="@dimen/spacing_md"
         android:hint="@string/hint_search_transactions"
         app:startIconDrawable="@drawable/ic_search"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense">
+        style="@style/Widget.Hisab.TextInput.Dense">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchInput"
@@ -45,7 +45,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipAll"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.Hisab.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
@@ -53,35 +53,35 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipIncome"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.Hisab.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type_income" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipExpense"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.Hisab.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type_expense" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipTransfer"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.Hisab.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type_transfer" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipLending"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.Hisab.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filter_lending" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipBorrowing"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.Hisab.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filter_borrowing" />
@@ -95,7 +95,7 @@
         android:layout_marginTop="@dimen/spacing_sm"
         android:hint="@string/hint_date_range"
         app:endIconMode="dropdown_menu"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        style="@style/Widget.Hisab.TextInput.Dropdown">
 
         <AutoCompleteTextView
             android:id="@+id/dateRangeDropdown"
@@ -116,7 +116,7 @@
             android:layout_weight="1"
             android:hint="@string/nav_accounts"
             app:endIconMode="dropdown_menu"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            style="@style/Widget.Hisab.TextInput.Dropdown">
 
             <AutoCompleteTextView
                 android:id="@+id/accountDropdown"
@@ -135,7 +135,7 @@
             android:layout_weight="1"
             android:hint="@string/nav_people"
             app:endIconMode="dropdown_menu"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            style="@style/Widget.Hisab.TextInput.Dropdown">
 
             <AutoCompleteTextView
                 android:id="@+id/personDropdown"
@@ -151,7 +151,7 @@
         android:layout_marginTop="@dimen/spacing_sm"
         android:hint="@string/hint_category"
         app:endIconMode="dropdown_menu"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        style="@style/Widget.Hisab.TextInput.Dropdown">
 
         <AutoCompleteTextView
             android:id="@+id/categoryDropdown"
@@ -174,7 +174,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xl"
-        android:alpha="0.7"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:gravity="center"
         android:text="@string/transactions_empty_state"
         android:visibility="gone" />

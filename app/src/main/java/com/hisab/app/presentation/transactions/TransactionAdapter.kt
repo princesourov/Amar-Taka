@@ -1,6 +1,7 @@
 package com.hisab.app.presentation.transactions
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,6 +64,21 @@ class TransactionAdapter(
 
             val isOutflow = item.type == TransactionType.EXPENSE || item.type == TransactionType.LENDING ||
                 item.type == TransactionType.REPAYMENT_MADE
+            // Visual only: leading badge shows direction of money (up/red out, down/green in, swap for transfers).
+            val isTransfer = item.type == TransactionType.TRANSFER
+            binding.txnIcon.setImageResource(
+                when {
+                    isTransfer -> R.drawable.ic_transactions
+                    isOutflow -> R.drawable.ic_arrow_up
+                    else -> R.drawable.ic_arrow_down
+                }
+            )
+            binding.txnIcon.setBackgroundResource(
+                if (isOutflow) R.drawable.bg_icon_circle_negative else R.drawable.bg_icon_circle
+            )
+            binding.txnIcon.imageTintList = ColorStateList.valueOf(
+                context.getColor(if (isOutflow) R.color.color_negative else R.color.color_positive)
+            )
             val amountText = formatMinorAsCurrency(item.transaction.amountMinor)
             binding.txnAmount.text = if (isOutflow) "-$amountText" else "+$amountText"
             binding.txnAmount.setTextColor(

@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ellipsize="end"
+            android:fontFamily="@font/poppins_semibold"
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             tools:text="Food &amp; Dining · Monthly" />
@@ -29,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:fontFamily="@font/poppins_bold"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             tools:text="73%" />
     </LinearLayout>
@@ -48,6 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:fontFamily="@font/poppins_semibold"
         android:textAppearance="?attr/textAppearanceBodySmall"
         tools:text="৳2,200.00 of ৳3,000.00 · ৳800.00 left" />
 </LinearLayout>

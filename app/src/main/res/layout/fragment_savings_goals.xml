@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_sm"
-            android:alpha="0.7"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:gravity="center"
             android:text="@string/goals_empty_body"
             android:textAppearance="?attr/textAppearanceBodyMedium" />
